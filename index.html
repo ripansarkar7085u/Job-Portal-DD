@@ -3,9 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Job Portal - Development Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .link-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .link-card:hover {
+            transform: translateY(-2px);
+            border-color: #6366f1;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+        .link-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .link-icon.admin {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+        .link-icon.user {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        .link-info {
+            text-align: left;
+        }
+        .link-title {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .link-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .badge {
+            margin-left: auto;
+            background: #22c55e;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .badge.coming-soon {
+            background: #f59e0b;
+        }
+    </style>
 </head>
 <body>
-    hello!
+    <div class="container">
+        <h1>🎯 Job Portal</h1>
+        <p class="subtitle">Development Navigation Hub</p>
+        
+        <div class="links">
+            <a href="./admin/index.html" class="link-card">
+                <div class="link-icon admin">👨‍💼</div>
+                <div class="link-info">
+                    <div class="link-title">Super Admin Dashboard</div>
+                    <div class="link-desc">Manage users, companies, and jobs</div>
+                </div>
+                <span class="badge">Ready</span>
+            </a>
+            
+            <a href="#" class="link-card" onclick="alert('User pages coming soon from team!'); return false;">
+                <div class="link-icon user">👤</div>
+                <div class="link-info">
+                    <div class="link-title">User / Candidate Portal</div>
+                    <div class="link-desc">Browse jobs, apply, manage profile</div>
+                </div>
+                <span class="badge coming-soon">Coming Soon</span>
+            </a>
+        </div>
+    </div>
 </body>
 </html>
