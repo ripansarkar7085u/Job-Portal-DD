@@ -2,23 +2,23 @@
    
   
 const sampleUsers = [
-    { id: 1, name: "John Doe", email: "john@example.com", phone: "+1 234-567-8901", status: "active", joined: "2026-02-15", avatar: "https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff" },
+    { id: 1, name: "John Doe", email: "john@example.com", phone: "+1 234-567-8901", status: "active", joined: "2026-02-15", avatar: "https://ui-avatars.com/api/?name=John+Doe&background=0d47a1&color=fff" },
     { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "+1 234-567-8902", status: "active", joined: "2026-02-20", avatar: "https://ui-avatars.com/api/?name=Jane+Smith&background=22c55e&color=fff" },
-    { id: 3, name: "Mike Johnson", email: "mike@example.com", phone: "+1 234-567-8903", status: "blocked", joined: "2026-01-10", avatar: "https://ui-avatars.com/api/?name=Mike+Johnson&background=ef4444&color=fff" },
-    { id: 4, name: "Sarah Williams", email: "sarah@example.com", phone: "+1 234-567-8904", status: "active", joined: "2026-03-01", avatar: "https://ui-avatars.com/api/?name=Sarah+Williams&background=f59e0b&color=fff" },
-    { id: 5, name: "David Brown", email: "david@example.com", phone: "+1 234-567-8905", status: "active", joined: "2026-02-28", avatar: "https://ui-avatars.com/api/?name=David+Brown&background=3b82f6&color=fff" },
-    { id: 6, name: "Emily Davis", email: "emily@example.com", phone: "+1 234-567-8906", status: "active", joined: "2026-03-02", avatar: "https://ui-avatars.com/api/?name=Emily+Davis&background=8b5cf6&color=fff" },
-    { id: 7, name: "Chris Wilson", email: "chris@example.com", phone: "+1 234-567-8907", status: "blocked", joined: "2026-01-25", avatar: "https://ui-avatars.com/api/?name=Chris+Wilson&background=ec4899&color=fff" },
+    { id: 3, name: "Mike Johnson", email: "mike@example.com", phone: "+1 234-567-8903", status: "blocked", joined: "2026-01-10", avatar: "https://ui-avatars.com/api/?name=Mike+Johnson&background=ff4b4b&color=fff" },
+    { id: 4, name: "Sarah Williams", email: "sarah@example.com", phone: "+1 234-567-8904", status: "active", joined: "2026-03-01", avatar: "https://ui-avatars.com/api/?name=Sarah+Williams&background=ff7a00&color=fff" },
+    { id: 5, name: "David Brown", email: "david@example.com", phone: "+1 234-567-8905", status: "active", joined: "2026-02-28", avatar: "https://ui-avatars.com/api/?name=David+Brown&background=1565c0&color=fff" },
+    { id: 6, name: "Emily Davis", email: "emily@example.com", phone: "+1 234-567-8906", status: "active", joined: "2026-03-02", avatar: "https://ui-avatars.com/api/?name=Emily+Davis&background=0a3d8f&color=fff" },
+    { id: 7, name: "Chris Wilson", email: "chris@example.com", phone: "+1 234-567-8907", status: "blocked", joined: "2026-01-25", avatar: "https://ui-avatars.com/api/?name=Chris+Wilson&background=e66a00&color=fff" },
     { id: 8, name: "Lisa Anderson", email: "lisa@example.com", phone: "+1 234-567-8908", status: "active", joined: "2026-03-03", avatar: "https://ui-avatars.com/api/?name=Lisa+Anderson&background=14b8a6&color=fff" },
 ];
 
 const sampleCompanies = [
-    { id: 1, name: "TechCorp Inc.", industry: "Technology", email: "hr@techcorp.com", jobsPosted: 15, status: "active", logo: "https://ui-avatars.com/api/?name=TC&background=6366f1&color=fff&rounded=false" },
+    { id: 1, name: "TechCorp Inc.", industry: "Technology", email: "hr@techcorp.com", jobsPosted: 15, status: "active", logo: "https://ui-avatars.com/api/?name=TC&background=0d47a1&color=fff&rounded=false" },
     { id: 2, name: "FinanceHub", industry: "Finance", email: "careers@financehub.com", jobsPosted: 8, status: "active", logo: "https://ui-avatars.com/api/?name=FH&background=22c55e&color=fff&rounded=false" },
-    { id: 3, name: "HealthPlus", industry: "Healthcare", email: "jobs@healthplus.com", jobsPosted: 12, status: "blocked", logo: "https://ui-avatars.com/api/?name=HP&background=ef4444&color=fff&rounded=false" },
-    { id: 4, name: "EduLearn", industry: "Education", email: "hr@edulearn.com", jobsPosted: 5, status: "active", logo: "https://ui-avatars.com/api/?name=EL&background=f59e0b&color=fff&rounded=false" },
-    { id: 5, name: "RetailMax", industry: "Retail", email: "careers@retailmax.com", jobsPosted: 20, status: "active", logo: "https://ui-avatars.com/api/?name=RM&background=3b82f6&color=fff&rounded=false" },
-    { id: 6, name: "BuildRight", industry: "Construction", email: "jobs@buildright.com", jobsPosted: 7, status: "active", logo: "https://ui-avatars.com/api/?name=BR&background=8b5cf6&color=fff&rounded=false" },
+    { id: 3, name: "HealthPlus", industry: "Healthcare", email: "jobs@healthplus.com", jobsPosted: 12, status: "blocked", logo: "https://ui-avatars.com/api/?name=HP&background=ff4b4b&color=fff&rounded=false" },
+    { id: 4, name: "EduLearn", industry: "Education", email: "hr@edulearn.com", jobsPosted: 5, status: "active", logo: "https://ui-avatars.com/api/?name=EL&background=ff7a00&color=fff&rounded=false" },
+    { id: 5, name: "RetailMax", industry: "Retail", email: "careers@retailmax.com", jobsPosted: 20, status: "active", logo: "https://ui-avatars.com/api/?name=RM&background=1565c0&color=fff&rounded=false" },
+    { id: 6, name: "BuildRight", industry: "Construction", email: "jobs@buildright.com", jobsPosted: 7, status: "active", logo: "https://ui-avatars.com/api/?name=BR&background=0a3d8f&color=fff&rounded=false" },
 ];
 
 const sampleJobs = [
@@ -269,14 +269,14 @@ function renderUsersTable() {
             <td>
                 <div class="action-btns">
                     <button class="action-btn view" title="View Details" onclick="viewUser(${user.id})">
-                        <i class="fas fa-eye"></i>
+                        <i class="bi bi-eye-fill"></i>
                     </button>
                     ${user.status === 'active' 
                         ? `<button class="action-btn block" title="Block User" onclick="confirmBlockUser(${user.id})">
-                               <i class="fas fa-ban"></i>
+                               <i class="bi bi-slash-circle"></i>
                            </button>`
                         : `<button class="action-btn unblock" title="Unblock User" onclick="confirmUnblockUser(${user.id})">
-                               <i class="fas fa-check-circle"></i>
+                               <i class="bi bi-check-circle-fill"></i>
                            </button>`
                     }
                 </div>
@@ -325,14 +325,14 @@ function renderCompaniesTable() {
             <td>
                 <div class="action-btns">
                     <button class="action-btn view" title="View Details" onclick="viewCompany(${company.id})">
-                        <i class="fas fa-eye"></i>
+                        <i class="bi bi-eye-fill"></i>
                     </button>
                     ${company.status === 'active' 
                         ? `<button class="action-btn block" title="Block Company" onclick="confirmBlockCompany(${company.id})">
-                               <i class="fas fa-ban"></i>
+                               <i class="bi bi-slash-circle"></i>
                            </button>`
                         : `<button class="action-btn unblock" title="Unblock Company" onclick="confirmUnblockCompany(${company.id})">
-                               <i class="fas fa-check-circle"></i>
+                               <i class="bi bi-check-circle-fill"></i>
                            </button>`
                     }
                 </div>
@@ -379,10 +379,10 @@ function renderJobsTable() {
             <td>
                 <div class="action-btns">
                     <button class="action-btn view" title="View Details" onclick="viewJob(${job.id})">
-                        <i class="fas fa-eye"></i>
+                        <i class="bi bi-eye-fill"></i>
                     </button>
                     <button class="action-btn delete" title="Delete Job" onclick="confirmDeleteJob(${job.id})">
-                        <i class="fas fa-trash"></i>
+                        <i class="bi bi-trash-fill"></i>
                     </button>
                 </div>
             </td>
@@ -592,13 +592,13 @@ function showToast(message, type = 'success') {
 
     // Set icon based on type
     const icons = {
-        success: 'fa-check-circle',
-        error: 'fa-times-circle',
-        warning: 'fa-exclamation-circle',
-        info: 'fa-info-circle'
+        success: 'bi-check-circle-fill',
+        error: 'bi-x-circle-fill',
+        warning: 'bi-exclamation-circle-fill',
+        info: 'bi-info-circle-fill'
     };
 
-    toastIcon.className = `toast-icon fas ${icons[type] || icons.success}`;
+    toastIcon.className = `toast-icon bi ${icons[type] || icons.success}`;
     toastMessage.textContent = message;
     toast.className = `toast ${type}`;
 
