@@ -1,36 +1,42 @@
 /* ===================================
    Admin Dashboard Styles
-   Job Portal - Super Admin Panel
+   CareerHunt - Super Admin Panel
+   Synced with Landing Page Design
    =================================== */
 
 :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
-    --secondary: #64748b;
+    /* Colors matching landing page */
+    --primary: #0d47a1;
+    --primary-dark: #0a3d8f;
+    --primary-light: #1565c0;
+    --accent: #ff7a00;
+    --accent-dark: #e66a00;
+    --accent-light: #ff9933;
+    
     --success: #22c55e;
     --warning: #f59e0b;
-    --danger: #ef4444;
-    --info: #3b82f6;
+    --danger: #ff4b4b;
+    --info: #0d47a1;
     
-    --bg-dark: #0f172a;
-    --bg-sidebar: #1e293b;
-    --bg-main: #f1f5f9;
+    --bg-main: #f5f7fb;
     --bg-card: #ffffff;
+    --bg-sidebar: #0d47a1;
+    --bg-sidebar-dark: #0a3d8f;
     
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --text-light: #94a3b8;
+    --text-primary: #222222;
+    --text-secondary: #666666;
+    --text-light: #777777;
     --text-white: #ffffff;
     
-    --border-color: #e2e8f0;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.1);
     
     --sidebar-width: 260px;
     --header-height: 70px;
     --transition: all 0.3s ease;
+    --radius: 12px;
 }
 
 * {
@@ -40,7 +46,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     background-color: var(--bg-main);
     color: var(--text-primary);
     line-height: 1.6;
@@ -55,11 +61,11 @@ body {
 }
 
 /* ===================================
-   Sidebar
+   Sidebar - Matching landing nav color
    =================================== */
 .sidebar {
     width: var(--sidebar-width);
-    background: var(--bg-sidebar);
+    background: linear-gradient(180deg, var(--bg-sidebar) 0%, var(--bg-sidebar-dark) 100%);
     color: var(--text-white);
     position: fixed;
     height: 100vh;
@@ -67,6 +73,7 @@ body {
     flex-direction: column;
     transition: var(--transition);
     z-index: 100;
+    box-shadow: var(--shadow-md);
 }
 
 .sidebar.collapsed {
@@ -88,17 +95,17 @@ body {
 }
 
 .logo i {
-    color: var(--primary);
+    color: var(--accent);
     font-size: 1.75rem;
 }
 
 .admin-badge {
     display: inline-block;
-    background: var(--primary);
+    background: var(--accent);
     color: var(--text-white);
     font-size: 0.7rem;
     font-weight: 600;
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     margin-top: 10px;
     text-transform: uppercase;
@@ -122,19 +129,20 @@ body {
     padding: 14px 20px;
     cursor: pointer;
     transition: var(--transition);
-    color: var(--text-light);
+    color: rgba(255, 255, 255, 0.7);
     border-left: 3px solid transparent;
+    font-weight: 500;
 }
 
 .nav-item:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text-white);
 }
 
 .nav-item.active {
-    background: rgba(99, 102, 241, 0.15);
-    color: var(--primary-light);
-    border-left-color: var(--primary);
+    background: rgba(255, 122, 0, 0.15);
+    color: var(--accent);
+    border-left-color: var(--accent);
 }
 
 .nav-item i {
@@ -161,6 +169,7 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    border: 2px solid var(--accent);
 }
 
 .admin-info {
@@ -175,13 +184,13 @@ body {
 
 .admin-role {
     font-size: 0.75rem;
-    color: var(--text-light);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .logout-btn {
     background: transparent;
     border: none;
-    color: var(--text-light);
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     padding: 8px;
     border-radius: 8px;
@@ -189,7 +198,7 @@ body {
 }
 
 .logout-btn:hover {
-    background: rgba(239, 68, 68, 0.2);
+    background: rgba(255, 75, 75, 0.2);
     color: var(--danger);
 }
 
@@ -207,12 +216,12 @@ body {
 }
 
 /* ===================================
-   Header
+   Header - Matching landing style
    =================================== */
 .main-header {
     height: var(--header-height);
     background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 0 30px;
     display: flex;
     align-items: center;
@@ -242,11 +251,12 @@ body {
 
 .menu-toggle:hover {
     background: var(--bg-main);
+    color: var(--primary);
 }
 
 .page-title {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-primary);
 }
 
@@ -256,32 +266,35 @@ body {
     gap: 20px;
 }
 
+/* Search box - matching landing page style */
 .search-box {
     position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    transition: var(--transition);
+}
+
+.search-box:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
 }
 
 .search-box i {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
     color: var(--text-light);
+    margin-right: 10px;
 }
 
 .search-box input {
-    padding: 10px 14px 10px 42px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    padding: 10px 0;
+    border: none;
     font-size: 0.9rem;
-    width: 250px;
-    transition: var(--transition);
-    background: var(--bg-main);
-}
-
-.search-box input:focus {
+    width: 220px;
     outline: none;
-    border-color: var(--primary);
-    background: var(--bg-card);
+    background: transparent;
 }
 
 .notification-btn {
@@ -291,20 +304,21 @@ body {
     font-size: 1.25rem;
     color: var(--text-secondary);
     cursor: pointer;
-    padding: 8px;
-    border-radius: 8px;
+    padding: 10px;
+    border-radius: var(--radius);
     transition: var(--transition);
 }
 
 .notification-btn:hover {
     background: var(--bg-main);
+    color: var(--primary);
 }
 
 .notification-badge {
     position: absolute;
-    top: 2px;
-    right: 2px;
-    background: var(--danger);
+    top: 4px;
+    right: 4px;
+    background: var(--accent);
     color: var(--text-white);
     font-size: 0.65rem;
     font-weight: 600;
@@ -329,7 +343,7 @@ body {
 }
 
 /* ===================================
-   Stats Grid
+   Stats Grid - Landing page card style
    =================================== */
 .stats-grid {
     display: grid;
@@ -340,7 +354,7 @@ body {
 
 .stat-card {
     background: var(--bg-card);
-    border-radius: 12px;
+    border-radius: var(--radius);
     padding: 24px;
     display: flex;
     align-items: flex-start;
@@ -350,14 +364,14 @@ body {
 }
 
 .stat-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
 }
 
 .stat-icon {
     width: 56px;
     height: 56px;
-    border-radius: 12px;
+    border-radius: var(--radius);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -365,29 +379,29 @@ body {
 }
 
 .stat-icon.users {
-    background: rgba(99, 102, 241, 0.1);
+    background: #e6f0ff;
     color: var(--primary);
 }
 
 .stat-icon.companies {
-    background: rgba(34, 197, 94, 0.1);
+    background: #e8faf0;
     color: var(--success);
 }
 
 .stat-icon.jobs {
-    background: rgba(59, 130, 246, 0.1);
-    color: var(--info);
+    background: #fff2e6;
+    color: var(--accent);
 }
 
 .stat-icon.blocked {
-    background: rgba(239, 68, 68, 0.1);
+    background: #ffeaea;
     color: var(--danger);
 }
 
 .stat-info h3 {
     font-size: 0.85rem;
     font-weight: 500;
-    color: var(--text-secondary);
+    color: var(--text-light);
     margin-bottom: 8px;
 }
 
@@ -423,13 +437,18 @@ body {
 }
 
 /* ===================================
-   Cards
+   Cards - Matching landing page
    =================================== */
 .card {
     background: var(--bg-card);
-    border-radius: 12px;
+    border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
     overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
 }
 
 .card-header {
@@ -443,10 +462,11 @@ body {
 .card-header h2 {
     font-size: 1.1rem;
     font-weight: 600;
+    color: var(--text-primary);
 }
 
 .view-all {
-    color: var(--primary);
+    color: var(--accent);
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 500;
@@ -454,7 +474,7 @@ body {
 }
 
 .view-all:hover {
-    color: var(--primary-dark);
+    color: var(--primary);
 }
 
 .card-body {
@@ -485,7 +505,7 @@ body {
 .data-table th {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--text-light);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     background: var(--bg-main);
@@ -533,11 +553,11 @@ body {
 
 .user-name,
 .company-name {
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-primary);
 }
 
-/* Status Badge */
+/* Status Badge - matching landing page style */
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -549,17 +569,17 @@ body {
 }
 
 .status-badge.active {
-    background: rgba(34, 197, 94, 0.1);
+    background: #e8faf0;
     color: var(--success);
 }
 
 .status-badge.blocked {
-    background: rgba(239, 68, 68, 0.1);
+    background: #ffeaea;
     color: var(--danger);
 }
 
 .status-badge.expired {
-    background: rgba(245, 158, 11, 0.1);
+    background: #fff2e6;
     color: var(--warning);
 }
 
@@ -569,6 +589,17 @@ body {
     height: 6px;
     border-radius: 50%;
     background: currentColor;
+}
+
+/* Job Type Badge */
+.job-type {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: #e6f0ff;
+    color: var(--primary);
 }
 
 /* Action Buttons */
@@ -581,7 +612,7 @@ body {
     width: 32px;
     height: 32px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -591,27 +622,27 @@ body {
 }
 
 .action-btn.view {
-    background: rgba(59, 130, 246, 0.1);
-    color: var(--info);
+    background: #e6f0ff;
+    color: var(--primary);
 }
 
 .action-btn.view:hover {
-    background: var(--info);
+    background: var(--primary);
     color: var(--text-white);
 }
 
 .action-btn.block {
-    background: rgba(245, 158, 11, 0.1);
-    color: var(--warning);
+    background: #fff2e6;
+    color: var(--accent);
 }
 
 .action-btn.block:hover {
-    background: var(--warning);
+    background: var(--accent);
     color: var(--text-white);
 }
 
 .action-btn.unblock {
-    background: rgba(34, 197, 94, 0.1);
+    background: #e8faf0;
     color: var(--success);
 }
 
@@ -621,7 +652,7 @@ body {
 }
 
 .action-btn.delete {
-    background: rgba(239, 68, 68, 0.1);
+    background: #ffeaea;
     color: var(--danger);
 }
 
@@ -644,7 +675,8 @@ body {
 
 .section-header h2 {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .section-actions {
@@ -656,7 +688,7 @@ body {
 .filter-dropdown select {
     padding: 10px 14px;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: var(--radius);
     font-size: 0.9rem;
     background: var(--bg-card);
     cursor: pointer;
@@ -695,6 +727,7 @@ body {
 .page-btn:hover:not(:disabled) {
     border-color: var(--primary);
     color: var(--primary);
+    background: #e6f0ff;
 }
 
 .page-btn:disabled {
@@ -738,7 +771,7 @@ body {
 .modal-content {
     position: relative;
     background: var(--bg-card);
-    border-radius: 12px;
+    border-radius: var(--radius);
     width: 90%;
     max-width: 450px;
     box-shadow: var(--shadow-lg);
@@ -767,6 +800,7 @@ body {
 .modal-header h3 {
     font-size: 1.1rem;
     font-weight: 600;
+    color: var(--text-primary);
 }
 
 .modal-close {
@@ -779,7 +813,7 @@ body {
 }
 
 .modal-close:hover {
-    color: var(--text-primary);
+    color: var(--danger);
 }
 
 .modal-body {
@@ -788,6 +822,7 @@ body {
 
 .modal-body p {
     color: var(--text-secondary);
+    line-height: 1.6;
 }
 
 .modal-footer {
@@ -799,14 +834,14 @@ body {
 }
 
 /* ===================================
-   Buttons
+   Buttons - Matching landing page
    =================================== */
 .btn {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
 }
@@ -817,16 +852,18 @@ body {
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
+    background: var(--accent);
 }
 
 .btn-secondary {
-    background: var(--bg-main);
+    border: 2px solid var(--border-color);
+    background: var(--bg-card);
     color: var(--text-secondary);
 }
 
 .btn-secondary:hover {
-    background: var(--border-color);
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 .btn-danger {
@@ -835,7 +872,16 @@ body {
 }
 
 .btn-danger:hover {
-    background: #dc2626;
+    background: #e63939;
+}
+
+.btn-accent {
+    background: var(--accent);
+    color: var(--text-white);
+}
+
+.btn-accent:hover {
+    background: var(--accent-dark);
 }
 
 /* ===================================
@@ -845,10 +891,10 @@ body {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background: var(--bg-sidebar);
-    color: var(--text-white);
+    background: var(--bg-card);
+    color: var(--text-primary);
     padding: 16px 24px;
-    border-radius: 10px;
+    border-radius: var(--radius);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -856,22 +902,62 @@ body {
     transform: translateX(150%);
     transition: transform 0.3s ease;
     z-index: 1100;
+    border-left: 4px solid var(--primary);
 }
 
 .toast.show {
     transform: translateX(0);
 }
 
+.toast.success {
+    border-left-color: var(--success);
+}
+
 .toast.success .toast-icon {
     color: var(--success);
+}
+
+.toast.error {
+    border-left-color: var(--danger);
 }
 
 .toast.error .toast-icon {
     color: var(--danger);
 }
 
+.toast.warning {
+    border-left-color: var(--accent);
+}
+
 .toast.warning .toast-icon {
-    color: var(--warning);
+    color: var(--accent);
+}
+
+.toast.info {
+    border-left-color: var(--primary);
+}
+
+.toast.info .toast-icon {
+    color: var(--primary);
+}
+
+/* ===================================
+   Back to Home Link
+   =================================== */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    transition: var(--transition);
+}
+
+.back-link:hover {
+    color: var(--accent);
 }
 
 /* ===================================
@@ -933,6 +1019,10 @@ body {
     .content-section {
         padding: 20px 16px;
     }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
@@ -942,5 +1032,9 @@ body {
     
     .header-right .search-box {
         display: none;
+    }
+    
+    .page-title {
+        font-size: 1.2rem;
     }
 }
