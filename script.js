@@ -1,36 +1,18 @@
+function openSection(sectionId){
 
-var swiper = new Swiper(".testimonial-slider", {
+let sections = document.querySelectorAll('.section');
 
-slidesPerView: 3,
-spaceBetween: 30,
-loop: true,
-
-autoplay: {
-delay: 3000,
-},
-
-pagination: {
-el: ".swiper-pagination",
-clickable: true,
-},
-
-breakpoints: {
-
-0: {
-slidesPerView: 1
-},
-
-768: {
-slidesPerView: 2
-},
-
-992: {
-slidesPerView: 3
-}
-
-}
-
+sections.forEach(function(section){
+section.style.display="none";
 });
 
-// login
+document.getElementById(sectionId).style.display="block";
+
+}
+
+function logout(){
+
+alert("You have been logged out");
+
+}
 
