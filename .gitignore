@@ -138,6 +138,82 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# ===================================
+# IDE & Editor
+# ===================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
 
+# ===================================
+# PHP & XAMPP
+# ===================================
+# Configuration with credentials
+config/database.php
+config/.schema_version
+
+# Setup & test files (contain credentials)
+setup_database.php
+test_db.php
+
+# PHP error logs
+php_errors.log
+error_log
+
+# Session files
+sessions/
+
+# ===================================
+# Security - Sensitive Files
+# ===================================
+# Environment & config files
+*.env
+*.env.local
+*.env.*.local
+config.php
+secrets.php
+credentials.php
+
+# SQL dumps (may contain data)
+*.sql
+!sql/database_setup.sql
+
+# Private keys & certificates
+*.pem
+*.key
+*.crt
+*.p12
+
+# ===================================
+# Uploads & User Content
+# ===================================
+uploads/
+photos/user_*
+photos/company_*
+photos/resumes/
+
+# ===================================
+# OS Generated
+# ===================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ===================================
+# Misc
+# ===================================
+*.bak
+*.tmp
+*.temp
+*.cache
 
 assett/
