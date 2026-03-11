@@ -681,61 +681,92 @@
     <!-- login js -->
     <script>
 
-        /* LOGIN FUNCTION */
+        /* REGISTER USER */
+        function registerUser() {
 
-        function loginUser() {
+            let email = document.querySelector("#registerForm input[type='email']").value.trim();
+            let password = document.querySelector("#registerForm input[type='password']").value.trim();
 
-            let username = document.querySelector("#loginForm input[type='text']").value.trim();
-            let password = document.querySelector("#loginForm input[type='password']").value.trim();
-
-            if (username === "" || password === "") {
-
-                alert("Please enter username and password");
+            if (email === "" || password === "") {
+                alert("Please fill all fields");
                 return;
-
             }
 
-            alert("Login Successful");
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Enter valid email");
+                return;
+            }
 
-            // redirect to dashboard
-            window.location.href = "candidate-dashboard.html";
+            // Password validation
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
+            if (!passwordRegex.test(password)) {
+                alert("Password must be at least 6 characters with number");
+                return;
+            }
 
+            let user = {
+                email: email,
+                password: password
+            };
+
+            localStorage.setItem("careerhuntUser", JSON.stringify(user));
+
+            alert("Registration Successful! Please login.");
+
+            showLogin();
         }
 
+
+        /* LOGIN USER */
+        function loginUser() {
+
+            let email = document.querySelector("#loginForm input[type='text']").value.trim();
+            let password = document.querySelector("#loginForm input[type='password']").value.trim();
+
+            let savedUser = JSON.parse(localStorage.getItem("careerhuntUser"));
+
+            if (!savedUser) {
+                alert("No account found. Please register.");
+                return;
+            }
+
+            if (email === savedUser.email && password === savedUser.password) {
+
+                alert("Login Successful");
+
+                window.location.href = "user/candidate-dashboard.html";
+
+            } else {
+
+                alert("Invalid Email or Password");
+
+            }
+        }
+
+
         /* SWITCH REGISTER */
-
         function showRegister() {
-
             document.getElementById("loginForm").style.display = "none";
             document.getElementById("registerForm").style.display = "block";
-
-            document.getElementById("authTitle").innerText =
-                "Create a CareerHunt Account";
-
+            document.getElementById("authTitle").innerText = "Create a CareerHunt Account";
         }
 
         /* SWITCH LOGIN */
-
         function showLogin() {
-
             document.getElementById("registerForm").style.display = "none";
             document.getElementById("loginForm").style.display = "block";
-
-            document.getElementById("authTitle").innerText =
-                "Login to CareerHunt";
-
+            document.getElementById("authTitle").innerText = "Login to CareerHunt";
         }
 
+
         /* USER TYPE BUTTON */
-
         function selectType(btn) {
-
             document.querySelectorAll(".type-btn").forEach(b => {
                 b.classList.remove("active");
             });
-
             btn.classList.add("active");
-
         }
 
     </script>
@@ -816,11 +847,11 @@
                         <input type="password" class="form-control" placeholder="Password">
                     </div>
 
-                    <button class="btn auth-btn">Register</button>
+                    <button type="button" class="btn auth-btn" onclick="registerUser()">Register</button>
 
                     <p class="switch-text">
                         Already have an account?
-                        <a onclick="showLogin()">Login</a>
+                        <button type="button" class="btn auth-btn" onclick="loginUser()">Log In</button>
                     </p>
 
                 </form>
