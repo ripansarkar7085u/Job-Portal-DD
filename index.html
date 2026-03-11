@@ -306,7 +306,7 @@
 
                             <div class="job-top">
 
-                                <img src="photos/company1.png" class="company-logo">
+                                <img src="photos/ui ux.png" class="company-logo">
 
                                 <div>
                                     <h5>UI / UX Designer</h5>
@@ -343,7 +343,7 @@
 
                             <div class="job-top">
 
-                                <img src="photos/company2.png" class="company-logo">
+                                <img src="/photos/web.webp" class="company-logo">
 
                                 <div>
                                     <h5>Web Developer</h5>
@@ -380,7 +380,7 @@
 
                             <div class="job-top">
 
-                                <img src="photos/company3.png" class="company-logo">
+                                <img src="/photos/digital.webp" class="company-logo">
 
                                 <div>
                                     <h5>Digital Marketer</h5>
@@ -465,7 +465,7 @@
 
                                 <div class="testimonial-user">
 
-                                    <img src="photos/user2.jpg" alt="user">
+                                    <img src="photos/HR maneger.jpg" alt="user">
 
                                     <div>
                                         <h6>Priya Das</h6>
@@ -536,7 +536,7 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="photos/company1.png">
+                            <img src="/photos/google.webp">
                             <h5>Google</h5>
                             <p>15 Open Jobs</p>
                             <a href="#">View Jobs</a>
@@ -545,7 +545,7 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="photos/company2.png">
+                            <img src="photos/Microsoft.png">
                             <h5>Microsoft</h5>
                             <p>12 Open Jobs</p>
                             <a href="#">View Jobs</a>
@@ -554,7 +554,7 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="photos/company3.png">
+                            <img src="/photos/amazon.png">
                             <h5>Amazon</h5>
                             <p>10 Open Jobs</p>
                             <a href="#">View Jobs</a>
@@ -563,7 +563,7 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="photos/company4.png">
+                            <img src="photos/Facebook.avif">
                             <h5>Facebook</h5>
                             <p>8 Open Jobs</p>
                             <a href="#">View Jobs</a>
@@ -679,39 +679,67 @@
     <script src="script.js"></script>
 
     <!-- login js -->
-     <script>
+    <script>
 
-function showRegister(){
+        /* LOGIN FUNCTION */
 
-document.getElementById("loginForm").style.display="none";
-document.getElementById("registerForm").style.display="block";
+        function loginUser() {
 
-document.getElementById("authTitle").innerText=
-"Create a CareerHunt Account";
+            let username = document.querySelector("#loginForm input[type='text']").value.trim();
+            let password = document.querySelector("#loginForm input[type='password']").value.trim();
 
-}
+            if (username === "" || password === "") {
 
-function showLogin(){
+                alert("Please enter username and password");
+                return;
 
-document.getElementById("registerForm").style.display="none";
-document.getElementById("loginForm").style.display="block";
+            }
 
-document.getElementById("authTitle").innerText=
-"Login to CareerHunt";
+            alert("Login Successful");
 
-}
+            // redirect to dashboard
+            window.location.href = "candidate-dashboard.html";
 
-function selectType(btn){
+        }
 
-document.querySelectorAll(".type-btn").forEach(b=>{
-b.classList.remove("active");
-});
+        /* SWITCH REGISTER */
 
-btn.classList.add("active");
+        function showRegister() {
 
-}
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("registerForm").style.display = "block";
 
-</script>
+            document.getElementById("authTitle").innerText =
+                "Create a CareerHunt Account";
+
+        }
+
+        /* SWITCH LOGIN */
+
+        function showLogin() {
+
+            document.getElementById("registerForm").style.display = "none";
+            document.getElementById("loginForm").style.display = "block";
+
+            document.getElementById("authTitle").innerText =
+                "Login to CareerHunt";
+
+        }
+
+        /* USER TYPE BUTTON */
+
+        function selectType(btn) {
+
+            document.querySelectorAll(".type-btn").forEach(b => {
+                b.classList.remove("active");
+            });
+
+            btn.classList.add("active");
+
+        }
+
+    </script>
+
 
 </body>
 
@@ -749,7 +777,8 @@ btn.classList.add("active");
                         <a href="#">Forgot password?</a>
                     </div>
 
-                    <button class="btn auth-btn">Log In</button>
+                    <button type="button" class="btn auth-btn" onclick="loginUser()">Log In</button>
+
 
                     <p class="switch-text">
                         Don't have an account?
