@@ -1,6 +1,149 @@
 
    
   
+// ===================================
+// Admin Authentication
+// ===================================
+let currentAdmin = null;
+
+// Check admin session on page load
+async function checkAdminSession() {
+    try {
+        const response = await fetch('../api/admin_check_session.php');
+        const data = await response.json();
+        
+        if (data.success && data.logged_in) {
+            currentAdmin = data.admin;
+            showDashboard();
+            updateAdminUI();
+        } else {
+            showLogin();
+        }
+    } catch (error) {
+        console.error('Session check failed:', error);
+        showLogin();
+    }
+}
+
+function showLogin() {
+    document.getElementById('adminLoginContainer').style.display = 'flex';
+    document.getElementById('adminDashboard').style.display = 'none';
+}
+
+function showDashboard() {
+    document.getElementById('adminLoginContainer').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'flex';
+}
+
+function updateAdminUI() {
+    if (currentAdmin) {
+        const adminName = document.getElementById('adminNameDisplay');
+        const adminRole = document.getElementById('adminRoleDisplay');
+        const roleBadge = document.getElementById('roleBadge');
+        const adminAvatar = document.getElementById('adminAvatar');
+        
+        if (adminName) adminName.textContent = currentAdmin.full_name;
+        if (adminRole) adminRole.textContent = formatRole(currentAdmin.role);
+        if (roleBadge) roleBadge.textContent = formatRole(currentAdmin.role);
+        if (adminAvatar) {
+            adminAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentAdmin.full_name)}&background=0d47a1&color=fff`;
+        }
+    }
+}
+
+function formatRole(role) {
+    const roleMap = {
+        'super_admin': 'Super Admin',
+        'admin': 'Admin',
+        'moderator': 'Moderator'
+    };
+    return roleMap[role] || role;
+}
+
+// Admin Login Handler
+async function handleAdminLogin(e) {
+    e.preventDefault();
+    
+    const loginBtn = document.getElementById('loginBtn');
+    const errorDiv = document.getElementById('loginError');
+    const username = document.getElementById('adminUsername').value.trim();
+    const password = document.getElementById('adminPassword').value;
+    
+    // Clear previous errors
+    errorDiv.textContent = '';
+    
+    // Validation
+    if (!username || !password) {
+        errorDiv.textContent = 'Please fill in all fields';
+        return;
+    }
+    
+    // Set loading state
+    loginBtn.classList.add('loading');
+    loginBtn.disabled = true;
+    
+    try {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        
+        const response = await fetch('../api/admin_login.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            currentAdmin = data.admin;
+            showDashboard();
+            updateAdminUI();
+            showToast('Login successful! Welcome back.', 'success');
+        } else {
+            errorDiv.textContent = data.message || 'Login failed';
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        errorDiv.textContent = 'Connection error. Please try again.';
+    } finally {
+        loginBtn.classList.remove('loading');
+        loginBtn.disabled = false;
+    }
+}
+
+// Admin Logout Handler
+async function handleAdminLogout() {
+    try {
+        await fetch('../api/admin_logout.php');
+        currentAdmin = null;
+        showLogin();
+        showToast('Logged out successfully', 'success');
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+}
+
+// Toggle password visibility
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('adminPassword');
+    const toggleBtn = document.getElementById('togglePassword');
+    const icon = toggleBtn.querySelector('i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('bi-eye-fill');
+        icon.classList.add('bi-eye-slash-fill');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('bi-eye-slash-fill');
+        icon.classList.add('bi-eye-fill');
+    }
+}
+
+// ===================================
+// Sample Data (Development Only)
+// ===================================
+
 const sampleUsers = [
     { id: 1, name: "John Doe", email: "john@example.com", phone: "+1 234-567-8901", status: "active", joined: "2026-02-15", avatar: "https://ui-avatars.com/api/?name=John+Doe&background=0d47a1&color=fff" },
     { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "+1 234-567-8902", status: "active", joined: "2026-02-20", avatar: "https://ui-avatars.com/api/?name=Jane+Smith&background=22c55e&color=fff" },
@@ -67,6 +210,13 @@ const modalOverlay = document.querySelector('.modal-overlay');
 const toast = document.getElementById('toast');
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Check admin session first
+    checkAdminSession();
+    
+    // Initialize login event listeners
+    initializeLoginListeners();
+    
+    // Initialize dashboard
     updateDashboardStats();
     renderRecentUsers();
     renderRecentCompanies();
@@ -75,6 +225,25 @@ document.addEventListener('DOMContentLoaded', () => {
     renderJobsTable();
     initializeEventListeners();
 });
+
+// Login Event Listeners
+function initializeLoginListeners() {
+    const loginForm = document.getElementById('adminLoginForm');
+    const togglePassword = document.getElementById('togglePassword');
+    const logoutBtn = document.getElementById('adminLogoutBtn');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleAdminLogin);
+    }
+    
+    if (togglePassword) {
+        togglePassword.addEventListener('click', togglePasswordVisibility);
+    }
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleAdminLogout);
+    }
+}
 
 // Event Listeners
 
@@ -647,8 +816,9 @@ function handleGlobalSearch(e) {
         document.getElementById('jobSearch').value = query;
         switchSection('jobs');
         renderJobsTable();
-    }
+    } 
 }
+
 
 
 // Utility Functions
