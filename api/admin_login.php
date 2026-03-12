@@ -3,13 +3,13 @@ require_once '../config/database.php';
 
 header('Content-Type: application/json');
 
-// Only accept POST requests
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit;
 }
 
-// Get POST data
+
 $username = isset($_POST['username']) ? trim($_POST['username']) : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 
@@ -24,7 +24,7 @@ if (empty($password)) {
     $errors[] = 'Password is required';
 }
 
-// If there are validation errors, return them
+
 if (!empty($errors)) {
     echo json_encode(['success' => false, 'message' => implode(', ', $errors), 'errors' => $errors]);
     exit;
@@ -45,7 +45,7 @@ if (mysqli_num_rows($result) === 0) {
 $admin = mysqli_fetch_assoc($result);
 mysqli_stmt_close($stmt);
 
-// Check if account is active
+
 if (!$admin['is_active']) {
     echo json_encode(['success' => false, 'message' => 'Your account has been deactivated. Please contact super admin.']);
     exit;
@@ -80,8 +80,7 @@ echo json_encode([
         'username' => $admin['username'],
         'full_name' => $admin['full_name'],
         'email' => $admin['email'],
-        'role' => $admin['role']
-    ]
+        'role' => $admin['role']    ]
 ]);
 
 mysqli_close($conn);
