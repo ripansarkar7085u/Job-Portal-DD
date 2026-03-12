@@ -1,9 +1,5 @@
-
-   
-  
-// ===================================
 // Admin Authentication
-// ===================================
+
 let currentAdmin = null;
 
 // Check admin session on page load
@@ -127,7 +123,7 @@ async function handleAdminLogout() {
 function togglePasswordVisibility() {
     const passwordInput = document.getElementById('adminPassword');
     const toggleBtn = document.getElementById('togglePassword');
-    const icon = toggleBtn.querySelector('i');
+    const icon = toggleBtn.querySelector('i');    
     
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
@@ -140,10 +136,8 @@ function togglePasswordVisibility() {
     }
 }
 
-// ===================================
-// Sample Data (Development Only)
-// ===================================
 
+// Sample Data (Development Only)
 const sampleUsers = [
     { id: 1, name: "John Doe", email: "john@example.com", phone: "+1 234-567-8901", status: "active", joined: "2026-02-15", avatar: "https://ui-avatars.com/api/?name=John+Doe&background=0d47a1&color=fff" },
     { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "+1 234-567-8902", status: "active", joined: "2026-02-20", avatar: "https://ui-avatars.com/api/?name=Jane+Smith&background=22c55e&color=fff" },
