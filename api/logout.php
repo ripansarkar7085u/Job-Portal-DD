@@ -1,29 +1,24 @@
 <?php
 
+require_once __DIR__ . '/_auth_common.php';
 
-require_once '../config/database.php';
+auth_clear_remember_token($conn);
 
-// Clear session
 $_SESSION = [];
 
-// Destroy session cookie
-if (ini_get("session.use_cookies")) {
+if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
-    );
+    setcookie(session_name(), '', [
+        'expires' => time() - 42000,
+        'path' => $params['path'],
+        'domain' => $params['domain'],
+        'secure' => (bool) $params['secure'],
+        'httponly' => (bool) $params['httponly'],
+        'samesite' => $params['samesite'] ?? 'Lax',
+    ]);
 }
 
-// Destroy session
 session_destroy();
 
-// Clear remember me cookie
-if (isset($_COOKIE['remember_token'])) {
-    setcookie('remember_token', '', time() - 3600, '/');
-}
-
-// Redirect to home page
-header('Location: /index.html');
+header('Location: ' . auth_path('/index.php'));
 exit;
-?>

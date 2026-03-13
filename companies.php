@@ -50,9 +50,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="user/dashboard.php" class="btn login-btn">Dashboard</a>
                 <?php else: ?>
-                    <button class="btn login-btn" data-bs-toggle="modal" data-bs-target="#authModal">
-                        Login / Register
-                    </button>
+                    <a href="login.php" class="btn login-btn me-2">Login</a>
+                    <a href="register.php" class="btn login-btn">Register</a>
                 <?php endif; ?>
             </div>
         </nav>

@@ -12,7 +12,7 @@ $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" style="width: 500px;">
     <title>Google Inc. - CareerHunt</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -54,9 +54,8 @@ $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="user/dashboard.php" class="btn login-btn">Dashboard</a>
                 <?php else: ?>
-                    <button class="btn login-btn" data-bs-toggle="modal" data-bs-target="#authModal">
-                        Login / Register
-                    </button>
+                    <a href="login.php" class="btn login-btn me-2">Login</a>
+                    <a href="register.php" class="btn login-btn">Register</a>
                 <?php endif; ?>
             </div>
         </nav>

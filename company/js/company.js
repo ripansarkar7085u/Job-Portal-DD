@@ -1,7 +1,4 @@
-/**
- * Company Dashboard JavaScript
- * CareerHunt - Company Panel
- */
+
 
 // DOM Elements
 const sidebar = document.getElementById('sidebar');
@@ -32,13 +29,12 @@ let dashboardStats = {
     newApplicationsToday: 5
 };
 
-// ===================================
-// Session Management
-// ===================================
 
-/**
- * Check company session on page load
- */
+
+
+
+ // Check company session on page load
+ 
 async function checkSession() {
     try {
         const response = await fetch('../api/company_check_session.php', {
