@@ -1,3 +1,25 @@
+<?php
+// Start session
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if user is logged in
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header('Location: /index.php');
+    exit;
+}
+
+// Redirect company accounts to company dashboard
+if (isset($_SESSION['account_type']) && $_SESSION['account_type'] === 'company') {
+    header('Location: /company/index.php');
+    exit;
+}
+
+// Get user info from session
+$userName = $_SESSION['user_name'] ?? 'User';
+$userEmail = $_SESSION['user_email'] ?? '';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -424,8 +446,8 @@
                     <i class="bi bi-lock"></i> <span>Change Password</span>
                 </a>
 
-                <a onclick="logout()">
-                    <i class="bi bi-arrow-repeat"></i> <span>Logout</span>
+                <a href="../api/logout.php">
+                    <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
                 </a>
 
                 <a onclick="openSection('delete')">

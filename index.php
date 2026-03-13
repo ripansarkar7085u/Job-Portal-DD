@@ -30,7 +30,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <nav class="navbar navbar-expand-lg container">
 
             <a class="navbar-brand" href="index.php">
-                <img src="../photos/job logo.png" alt="CareerHunt">
+                <img src="/photos/job logo.png" alt="CareerHunt">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
@@ -58,12 +58,19 @@ if (session_status() == PHP_SESSION_NONE) {
                     </li>
                 </ul>
 
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="user/dashboard.php" class="btn login-btn">Dashboard</a>
+                <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
+                    <?php if (isset($_SESSION['account_type']) && $_SESSION['account_type'] === 'company'): ?>
+                        <a href="company/index.php" class="btn login-btn">
+                            <i class="bi bi-building me-1"></i><?php echo htmlspecialchars($_SESSION['company_name']); ?>
+                        </a>
+                    <?php else: ?>
+                        <a href="user/dashboard.php" class="btn login-btn">
+                            <i class="bi bi-person me-1"></i><?php echo htmlspecialchars($_SESSION['user_name']); ?>
+                        </a>
+                    <?php endif; ?>
                 <?php else: ?>
-                    <button class="btn login-btn" data-bs-toggle="modal" data-bs-target="#authModal">
-                        Login / Register
-                    </button>
+                    <a href="login.php" class="btn login-btn me-2">Login</a>
+                    <a href="register.php" class="btn login-btn">Register</a>
                 <?php endif; ?>
             </div>
 
@@ -687,153 +694,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 
-    <!-- login js -->
-    <script>
-
-        /* LOGIN FUNCTION */
-
-        function loginUser() {
-
-            let username = document.querySelector("#loginForm input[type='text']").value.trim();
-            let password = document.querySelector("#loginForm input[type='password']").value.trim();
-
-            if (username === "" || password === "") {
-
-                alert("Please enter username and password");
-                return;
-
-            }
-
-            alert("Login Successful");
-
-            // redirect to dashboard
-            window.location.href = "user/dashboard.php";
-
-        }
-
-        /* SWITCH REGISTER */
-
-        function showRegister() {
-
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("registerForm").style.display = "block";
-
-            document.getElementById("authTitle").innerText =
-                "Create a CareerHunt Account";
-
-        }
-
-        /* SWITCH LOGIN */
-
-        function showLogin() {
-
-            document.getElementById("registerForm").style.display = "none";
-            document.getElementById("loginForm").style.display = "block";
-
-            document.getElementById("authTitle").innerText =
-                "Login to CareerHunt";
-
-        }
-
-        /* USER TYPE BUTTON */
-
-        function selectType(btn) {
-
-            document.querySelectorAll(".type-btn").forEach(b => {
-                b.classList.remove("active");
-            });
-
-            btn.classList.add("active");
-
-        }
-
-    </script>
-
 
 </body>
-
-<!-- LOGIN / REGISTER MODAL -->
-
-<div class="modal fade" id="authModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content auth-box">
-
-            <button class="btn-close close-btn" data-bs-dismiss="modal"></button>
-
-            <div class="modal-body">
-
-                <h3 class="text-center mb-4" id="authTitle">Login to CareerHunt</h3>
-
-                <!-- LOGIN FORM -->
-
-                <form id="loginForm">
-
-                    <div class="mb-3">
-                        <label>Username</label>
-                        <input type="text" class="form-control" placeholder="Username">
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Password">
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-3 small">
-                        <div>
-                            <input type="checkbox"> Remember me
-                        </div>
-
-                        <a href="#">Forgot password?</a>
-                    </div>
-
-                    <button type="button" class="btn auth-btn" onclick="loginUser()">Log In</button>
-
-
-                    <p class="switch-text">
-                        Don't have an account?
-                        <a onclick="showRegister()">Signup</a>
-                    </p>
-
-                </form>
-
-
-                <!-- REGISTER FORM -->
-
-                <form id="registerForm" style="display:none">
-
-                    <!-- USER TYPE -->
-
-                    <div class="user-type">
-
-                        <button type="button" class="type-btn active" onclick="selectType(this)">
-                            Candidate
-                        </button>
-
-                        <button type="button" class="type-btn" onclick="selectType(this)">
-                            Employer
-                        </button>
-
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Email Address</label>
-                        <input type="email" class="form-control" placeholder="Email">
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Password">
-                    </div>
-
-                    <button class="btn auth-btn">Register</button>
-
-                    
-
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
 
 </html>

@@ -3,6 +3,22 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+// Check if company is logged in
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header('Location: /index.php');
+    exit;
+}
+
+// Redirect user accounts to user dashboard
+if (!isset($_SESSION['account_type']) || $_SESSION['account_type'] !== 'company') {
+    header('Location: /user/dashboard.php');
+    exit;
+}
+
+// Get company info from session
+$companyName = $_SESSION['company_name'] ?? 'Company';
+$companyEmail = $_SESSION['company_email'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,16 +73,15 @@ if (session_status() == PHP_SESSION_NONE) {
             
             <div class="sidebar-footer">
                 <div class="company-profile">
-                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=Company&background=0d47a1&color=fff" alt="Company">
+                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company">
                     <div class="company-info">
-                        <span class="company-name" id="companyNameDisplay">TechCorp Inc.</span>
+                        <span class="company-name" id="companyNameDisplay"><?php echo htmlspecialchars($companyName); ?></span>
                         <span class="company-role">Business Account</span>
                     </div>
                 </div>
-                <button class="logout-btn" id="logoutBtn" title="Logout">
+                <a href="../api/logout.php" class="logout-btn" id="logoutBtn" title="Logout">
                     <i class="bi bi-box-arrow-right"></i>
-                    <a href="../index.php"></a>
-                </button>
+                </a>
             </div>
         </aside>
 
@@ -91,8 +106,8 @@ if (session_status() == PHP_SESSION_NONE) {
                     </button>
                     <div class="profile-dropdown">
                         <button class="profile-btn" id="profileBtn">
-                            <img src="https://ui-avatars.com/api/?name=Company&background=0d47a1&color=fff" alt="Company" id="headerAvatar">
-                            <span id="headerCompanyName">TechCorp Inc.</span>
+                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company" id="headerAvatar">
+                            <span id="headerCompanyName"><?php echo htmlspecialchars($companyName); ?></span>
                             <i class="bi bi-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu" id="profileDropdown">
@@ -103,9 +118,9 @@ if (session_status() == PHP_SESSION_NONE) {
                                 <i class="bi bi-gear"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <button class="dropdown-item text-danger" id="dropdownLogout">
+                            <a href="../api/logout.php" class="dropdown-item text-danger">
                                 <i class="bi bi-box-arrow-right"></i> Logout
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
