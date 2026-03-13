@@ -1,0 +1,609 @@
+<?php include("header.php") ?>
+
+<main>
+    <!-- HERO SECTION -->
+
+    <section id="home" class="banner-section">
+
+        <div class="container">
+
+            <div class="row align-items-center">
+
+                <!-- LEFT SIDE -->
+
+                <div class="col-lg-7">
+
+                    <h1 class="banner-title">
+                        There Are <span>93,178</span> Postings Here <br> For you!
+                    </h1>
+
+                    <p class="banner-text">
+                        Find Jobs, Employment & Career Opportunities
+                    </p>
+
+                    <div class="job-search-box">
+
+                        <div class="search-field">
+                            <i class="bi bi-search"></i>
+                            <input type="text" placeholder="Job title, keywords, or company">
+                        </div>
+
+                        <div class="search-field">
+                            <i class="bi bi-geo-alt"></i>
+                            <input type="text" placeholder="City or postcode">
+                        </div>
+
+                        <button class="search-btn">
+                            Find Jobs
+                        </button>
+
+                    </div>
+
+                    <p class="popular">
+                        <b>Popular Searches :</b>
+                        Designer, Developer, Web, IOS, PHP, Senior, Engineer
+                    </p>
+
+                </div>
+
+
+                <!-- RIGHT SIDE -->
+
+                <div class="col-lg-5 hero-right">
+
+                    <img src="photos/banner-img.webp" class="hero-man">
+
+                    <!-- card 1 -->
+
+                    <div class="info-card card-mail">
+
+                        <div class="icon orange">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+
+                        <div>
+                            <p>Work Inquiry From</p>
+                            <b>Ali Tufan</b>
+                        </div>
+
+                    </div>
+
+
+                    <!-- card 2 -->
+
+                    <div class="info-card card-candidate">
+
+                        <p><b>10k+ Candidates</b></p>
+
+                        <div class="avatars">
+                            <img src="photos/male.2.jpg">
+                            <img src="photos/rahul.webp">
+                            <img src="photos/HR maneger.jpg">
+                            <img src="photos/male.2.jpg">
+                            <span class="plus">+</span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- card 3 -->
+
+                    <div class="info-card card-agency">
+
+                        <div class="icon red">
+                            <i class="bi bi-briefcase"></i>
+                        </div>
+
+                        <div>
+                            <b>Creative Agency</b>
+                            <p>Startup</p>
+                        </div>
+
+                        <span class="check">
+                            <i class="bi bi-check"></i>
+                        </span>
+
+                    </div>
+
+
+                    <!-- card 4 -->
+
+                    <div class="info-card card-cv">
+
+                        <div class="icon blue">
+                            <i class="bi bi-file-earmark-arrow-up"></i>
+                        </div>
+
+                        <div>
+                            <b>Upload Your CV</b>
+                            <p>It only takes a few seconds</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="job" class="job-categories">
+
+        <div class="container">
+
+            <div class="section-title text-center">
+
+                <h2>Popular Job Categories</h2>
+
+                <p>2020 jobs live - 293 added today.</p>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-code-slash"></i>
+                        <h5>Development</h5>
+                        <p>(120 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-palette"></i>
+                        <h5>Design</h5>
+                        <p>(85 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-megaphone"></i>
+                        <h5>Marketing</h5>
+                        <p>(70 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-bar-chart"></i>
+                        <h5>Finance</h5>
+                        <p>(60 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-people"></i>
+                        <h5>Human Resource</h5>
+                        <p>(45 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-headset"></i>
+                        <h5>Customer Support</h5>
+                        <p>(50 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-gear"></i>
+                        <h5>Engineering</h5>
+                        <p>(40 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="category-card">
+                        <i class="bi bi-briefcase"></i>
+                        <h5>Business</h5>
+                        <p>(30 Jobs)</p>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+            </div>
+
+        
+            <button onclick="window.location.href='job.php'" class="btn btn-orange">Learn More</button>
+
+        </div>
+
+    </section>
+
+    <section class="featured-jobs">
+
+        <div class="container">
+
+            <div class="section-title text-center">
+                <h2>Featured Jobs</h2>
+                <p>Know your worth and find the job that qualify your life</p>
+            </div>
+
+            <div class="row">
+
+                <!-- Job 1 -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="job-card">
+
+                        <div class="job-top">
+
+                            <img src="photos/ui ux.png" class="company-logo">
+
+                            <div>
+                                <h5>UI / UX Designer</h5>
+                                <span>Creative Agency</span>
+                            </div>
+
+                        </div>
+
+                        <div class="job-info">
+
+                            <span><i class="bi bi-geo-alt"></i> New York</span>
+                            <span><i class="bi bi-clock"></i> Full Time</span>
+
+                        </div>
+
+                        <div class="job-salary">
+
+                            $3000 - $5000 / Month
+
+                        </div>
+
+                        <a href="#" class="apply-btn">Apply Now</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Job 2 -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="job-card">
+
+                        <div class="job-top">
+
+                            <img src="photos\web.webp" class="company-logo">
+
+                            <div>
+                                <h5>Web Developer</h5>
+                                <span>Tech Company</span>
+                            </div>
+
+                        </div>
+
+                        <div class="job-info">
+
+                            <span><i class="bi bi-geo-alt"></i> London</span>
+                            <span><i class="bi bi-clock"></i> Full Time</span>
+
+                        </div>
+
+                        <div class="job-salary">
+
+                            $4000 - $7000 / Month
+
+                        </div>
+
+                        <a href="#" class="apply-btn">Apply Now</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Job 3 -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="job-card">
+
+                        <div class="job-top">
+
+                            <img src="photos\digital.webp" class="company-logo">
+
+                            <div>
+                                <h5>Digital Marketer</h5>
+                                <span>Marketing Agency</span>
+                            </div>
+
+                        </div>
+
+                        <div class="job-info">
+
+                            <span><i class="bi bi-geo-alt"></i> California</span>
+                            <span><i class="bi bi-clock"></i> Part Time</span>
+
+                        </div>
+
+                        <div class="job-salary">
+
+                            $2500 - $4500 / Month
+
+                        </div>
+
+                        <a href="#" class="apply-btn">Apply Now</a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="testimonials">
+
+        <div class="container">
+
+            <div class="section-title text-center">
+                <h2>User Testimonials</h2>
+                <p>What people say about CareerHunt</p>
+            </div>
+
+            <div id="testimonialSlider" class="carousel slide" data-bs-ride="carousel">
+
+                <div class="carousel-inner">
+
+                    <!-- Testimonial 1 -->
+                    <div class="carousel-item active">
+
+                        <div class="testimonial-card">
+
+                            <p class="testimonial-text">
+                                "CareerHunt helped me land my first developer job in just 10 days.
+                                The platform is simple, fast, and connects you with amazing companies."
+                            </p>
+
+                            <div class="testimonial-user">
+
+                                <img src="photos\rahul.webp" alt="user">
+
+                                <div>
+                                    <h6>Rahul Sharma</h6>
+                                    <span>Software Developer</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="carousel-item">
+
+                        <div class="testimonial-card">
+
+                            <p class="testimonial-text">
+                                "I uploaded my resume and within a week I received interview calls.
+                                CareerHunt is one of the best job search platforms."
+                            </p>
+
+                            <div class="testimonial-user">
+
+                                <img src="photos/HR maneger.jpg" alt="user">
+
+                                <div>
+                                    <h6>Priya Das</h6>
+                                    <span>UI/UX Designer</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="carousel-item">
+
+                        <div class="testimonial-card">
+
+                            <p class="testimonial-text">
+                                "We use CareerHunt to hire talented candidates quickly.
+                                The platform makes recruitment very easy."
+                            </p>
+
+                            <div class="testimonial-user">
+
+                                <img src="photos\male.2.jpg" alt="user">
+
+                                <div>
+                                    <h6>Arjun Mehta</h6>
+                                    <span>HR Manager</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Slider Buttons -->
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialSlider"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialSlider"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+    <section id="company" class="top-companies">
+
+        <div class="container">
+
+            <div class="section-title text-center">
+                <h2>Top Companies Hiring Now</h2>
+                <p>Trusted by thousands of companies around the world</p>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="company-card">
+                        <img src="photos\google.webp">
+                        <h5>Google</h5>
+                        <p>15 Open Jobs</p>
+                        <a href="#">View Jobs</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="company-card">
+                        <img src="photos/Microsoft.png">
+                        <h5>Microsoft</h5>
+                        <p>12 Open Jobs</p>
+                        <a href="#">View Jobs</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="company-card">
+                        <img src='photos/amazon.png'>
+                        <h5>Amazon</h5>
+                        <p>10 Open Jobs</p>
+                        <a href="#">View Jobs</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="company-card">
+                        <img src="photos\facebook.webp">
+                        <h5>Facebook</h5>
+                        <p>8 Open Jobs</p>
+                        <a href="#">View Jobs</a>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+    <section id="news" class="recent-news">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Recent News Articles</h2>
+                <p>Fresh job-related news content posted each day</p>
+            </div>
+
+            <div class="row">
+
+                <!-- News Card 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-card">
+                        <img src="photos\top-skill.png" alt="News 1">
+                        <h5>Top Skills Employers Look For in 2026</h5>
+                        <p>Stay updated with the most in-demand skills for the modern workforce...</p>
+                        <a href="#">Read More</a>
+                    </div>
+                </div>
+
+                <!-- News Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-card">
+                        <img src="photos\Remote-Work.png" alt="News 2">
+                        <h5>Remote Work Trends Across Industries</h5>
+                        <p>Discover how companies are adapting to hybrid and remote work in 2026...</p>
+                        <a href="#">Read More</a>
+                    </div>
+                </div>
+
+                <!-- News Card 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="news-card">
+                        <img src="photos\resume-write.webp" alt="News 3">
+                        <h5>Resume Tips to Land Your Dream Job</h5>
+                        <p>Learn how to optimize your CV and stand out from the competition...</p>
+                        <a href="#">Read More</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Us</h2>
+                    <p>Welcome to <span class="highlight">CareerHunt</span>, your trusted partner in career growth
+                        and job opportunities. We connect talented professionals with top employers, making the job
+                        search process simple and efficient.</p>
+                    <p>Whether you are a fresh graduate, an experienced professional, or an employer looking for the
+                        perfect talent, our platform offers a seamless experience tailored to your needs.</p>
+                    <ul class="features">
+                        <li>✅ Thousands of verified job listings</li>
+                        <li>✅ Personalized career recommendations</li>
+                        <li>✅ Easy application and resume management</li>
+                    </ul>
+                    <a href="#job" class="btn-primary">Explore Jobs</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80"
+                        alt="Career Growth Illustration" />
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<?php include("footer.php") ?>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+
+<!-- LOGIN / REGISTER MODAL -->
+
+<?php include("login_register.php")?>
+
+
+</html>
