@@ -1,3 +1,9 @@
+<?php
+// Start session
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +18,7 @@
     <div class="admin-login-container" id="adminLoginContainer">
         <div class="admin-login-card">
             <div class="login-header">
-                <a href="../index.html" class="logo">
+                <a href="../index.php" class="logo">
                     <i class="bi bi-briefcase-fill"></i>
                     <span>CareerHunt</span>
                 </a>
@@ -44,7 +50,7 @@
                 </button>
             </form>
             <div class="login-footer">
-                <a href="../index.html"><i class="bi bi-arrow-left"></i> Back to Website</a>
+                <a href="../index.php"><i class="bi bi-arrow-left"></i> Back to Website</a>
             </div>
         </div>
     </div>
@@ -54,9 +60,8 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <a href="../index.html" class="logo">
-                    <i class="bi bi-briefcase-fill"></i>
-                    <span>CareerHunt</span>
+                <a href="../index.php" class="logo">
+                    <img src="/photos/job logo.png" alt="CareerHunt">
                 </a>
                 <span class="admin-badge" id="roleBadge">Super Admin</span>
             </div>
@@ -246,7 +251,6 @@
                         <table class="data-table full-table">
                             <thead>
                                 <tr>
-                                    
                                     <th>User</th>
                                     <th>Email</th>
                                     <th>Phone</th>
@@ -294,7 +298,6 @@
                         <table class="data-table full-table">
                             <thead>
                                 <tr>
-                                  
                                     <th>Company</th>
                                     <th>Industry</th>
                                     <th>Email</th>
@@ -342,7 +345,6 @@
                         <table class="data-table full-table">
                             <thead>
                                 <tr>
-                        
                                     <th>Job Title</th>
                                     <th>Company</th>
                                     <th>Location</th>
