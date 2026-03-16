@@ -30,7 +30,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <nav class="navbar navbar-expand-lg container">
 
             <a class="navbar-brand" href="index.php">
-                <img src="/photos/job logo.png" alt="CareerHunt">
+                <img src="photos\job_logo.png" alt="CareerHunt">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
