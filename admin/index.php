@@ -18,9 +18,8 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="admin-login-container" id="adminLoginContainer">
         <div class="admin-login-card">
             <div class="login-header">
-                <a href="../index.php" class="logo">
-                    <i class="bi bi-briefcase-fill"></i>
-                    <span>CareerHunt</span>
+                 <a href="/index.php" class="logo">
+                    <img src="..\photos\job_logo.png" alt="CareerHunt">
                 </a>
                 <h1>Admin Login</h1>
                 <p>Enter your credentials to access the admin panel</p>
@@ -60,8 +59,8 @@ if (session_status() == PHP_SESSION_NONE) {
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <a href="../index.php" class="logo">
-                    <img src="/photos/job logo.png" alt="CareerHunt">
+                <a href="/index.php" class="logo">
+                    <img src="..\photos\job_logo.png" alt="CareerHunt">
                 </a>
                 <span class="admin-badge" id="roleBadge">Super Admin</span>
             </div>

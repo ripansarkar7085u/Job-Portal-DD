@@ -94,23 +94,11 @@ function updateCompanyInfo(company) {
 /**
  * Logout function
  */
-async function logout() {
-    try {
-        const response = await fetch('../api/company_logout.php', {
-            method: 'POST',
-            credentials: 'include'
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            window.location.href = '../index.html';
-        }
-    } catch (error) {
-        console.error('Logout failed:', error);
-        // Redirect anyway for demo purposes
-        window.location.href = '../index.html';
+async function logout(event) {
+    if (event) {
+        event.preventDefault();
     }
+    window.location.replace('../api/logout.php');
 }
 
 // ===================================
@@ -140,7 +128,7 @@ function closeSidebar() {
  */
 function handleNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPage = window.location.pathname.split('/').pop() || 'index.php';
     
     navItems.forEach(item => {
         const page = item.getAttribute('data-page');
@@ -463,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function() {
     handleSearch();
     
     // Update dashboard stats if on dashboard page
-    if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/company/')) {
+    if (window.location.pathname.includes('index.php') || window.location.pathname.endsWith('/company/')) {
         fetchDashboardData();
     }
     
