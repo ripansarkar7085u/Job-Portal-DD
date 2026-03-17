@@ -24,7 +24,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <header class="header">
         <nav class="navbar navbar-expand-lg container">
             <a class="navbar-brand" href="index.php">
-                <img src="/photos/job logo.png" alt="CareerHunt">
+                <img src="photos\job_logo.png" alt="CareerHunt">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
@@ -239,7 +239,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                             <div class="company-card-body">
                                 <div class="company-logo-wrapper">
-                                    <img src="https://ui-avatars.com/api/?name=Google&background=4285f4&color=fff&size=80&rounded=true" alt="Google">
+                                    <img src="photos\google.webp" alt="Google">
                                 </div>
                                 <h4 class="company-name">Google Inc.</h4>
                                 <span class="company-industry"><i class="bi bi-buildings"></i> Technology</span>
