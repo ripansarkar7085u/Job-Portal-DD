@@ -1,84 +1,7 @@
-<?php
-// Start session if not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CareerHuntt</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
-    <link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-    <header class="header">
-
-        <nav class="navbar navbar-expand-lg container">
-
-            <a class="navbar-brand" href="index.php">
-                <img src="photos\job_logo.png" alt="CareerHunt">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="menu">
-
-                <ul class="navbar-nav ms-auto align-items-center">
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.php">Home</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Jobs</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="companies.php">Companies</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-
-                <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
-                    <?php if (isset($_SESSION['account_type']) && $_SESSION['account_type'] === 'company'): ?>
-                        <a href="company/index.php" class="btn login-btn">
-                            <i class="bi bi-building me-1"></i><?php echo htmlspecialchars($_SESSION['company_name']); ?>
-                        </a>
-                    <?php else: ?>
-                        <a href="user/dashboard.php" class="btn login-btn">
-                            <i class="bi bi-person me-1"></i><?php echo htmlspecialchars($_SESSION['user_name']); ?>
-                        </a>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <a href="login.php" class="btn login-btn me-2">Login</a>
-                    <a href="register.php" class="btn login-btn">Register</a>
-                <?php endif; ?>
-            </div>
-
-        </nav>
-
+<?php include("header.php")?>
         <!-- HERO SECTION -->
 
-        <section class="banner-section">
+        <section id="home" class="banner-section ">
 
             <div class="container">
 
@@ -204,7 +127,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
         </section>
 
-        <section class="job-categories">
+        <section id="job" class="job-categories">
 
             <div class="container">
 
@@ -539,7 +462,7 @@ if (session_status() == PHP_SESSION_NONE) {
             </div>
 
         </section>
-        <section class="top-companies">
+        <section id="company" class="top-companies">
 
             <div class="container">
 
@@ -579,7 +502,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="photos/Facebook.avif">
+                            <img src="photos\facebook.webp">
                             <h5>Facebook</h5>
                             <p>8 Open Jobs</p>
                             <a href="#">View Jobs</a>
@@ -592,109 +515,126 @@ if (session_status() == PHP_SESSION_NONE) {
 
         </section>
 
-        <section class="job-stats">
-
+        <section id="news" class="job-news py-5">
             <div class="container">
 
-                <div class="row text-center">
+                <!-- CENTERED HEADING -->
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Recent Job News</h2>
+                </div>
 
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-box">
-                            <i class="bi bi-briefcase"></i>
-                            <h2>10K+</h2>
-                            <p>Jobs Posted</p>
+                <!-- ROW -->
+                <div class="row align-items-stretch">
+
+                    <!-- CARD 1 -->
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <img src="photos\SSB-Recruitment-2023-01.png" alt="news">
+                            <div class="p-3">
+                                <h5>SSB Recruitment 2026: Apply for 233 Posts</h5>
+                                <p class="text-muted small">Posted on March 17, 2026</p>
+                                <p class="news-desc">
+                                    SSB has released new vacancies for Head Constable posts. Check eligibility and apply
+                                    online.
+                                </p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-box">
-                            <i class="bi bi-people"></i>
-                            <h2>8K+</h2>
-                            <p>Candidates</p>
+                    <!-- CARD 2 -->
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <img src="photos\Fresher-Jobs-2025-Salary-25000.webp" alt="news">
+                            <div class="p-3">
+                                <h5>25,000 New Jobs Announced for Youth</h5>
+                                <p class="text-muted small">Posted on March 16, 2026</p>
+                                <p class="news-desc">
+                                    CII plans massive hiring drive with skill training programs for freshers across
+                                    India.
+                                </p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-box">
-                            <i class="bi bi-building"></i>
-                            <h2>5K+</h2>
-                            <p>Companies</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-box">
-                            <i class="bi bi-file-earmark-check"></i>
-                            <h2>20K+</h2>
-                            <p>Applications</p>
+                    <!-- CARD 3 -->
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <img src="photos\blog-images-37.webp" alt="news">
+                            <div class="p-3">
+                                <h5>Private Jobs vs Govt Jobs Debate Rising</h5>
+                                <p class="text-muted small">Posted on March 15, 2026</p>
+                                <p class="news-desc">
+                                    Youth demand secure jobs as contract-based hiring increases across India job market
+                                    trends.
+                                </p>
+                                <a href="#" class="read-more">Read More →</a>
+                            </div>
                         </div>
                     </div>
 
                 </div>
-
+                <a href="recent_news.php" class="btn  view-all">View All</a>
             </div>
-
         </section>
 
-        <footer class="footer">
-
+        <section id="about" class="about-section">
             <div class="container">
+                <div class="row align-items-center">
 
-                <div class="row">
-
-                    <div class="col-lg-4">
-                        <h4>CareerHunt</h4>
-                        <p>
-                            Find your dream job with CareerHunt. Search thousands of jobs and connect with top
-                            companies.
-                        </p>
+                    <!-- LEFT IMAGE -->
+                    <div class="col-lg-6">
+                        <div class="about-img">
+                            <img src="photos\about.webp" alt="About CareerHunt">
+                        </div>
                     </div>
 
-                    <div class="col-lg-2">
-                        <h5>Quick Links</h5>
-                        <ul>
-                            <li><a href="index.php">Home</a></li>
-                            <li><a href="#">Jobs</a></li>
-                            <li><a href="companies.php">Companies</a></li>
-                            <li><a href="#">About</a></li>
-                        </ul>
-                    </div>
+                    <!-- RIGHT CONTENT -->
+                    <div class="col-lg-6">
+                        <div class="about-content">
 
-                    <div class="col-lg-3">
-                        <h5>Job Categories</h5>
-                        <ul>
-                            <li><a href="#">Development</a></li>
-                            <li><a href="#">Design</a></li>
-                            <li><a href="#">Marketing</a></li>
-                            <li><a href="#">Finance</a></li>
-                        </ul>
-                    </div>
+                            <h2>About CareerHunt</h2>
 
-                    <div class="col-lg-3">
-                        <h5>Contact</h5>
-                        <p>Email: support@careerhunt.com</p>
-                        <p>Phone: +91 9876543210</p>
+                            <p class="about-text">
+                                CareerHunt is a modern job portal designed to connect talented individuals with top
+                                companies.
+                                Whether you're a fresher or an experienced professional, we help you find the perfect
+                                job faster
+                                and easier.
+                            </p>
+
+                            <div class="about-features">
+
+                                <div class="feature">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>1000+ Verified Jobs</span>
+                                </div>
+
+                                <div class="feature">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Top Companies Hiring</span>
+                                </div>
+
+                                <div class="feature">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Easy Apply System</span>
+                                </div>
+
+                                <div class="feature">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Fast & Secure Platform</span>
+                                </div>
+
+                            </div>
+
+                            <a href="#job" class="about-btn">Explore Jobs</a>
+
+                        </div>
                     </div>
 
                 </div>
-
-                <hr>
-
-                <p class="text-center copyright">
-                    &copy; <?php echo date('Y'); ?> CareerHunt. All rights reserved.
-                </p>
-
             </div>
+        </section>
 
-        </footer>
-
-    </header>
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
-
-
-</body>
-
-</html>
+ <?php include("footer.php")?>

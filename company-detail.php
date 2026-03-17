@@ -1,29 +1,5 @@
-<?php
-// Start session if not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Get company ID from URL
-$company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
+<?php include ("header.php")
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" style="width: 500px;">
-    <title>Google Inc. - CareerHunt</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/companies.css">
-    <link rel="stylesheet" href="css/company-detail.css">
-</head>
-
-<body>
-
     <!-- HEADER -->
     <header class="header">
         <nav class="navbar navbar-expand-lg container">
