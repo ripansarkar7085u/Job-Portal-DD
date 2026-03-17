@@ -40,11 +40,11 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#job">Jobs</a>
+                        <a class="nav-link" href="job.php">Jobs</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#company">Companies</a>
+                        <a class="nav-link" href="companies.php">Companies</a>
                     </li>
 
                     <li class="nav-item">
