@@ -359,7 +359,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                             <div class="job-top">
 
-                                <img src="/photos/web.webp" class="company-logo">
+                                <img src="photos/web.webp" class="company-logo">
 
                                 <div>
                                     <h5>Web Developer</h5>
@@ -396,7 +396,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                             <div class="job-top">
 
-                                <img src="/photos/digital.webp" class="company-logo">
+                                <img src="photos/digital.webp" class="company-logo">
 
                                 <div>
                                     <h5>Digital Marketer</h5>
@@ -456,7 +456,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                                 <div class="testimonial-user">
 
-                                    <img src="photos/user1.jpg" alt="user">
+                                    <img src="photos\HR maneger.jpg" alt="user">
 
                                     <div>
                                         <h6>Rahul Sharma</h6>
@@ -481,7 +481,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                                 <div class="testimonial-user">
 
-                                    <img src="photos/HR maneger.jpg" alt="user">
+                                    <img src="photos\HR maneger.jpg" alt="user">
 
                                     <div>
                                         <h6>Priya Das</h6>
@@ -506,7 +506,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                                 <div class="testimonial-user">
 
-                                    <img src="photos/user3.jpg" alt="user">
+                                    <img src="photos\HR maneger.jpg" alt="user">
 
                                     <div>
                                         <h6>Arjun Mehta</h6>
@@ -552,7 +552,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="/photos/google.webp">
+                            <img src="photos\google.webp" alt="Company Logo">
                             <h5>Google</h5>
                             <p>15 Open Jobs</p>
                             <a href="#">View Jobs</a>
@@ -561,7 +561,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="photos/Microsoft.png">
+                            <img src="photos\Microsoft.png" alt="Company Logo">
                             <h5>Microsoft</h5>
                             <p>12 Open Jobs</p>
                             <a href="#">View Jobs</a>
@@ -570,7 +570,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                     <div class="col-lg-3 col-md-6">
                         <div class="company-card">
-                            <img src="/photos/amazon.png">
+                            <img src="photos\amazon.png" alt="Company Logo">
                             <h5>Amazon</h5>
                             <p>10 Open Jobs</p>
                             <a href="#">View Jobs</a>

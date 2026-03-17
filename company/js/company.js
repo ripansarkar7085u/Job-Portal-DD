@@ -45,10 +45,10 @@ async function checkSession() {
         const data = await response.json();
         
         if (data.success && data.loggedIn) {
-            // Session valid, update company info
+            
             updateCompanyInfo(data.company);
         } else {
-            // Session invalid, redirect to login
+           
             // For demo purposes, we'll just log this
             console.log('Session not found, using demo data');
             updateCompanyInfo(companyData);
@@ -60,9 +60,9 @@ async function checkSession() {
     }
 }
 
-/**
- * Update company information in UI
- */
+
+ // Update company information in UI
+ 
 function updateCompanyInfo(company) {
     companyData = { ...companyData, ...company };
     
@@ -91,9 +91,9 @@ function updateCompanyInfo(company) {
     }
 }
 
-/**
- * Logout function
- */
+
+ // Logout function
+ 
 async function logout(event) {
     if (event) {
         event.preventDefault();
@@ -101,31 +101,24 @@ async function logout(event) {
     window.location.replace('../api/logout.php');
 }
 
-// ===================================
-// Sidebar & Navigation
-// ===================================
 
-/**
- * Toggle sidebar on mobile
- */
+// Toggle sidebar on mobile
+ 
 function toggleSidebar() {
     sidebar.classList.toggle('show');
     sidebarOverlay.classList.toggle('show');
     document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
 }
 
-/**
- * Close sidebar
- */
+
+ // Close sidebar
+ 
 function closeSidebar() {
     sidebar.classList.remove('show');
     sidebarOverlay.classList.remove('show');
     document.body.style.overflow = '';
 }
 
-/**
- * Handle navigation active state
- */
 function handleNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     const currentPage = window.location.pathname.split('/').pop() || 'index.php';
@@ -208,7 +201,7 @@ async function fetchDashboardData() {
         }
     } catch (error) {
         console.error('Failed to fetch dashboard data:', error);
-        // Use sample data
+        dashboardStats = { ...dashboardStats, ...sampleDashboardStats };
         updateDashboardStats();
     }
 }

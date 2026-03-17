@@ -53,6 +53,7 @@ function showError(inputElement, message) {
         errorDiv.className = 'error-message';
         formGroup.appendChild(errorDiv);
     }
+    
 
     errorDiv.textContent = message;
     inputElement.classList.add('is-invalid');
@@ -228,6 +229,8 @@ async function postAuth(endpoint, formData) {
 
     return data;
 }
+
+
 
 async function handleUserLogin(event) {
     event.preventDefault();
@@ -650,4 +653,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function logout() {
     window.location.href = apiUrl('logout.php');
-}
+}        
