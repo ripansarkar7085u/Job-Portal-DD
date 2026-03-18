@@ -41,7 +41,7 @@ $userEmail = $_SESSION['user_email'] ?? '';
         <!-- SIDEBAR -->
         <div class="sidebar">
 
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="..\index.php">
                 <img src="..\photos\job_logo.png" alt="CareerHunt">
             </a>
 
