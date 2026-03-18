@@ -1,4 +1,6 @@
+
 <?php include("header.php")?>
+
         <!-- HERO SECTION -->
 
         <section id="home" class="banner-section ">
@@ -235,9 +237,7 @@
                     <p>Know your worth and find the job that qualify your life</p>
                 </div>
 
-                <div class="row">
-
-                    <!-- Job 1 -->
+                <div class="row" id="featuredJobsList">
 
                     <div class="col-lg-4 col-md-6">
 
@@ -274,8 +274,6 @@
                     </div>
 
 
-                    <!-- Job 2 -->
-
                     <div class="col-lg-4 col-md-6">
 
                         <div class="job-card">
@@ -310,8 +308,6 @@
 
                     </div>
 
-
-                    <!-- Job 3 -->
 
                     <div class="col-lg-4 col-md-6">
 
@@ -637,4 +633,6 @@
             </div>
         </section>
 
+
  <?php include("footer.php")?>
+  

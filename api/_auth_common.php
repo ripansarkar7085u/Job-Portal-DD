@@ -287,6 +287,41 @@ function auth_ensure_core_tables(mysqli $conn): void
     $initialized = true;
 }
 
+function auth_ensure_jobs_table(mysqli $conn): void
+{
+    static $initialized = false;
+    if ($initialized) {
+        return;
+    }
+
+    $sql = "CREATE TABLE IF NOT EXISTS jobs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        company_id INT NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        employment_type VARCHAR(50) NOT NULL,
+        experience_level VARCHAR(50) DEFAULT NULL,
+        category VARCHAR(100) DEFAULT NULL,
+        work_style VARCHAR(50) DEFAULT NULL,
+        location VARCHAR(255) DEFAULT NULL,
+        salary_min DECIMAL(12,2) DEFAULT NULL,
+        salary_max DECIMAL(12,2) DEFAULT NULL,
+        salary_period VARCHAR(20) DEFAULT 'year',
+        currency VARCHAR(10) DEFAULT 'USD',
+        salary_visible TINYINT(1) NOT NULL DEFAULT 1,
+        description TEXT NOT NULL,
+        requirements TEXT NOT NULL,
+        status ENUM('draft','published','closed') NOT NULL DEFAULT 'draft',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_company_id (company_id),
+        INDEX idx_status_created (status, created_at),
+        CONSTRAINT fk_jobs_company FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+
+    $conn->query($sql);
+    $initialized = true;
+}
+
 function auth_rate_limit_check(mysqli $conn, string $scope, string $key, int $maxAttempts = 6, int $windowSeconds = 900, int $blockSeconds = 900): bool
 {
     auth_ensure_rate_limit_table($conn);

@@ -497,25 +497,63 @@ if (session_status() == PHP_SESSION_NONE) {
             }
         });
 
-        // Form submission
-        document.getElementById('jobForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Collect form data
-            const formData = {
-                title: document.getElementById('jobTitle').value,
-                type: document.getElementById('jobType').value,
-                level: document.getElementById('experienceLevel').value,
+        async function saveJobPosting(status) {
+            const form = document.getElementById('jobForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return false;
+            }
+
+            const jobType = document.getElementById('jobType').value;
+            const payload = {
+                title: document.getElementById('jobTitle').value.trim(),
+                employment_type: jobType,
+                experience_level: document.getElementById('experienceLevel').value,
                 category: document.getElementById('category').value,
-                workStyle: document.getElementById('workStyle').value,
-                location: document.getElementById('location').value,
-                salaryMin: document.getElementById('salaryMin').value,
-                salaryMax: document.getElementById('salaryMax').value,
-                description: document.getElementById('description').value,
-                requirements: document.getElementById('requirements').value
+                work_style: document.getElementById('workStyle').value,
+                location: document.getElementById('location').value.trim(),
+                salary_min: document.getElementById('salaryMin').value.trim(),
+                salary_max: document.getElementById('salaryMax').value.trim(),
+                salary_period: document.getElementById('salaryPeriod').value,
+                currency: document.getElementById('currency').value,
+                salary_visible: document.getElementById('showSalary').checked ? 1 : 0,
+                description: document.getElementById('description').value.trim(),
+                requirements: document.getElementById('requirements').value.trim(),
+                status
             };
 
-            console.log('Publishing job:', formData);
+            try {
+                const response = await fetch('../api/company_jobs.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    window.companyDashboard.showToast(data.message || 'Failed to save job', 'error');
+                    return false;
+                }
+
+                return true;
+            } catch (error) {
+                window.companyDashboard.showToast('Unable to connect to server', 'error');
+                return false;
+            }
+        }
+
+        // Form submission
+        document.getElementById('jobForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const saved = await saveJobPosting('published');
+            if (!saved) {
+                return;
+            }
+
             window.companyDashboard.showToast('Job published successfully!', 'success');
             
             setTimeout(() => {
@@ -524,7 +562,11 @@ if (session_status() == PHP_SESSION_NONE) {
         });
 
         // Save draft
-        document.getElementById('saveDraftBtn').addEventListener('click', function() {
+        document.getElementById('saveDraftBtn').addEventListener('click', async function() {
+            const saved = await saveJobPosting('draft');
+            if (!saved) {
+                return;
+            }
             window.companyDashboard.showToast('Draft saved successfully!', 'success');
         });
 
