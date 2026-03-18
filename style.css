@@ -22,6 +22,7 @@ section {
 
 
 .navbar {
+    padding: 8px 25px;
     position: fixed;
     top: 0;
     left: 0;
@@ -403,9 +404,10 @@ section {
     text-align: center !important;
 }
 
-.text-center h1{
+.text-center h1 {
     color: #fff;
-} 
+}
+
 /* Section Title */
 section .section-title h2 {
     color: #f8f8f8;
