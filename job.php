@@ -29,201 +29,157 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <body>
 <?php include("header.php") ?>
-<style>
-    job-card {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+<section class="jobs-section py-5">
 
-    .job-info {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-    }
+    <div class="container">
 
-    .company-logo {
-        width: 50px;
-        height: 50px;
-        background: #0d1b3d;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-        font-weight: bold;
-    }
-
-    .job-tags span {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        margin-right: 5px;
-    }
-
-    .tag-blue {
-        background: #e6f0ff;
-        color: #2563eb;
-    }
-
-    .tag-green {
-        background: #e6f6ec;
-        color: #16a34a;
-    }
-
-    .tag-yellow {
-        background: #fff4e5;
-        color: #f59e0b;
-    }
-</style>
-
-<!-- PAGE HEADER -->
-
-<div class="page-header">
-    <h2>Find Jobs</h2>
-    <p>Home / Jobs</p>
-</div>
+        <!-- Title -->
+        <div class="section-title text-center mb-4">
+            <h2>Browse Jobs</h2>
+            <p>Find your dream job from top companies</p>
+            <p><a href="index.php">Home</a>/Job</p>
+        </div>
 
         <!-- Search Bar -->
         <div class="job-search-box mb-4 p-3 shadow-sm rounded">
             <div class="row g-3">
 
-        <div class="col-md-4">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Job title or keyword">
+                </div>
 
-            <div class="filter-box">
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option>All Locations</option>
+                        <option>Delhi</option>
+                        <option>Mumbai</option>
+                        <option>Bangalore</option>
+                    </select>
+                </div>
 
-                <h5>Search by Keywords</h5>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option>All Categories</option>
+                        <option>IT</option>
+                        <option>Finance</option>
+                        <option>Healthcare</option>
+                    </select>
+                </div>
 
-                <input type="text" class="form-control" placeholder="Job title, keywords, or company">
-
-                <label>Location</label>
-
-                <input type="text" class="form-control" placeholder="City or postcode">
-
-                <label>Radius around selected destination</label>
-
-                <input type="range" id="radiusSlider" class="form-range" min="1" max="200" value="100">
-
-                <p><span id="radiusValue">100</span> km</p>
-
-                <label>Category</label>
-
-                <select class="form-control">
-                    <option>Choose a category</option>
-                    <option>IT</option>
-                    <option>Marketing</option>
-                    <option>Finance</option>
-                </select>
-
-                <label>Job Type</label>
-
-                <select class="form-control">
-                    <option>Full Time</option>
-                    <option>Part Time</option>
-                    <option>Internship</option>
-                </select>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100">Search</button>
+                </div>
 
             </div>
         </div>
 
+        <div class="row">
 
-        <!-- JOB LISTINGS -->
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3">
 
-        <div class="col-md-8">
+                <div class="filter-box p-3 shadow-sm rounded mb-4">
 
-            <div class="d-flex justify-content-between mb-3">
+                    <h5>Job Type</h5>
+                    <div>
+                        <input type="checkbox"> Full Time <br>
+                        <input type="checkbox"> Part Time <br>
+                        <input type="checkbox"> Internship <br>
+                        <input type="checkbox"> Remote
+                    </div>
 
-                <p>Show <b>4</b> jobs</p>
+                    <hr>
 
-                <div>
+                    <h5>Experience</h5>
+                    <div>
+                        <input type="checkbox"> Fresher <br>
+                        <input type="checkbox"> 1-3 Years <br>
+                        <input type="checkbox"> 3-5 Years
+                    </div>
 
-                    <button class="btn btn-danger">Clear All</button>
+                    <hr>
 
-                    <select class="btn btn-light">
-                        <option>Sort by (default)</option>
-                        <option>Newest</option>
+                    <h5>Salary</h5>
+                    <div>
+                        <input type="checkbox"> 0-3 LPA <br>
+                        <input type="checkbox"> 3-6 LPA <br>
+                        <input type="checkbox"> 6+ LPA
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Job Cards -->
+            <div class="col-lg-9">
+
+                <div class="d-flex justify-content-between mb-3">
+                    <p>Showing 1-6 of 50 jobs</p>
+
+                    <select class="form-select w-auto">
+                        <option>Newest First</option>
                         <option>Oldest</option>
                     </select>
-
                 </div>
 
-            </div>
+                <div class="row g-4">
 
+                    <!-- Job Card -->
+                    <div class="col-md-6">
+                        <div class="job-card p-3 shadow-sm rounded">
 
-            <!-- JOB CARD -->
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="job-logo me-3">GO</div>
+                                <div>
+                                    <h5 class="mb-0">Frontend Developer</h5>
+                                    <small>Google</small>
+                                </div>
+                            </div>
 
-            <div class="job-card">
+                            <p class="text-muted">Location: Bangalore</p>
+                            <p class="text-muted">Salary: ₹8 LPA</p>
 
-                <div class="job-info">
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-success">Full Time</span>
+                                <a href="job-details.php" class="btn btn-sm btn-outline-primary">Apply</a>
+                            </div>
 
-                    <div class="company-logo">S</div>
-
-                    <div>
-
-                        <h5>Software Engineer (Android), Libraries</h5>
-
-                        <p class="text-muted mb-1">
-                            <i class="bi bi-building"></i> Segment
-                            &nbsp;&nbsp;
-                            <i class="bi bi-geo-alt"></i> London, UK
-                            &nbsp;&nbsp;
-                            <i class="bi bi-clock"></i> 11 hours ago
-                            &nbsp;&nbsp;
-                            <i class="bi bi-cash"></i> $35k - $45k
-                        </p>
-
-                        <div class="job-tags">
-                            <span class="tag-blue">Full Time</span>
-                            <span class="tag-green">Private</span>
-                            <span class="tag-yellow">Urgent</span>
                         </div>
+                    </div>
 
+                    <!-- Job Card -->
+                    <div class="col-md-6">
+                        <div class="job-card p-3 shadow-sm rounded">
+
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="job-logo me-3">MI</div>
+                                <div>
+                                    <h5 class="mb-0">Backend Developer</h5>
+                                    <small>Microsoft</small>
+                                </div>
+                            </div>
+
+                            <p class="text-muted">Location: Hyderabad</p>
+                            <p class="text-muted">Salary: ₹10 LPA</p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-info">Remote</span>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Apply</a>
+                            </div>
+
+                        </div>
                     </div>
 
                 </div>
 
-                <i class="bi bi-bookmark"></i>
-
-            </div>
-
-
-            <!-- SECOND JOB -->
-
-            <div class="job-card">
-
-                <div class="job-info">
-
-                    <div class="company-logo">M</div>
-
-                    <div>
-
-                        <h5>Software Engineer (Android), Libraries</h5>
-
-                        <p class="text-muted mb-1">
-                            <i class="bi bi-building"></i> Medium
-                            &nbsp;&nbsp;
-                            <i class="bi bi-geo-alt"></i> New York
-                            &nbsp;&nbsp;
-                            <i class="bi bi-clock"></i> 5 hours ago
-                            &nbsp;&nbsp;
-                            <i class="bi bi-cash"></i> $50k - $60k
-                        </p>
-
-                        <div class="job-tags">
-                            <span class="tag-blue">Full Time</span>
-                            <span class="tag-green">Private</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <i class="bi bi-bookmark"></i>
+                <!-- Pagination -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    </ul>
+                </nav>
 
             </div>
 
@@ -231,12 +187,6 @@ if (session_status() == PHP_SESSION_NONE) {
 
     </div>
 
-</div>
-<?php include("login_register.php") ?>
+</section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="script.js"></script>
-
-</body>
-
-</html>
+<?php include("footer.php")?>
