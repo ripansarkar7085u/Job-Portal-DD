@@ -14,11 +14,11 @@ $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 6;
 if ($limit < 1) {
     $limit = 6;
 }
-if ($limit > 24) {
-    $limit = 24;
+if ($limit > 200) {
+    $limit = 200;
 }
 
-$sql = "SELECT j.id, j.title, j.employment_type, j.location, j.salary_min, j.salary_max, j.salary_period, j.currency, j.salary_visible, j.created_at, c.company_name
+$sql = "SELECT j.id, j.title, j.category, j.employment_type, j.location, j.salary_min, j.salary_max, j.salary_period, j.currency, j.salary_visible, j.created_at, c.company_name
         FROM jobs j
         INNER JOIN companies c ON c.id = j.company_id
         WHERE j.status = 'published'
@@ -39,6 +39,7 @@ while ($row = $result->fetch_assoc()) {
     $jobs[] = [
         'id' => (int) $row['id'],
         'title' => (string) $row['title'],
+        'category' => (string) ($row['category'] ?? ''),
         'company_name' => (string) $row['company_name'],
         'employment_type' => (string) $row['employment_type'],
         'location' => (string) ($row['location'] ?? ''),
