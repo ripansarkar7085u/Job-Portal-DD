@@ -1,6 +1,6 @@
 <?php include("header.php") ?>
 <style>
-    job-card {
+    .job-card {
         background: white;
         padding: 20px;
         border-radius: 10px;
@@ -50,6 +50,10 @@
         background: #fff4e5;
         color: #f59e0b;
     }
+
+    .apply-job-btn {
+        min-width: 120px;
+    }
 </style>
 
 <!-- PAGE HEADER -->
@@ -72,11 +76,11 @@
 
                 <h5>Search by Keywords</h5>
 
-                <input type="text" class="form-control" placeholder="Job title, keywords, or company">
+                <input type="text" class="form-control" id="keywordInput" placeholder="Job title, keywords, or company">
 
                 <label>Location</label>
 
-                <input type="text" class="form-control" placeholder="City or postcode">
+                <input type="text" class="form-control" id="locationInput" placeholder="City or postcode">
 
                 <label>Radius around selected destination</label>
 
@@ -86,19 +90,19 @@
 
                 <label>Category</label>
 
-                <select class="form-control">
-                    <option>Choose a category</option>
-                    <option>IT</option>
-                    <option>Marketing</option>
-                    <option>Finance</option>
+                <select class="form-control" id="categoryFilter">
+                    <option value="">Choose a category</option>
                 </select>
 
                 <label>Job Type</label>
 
-                <select class="form-control">
-                    <option>Full Time</option>
-                    <option>Part Time</option>
-                    <option>Internship</option>
+                <select class="form-control" id="jobTypeFilter">
+                    <option value="">Any Job Type</option>
+                    <option value="full-time">Full Time</option>
+                    <option value="part-time">Part Time</option>
+                    <option value="contract">Contract</option>
+                    <option value="freelance">Freelance</option>
+                    <option value="internship">Internship</option>
                 </select>
 
             </div>
@@ -112,16 +116,16 @@
 
             <div class="d-flex justify-content-between mb-3">
 
-                <p>Show <b>4</b> jobs</p>
+                <p>Show <b id="jobsCount">0</b> jobs</p>
 
                 <div>
 
-                    <button class="btn btn-danger">Clear All</button>
+                    <button class="btn btn-danger" id="clearFiltersBtn">Clear All</button>
 
-                    <select class="btn btn-light">
-                        <option>Sort by (default)</option>
-                        <option>Newest</option>
-                        <option>Oldest</option>
+                    <select class="btn btn-light" id="sortSelect">
+                        <option value="newest">Sort by: Newest</option>
+                        <option value="oldest">Sort by: Oldest</option>
+                        <option value="title">Sort by: Title</option>
                     </select>
 
                 </div>
@@ -131,74 +135,10 @@
 
             <!-- JOB CARD -->
 
-            <div class="job-card">
-
-                <div class="job-info">
-
-                    <div class="company-logo">S</div>
-
-                    <div>
-
-                        <h5>Software Engineer (Android), Libraries</h5>
-
-                        <p class="text-muted mb-1">
-                            <i class="bi bi-building"></i> Segment
-                            &nbsp;&nbsp;
-                            <i class="bi bi-geo-alt"></i> London, UK
-                            &nbsp;&nbsp;
-                            <i class="bi bi-clock"></i> 11 hours ago
-                            &nbsp;&nbsp;
-                            <i class="bi bi-cash"></i> $35k - $45k
-                        </p>
-
-                        <div class="job-tags">
-                            <span class="tag-blue">Full Time</span>
-                            <span class="tag-green">Private</span>
-                            <span class="tag-yellow">Urgent</span>
-                        </div>
-
-                    </div>
-
+            <div id="jobsList">
+                <div class="job-card">
+                    <p class="mb-0 text-muted">Loading jobs...</p>
                 </div>
-
-                <i class="bi bi-bookmark"></i>
-
-            </div>
-
-
-            <!-- SECOND JOB -->
-
-            <div class="job-card">
-
-                <div class="job-info">
-
-                    <div class="company-logo">M</div>
-
-                    <div>
-
-                        <h5>Software Engineer (Android), Libraries</h5>
-
-                        <p class="text-muted mb-1">
-                            <i class="bi bi-building"></i> Medium
-                            &nbsp;&nbsp;
-                            <i class="bi bi-geo-alt"></i> New York
-                            &nbsp;&nbsp;
-                            <i class="bi bi-clock"></i> 5 hours ago
-                            &nbsp;&nbsp;
-                            <i class="bi bi-cash"></i> $50k - $60k
-                        </p>
-
-                        <div class="job-tags">
-                            <span class="tag-blue">Full Time</span>
-                            <span class="tag-green">Private</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <i class="bi bi-bookmark"></i>
-
             </div>
 
 
@@ -211,6 +151,206 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="script.js"></script>
+
+<script>
+    (function initPublicJobsPage() {
+        const jobsList = document.getElementById('jobsList');
+        const jobsCount = document.getElementById('jobsCount');
+        const keywordInput = document.getElementById('keywordInput');
+        const locationInput = document.getElementById('locationInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const jobTypeFilter = document.getElementById('jobTypeFilter');
+        const sortSelect = document.getElementById('sortSelect');
+        const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+        const radiusSlider = document.getElementById('radiusSlider');
+        const radiusValue = document.getElementById('radiusValue');
+
+        let allJobs = [];
+
+        const escapeHtml = (value) => String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+
+        const employmentTypeLabel = (value) => {
+            const map = {
+                'full-time': 'Full Time',
+                'part-time': 'Part Time',
+                'contract': 'Contract',
+                'freelance': 'Freelance',
+                'internship': 'Internship'
+            };
+            return map[value] || 'Full Time';
+        };
+
+        const categoryLabel = (value) => String(value || 'General')
+            .split('-')
+            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+            .join(' ');
+
+        const salaryLabel = (job) => {
+            if (!job.salary_visible || (job.salary_min === null && job.salary_max === null)) {
+                return 'Salary not disclosed';
+            }
+
+            const symbolMap = {
+                USD: '$',
+                EUR: 'EUR ',
+                GBP: 'GBP ',
+                CAD: 'CAD ',
+                AUD: 'AUD '
+            };
+            const symbol = symbolMap[job.currency] || '';
+
+            if (job.salary_min !== null && job.salary_max !== null) {
+                return `${symbol}${job.salary_min} - ${symbol}${job.salary_max}`;
+            }
+            if (job.salary_min !== null) {
+                return `${symbol}${job.salary_min}+`;
+            }
+            return `Up to ${symbol}${job.salary_max}`;
+        };
+
+        const hoursAgoLabel = (createdAt) => {
+            const created = new Date(createdAt);
+            if (Number.isNaN(created.getTime())) {
+                return 'Recently posted';
+            }
+
+            const diffMs = Date.now() - created.getTime();
+            const diffHours = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60)));
+            if (diffHours < 24) {
+                return `${diffHours} hours ago`;
+            }
+
+            const diffDays = Math.floor(diffHours / 24);
+            return `${diffDays} days ago`;
+        };
+
+        function buildCategoryOptions(jobs) {
+            const categories = [...new Set(jobs.map((job) => job.category).filter(Boolean))].sort();
+            const options = ['<option value="">Choose a category</option>'];
+            categories.forEach((category) => {
+                options.push(`<option value="${escapeHtml(category)}">${escapeHtml(categoryLabel(category))}</option>`);
+            });
+            categoryFilter.innerHTML = options.join('');
+        }
+
+        function filteredJobs() {
+            const keyword = keywordInput.value.trim().toLowerCase();
+            const location = locationInput.value.trim().toLowerCase();
+            const category = categoryFilter.value;
+            const type = jobTypeFilter.value;
+
+            let result = allJobs.filter((job) => {
+                const haystack = `${job.title} ${job.company_name} ${job.location}`.toLowerCase();
+                const keywordMatch = !keyword || haystack.includes(keyword);
+                const locationMatch = !location || String(job.location || '').toLowerCase().includes(location);
+                const categoryMatch = !category || job.category === category;
+                const typeMatch = !type || job.employment_type === type;
+                return keywordMatch && locationMatch && categoryMatch && typeMatch;
+            });
+
+            if (sortSelect.value === 'oldest') {
+                result = result.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            } else if (sortSelect.value === 'title') {
+                result = result.sort((a, b) => String(a.title).localeCompare(String(b.title)));
+            } else {
+                result = result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            }
+
+            return result;
+        }
+
+        function renderJobs() {
+            const list = filteredJobs();
+            jobsCount.textContent = String(list.length);
+
+            if (list.length === 0) {
+                jobsList.innerHTML = '<div class="job-card"><p class="mb-0 text-muted">No jobs found for selected filters.</p></div>';
+                return;
+            }
+
+            jobsList.innerHTML = list.map((job) => {
+                const initials = (job.company_name || 'C')
+                    .split(' ')
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .map((part) => part.charAt(0).toUpperCase())
+                    .join('') || 'C';
+
+                return `
+                    <div class="job-card">
+                        <div class="job-info">
+                            <div class="company-logo">${escapeHtml(initials)}</div>
+                            <div>
+                                <h5>${escapeHtml(job.title)}</h5>
+                                <p class="text-muted mb-1">
+                                    <i class="bi bi-building"></i> ${escapeHtml(job.company_name || 'Company')}
+                                    &nbsp;&nbsp;
+                                    <i class="bi bi-geo-alt"></i> ${escapeHtml(job.location || 'Not specified')}
+                                    &nbsp;&nbsp;
+                                    <i class="bi bi-clock"></i> ${escapeHtml(hoursAgoLabel(job.created_at))}
+                                    &nbsp;&nbsp;
+                                    <i class="bi bi-cash"></i> ${escapeHtml(salaryLabel(job))}
+                                </p>
+                                <div class="job-tags">
+                                    <span class="tag-blue">${escapeHtml(employmentTypeLabel(job.employment_type))}</span>
+                                    <span class="tag-green">${escapeHtml(categoryLabel(job.category))}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="login.php" class="btn btn-primary apply-job-btn">Apply</a>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function loadJobs() {
+            try {
+                const response = await fetch('api/featured_jobs.php?limit=200', {
+                    method: 'GET'
+                });
+
+                const payload = await response.json();
+                if (!response.ok || !payload.success) {
+                    jobsList.innerHTML = '<div class="job-card"><p class="mb-0 text-danger">Unable to load jobs right now.</p></div>';
+                    return;
+                }
+
+                allJobs = Array.isArray(payload.jobs) ? payload.jobs : [];
+                buildCategoryOptions(allJobs);
+                renderJobs();
+            } catch (error) {
+                jobsList.innerHTML = '<div class="job-card"><p class="mb-0 text-danger">Unable to load jobs right now.</p></div>';
+            }
+        }
+
+        [keywordInput, locationInput, categoryFilter, jobTypeFilter, sortSelect].forEach((element) => {
+            element.addEventListener('input', renderJobs);
+            element.addEventListener('change', renderJobs);
+        });
+
+        clearFiltersBtn.addEventListener('click', function() {
+            keywordInput.value = '';
+            locationInput.value = '';
+            categoryFilter.value = '';
+            jobTypeFilter.value = '';
+            sortSelect.value = 'newest';
+            radiusSlider.value = 100;
+            radiusValue.textContent = '100';
+            renderJobs();
+        });
+
+        radiusSlider.addEventListener('input', function() {
+            radiusValue.textContent = this.value;
+        });
+
+        loadJobs();
+    })();
+</script>
 
 </body>
 
