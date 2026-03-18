@@ -1,32 +1,3 @@
-<?php
-// Start session if not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CareerHuntt</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
-    <link rel="stylesheet" href="style.css">
-
-    <link rel="stylesheet" href="css\companies.css">
-
-</head>
-
-<body>
-
     <header class="header">
 
         <nav class="navbar navbar-expand-lg fixed-top">
@@ -44,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <ul class="navbar-nav ms-auto align-items-center">
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
+                        <a class="nav-link active" href="index.php">Home</a>
                     </li>
 
                     <li class="nav-item">
@@ -56,7 +27,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     </li>
 
                      <li class="nav-item">
-                        <a class="nav-link" href="#news">News</a>
+                        <a class="nav-link" href="recent_news.php">News</a>
                     </li>
 
                     <li class="nav-item">

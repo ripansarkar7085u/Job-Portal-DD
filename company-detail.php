@@ -1,53 +1,51 @@
-<?php include ("header.php")
+<?php
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Get company ID from URL
+$company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Inc. - CareerHunt</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/companies.css">
+    <link rel="stylesheet" href="css/company-detail.css">
+</head>
+
+<body>
+
     <!-- HEADER -->
-    <header class="header">
-        <nav class="navbar navbar-expand-lg container">
-            <a class="navbar-brand" href="index.php">
-                <img src="/photos/job logo.png" alt="CareerHunt">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="jobs.php">Jobs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="companies.php">Companies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.php">About</a>
-                    </li>
-                </ul>
-
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="user/dashboard.php" class="btn login-btn">Dashboard</a>
-                <?php else: ?>
-                    <a href="login.php" class="btn login-btn me-2">Login</a>
-                    <a href="register.php" class="btn login-btn">Register</a>
-                <?php endif; ?>
-            </div>
-        </nav>
-    </header>
+    <?php include("header.php") ?>
 
     <!-- COMPANY HEADER SECTION -->
-    <section class="company-header-section">
-        <div class="company-cover">
-            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&h=400&fit=crop" alt="Company Cover">
+    <!-- <section class="company-header-section"> -->
+      
+    
+
+    <!-- COMPANY MAIN CONTENT -->
+    <section class="company-main-section">
+        <div class="container">
+              <div class="company-cover">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&h=400&fit=crop"
+                alt="Company Cover">
             <div class="cover-overlay"></div>
         </div>
-        <div class="container">
+        <div class="container-fluid px-4">
             <div class="company-header-content">
                 <div class="company-info-main">
                     <div class="company-logo-large">
-                        <img src="https://ui-avatars.com/api/?name=Google&background=4285f4&color=fff&size=120&rounded=true" alt="Google">
+                        <img src="https://ui-avatars.com/api/?name=Google&background=4285f4&color=fff&size=120&rounded=true"
+                            alt="Google">
                     </div>
                     <div class="company-info-text">
                         <div class="company-title-wrapper">
@@ -82,11 +80,6 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- COMPANY MAIN CONTENT -->
-    <section class="company-main-section">
-        <div class="container">
             <div class="row">
                 <!-- LEFT CONTENT -->
                 <div class="col-lg-8">
@@ -94,13 +87,22 @@
                     <div class="content-card">
                         <h3 class="card-title">About Company</h3>
                         <div class="about-content">
-                            <p>Google LLC is an American multinational technology company focusing on search engine technology, online advertising, cloud computing, computer software, quantum computing, e-commerce, artificial intelligence, and consumer electronics.</p>
-                            <p>It has been referred to as "the most powerful company in the world" and one of the world's most valuable brands due to its market dominance, data collection, and technological advantages in the area of artificial intelligence.</p>
-                            <p>Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were PhD students at Stanford University in California. Together they own about 14% of its publicly listed shares and control 56% of the stockholder voting power through super-voting stock.</p>
+                            <p>Google LLC is an American multinational technology company focusing on search engine
+                                technology, online advertising, cloud computing, computer software, quantum computing,
+                                e-commerce, artificial intelligence, and consumer electronics.</p>
+                            <p>It has been referred to as "the most powerful company in the world" and one of the
+                                world's most valuable brands due to its market dominance, data collection, and
+                                technological advantages in the area of artificial intelligence.</p>
+                            <p>Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were
+                                PhD students at Stanford University in California. Together they own about 14% of its
+                                publicly listed shares and control 56% of the stockholder voting power through
+                                super-voting stock.</p>
                             <h5>Our Mission</h5>
                             <p>To organize the world's information and make it universally accessible and useful.</p>
                             <h5>Our Culture</h5>
-                            <p>We strive to create an environment where every employee feels empowered to share their ideas and collaborate across teams. Innovation is at the heart of everything we do, and we believe diverse perspectives lead to better solutions.</p>
+                            <p>We strive to create an environment where every employee feels empowered to share their
+                                ideas and collaborate across teams. Innovation is at the heart of everything we do, and
+                                we believe diverse perspectives lead to better solutions.</p>
                         </div>
                     </div>
 
@@ -109,16 +111,20 @@
                         <h3 class="card-title">Company Gallery</h3>
                         <div class="gallery-grid">
                             <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop" alt="Office">
+                                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop"
+                                    alt="Office">
                             </div>
                             <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=400&h=300&fit=crop" alt="Workspace">
+                                <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=400&h=300&fit=crop"
+                                    alt="Workspace">
                             </div>
                             <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop" alt="Team">
+                                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop"
+                                    alt="Team">
                             </div>
                             <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?w=400&h=300&fit=crop" alt="Meeting">
+                                <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?w=400&h=300&fit=crop"
+                                    alt="Meeting">
                             </div>
                         </div>
                     </div>
@@ -127,9 +133,10 @@
                     <div class="content-card" id="open-positions">
                         <div class="card-header-flex">
                             <h3 class="card-title">Open Positions <span class="count-badge">25</span></h3>
-                            <a href="jobs.php?company=google" class="view-all-link">View All Jobs <i class="bi bi-arrow-right"></i></a>
+                            <a href="jobs.php?company=google" class="view-all-link">View All Jobs <i
+                                    class="bi bi-arrow-right"></i></a>
                         </div>
-                        
+
                         <!-- Job Listing 1 -->
                         <div class="job-listing-card">
                             <div class="job-listing-left">
@@ -281,12 +288,9 @@
                     <div class="sidebar-card">
                         <h4 class="sidebar-title">Location</h4>
                         <div class="map-placeholder">
-                            <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.639290621062!2d-122.0840897!3d37.4219999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425dad8f%3A0x6c296c66619367e0!2sGoogleplex!5e0!3m2!1sen!2sus!4v1635959764512!5m2!1sen!2sus" 
-                                width="100%" 
-                                height="200" 
-                                style="border:0; border-radius: 8px;" 
-                                allowfullscreen="" 
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.639290621062!2d-122.0840897!3d37.4219999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425dad8f%3A0x6c296c66619367e0!2sGoogleplex!5e0!3m2!1sen!2sus!4v1635959764512!5m2!1sen!2sus"
+                                width="100%" height="200" style="border:0; border-radius: 8px;" allowfullscreen=""
                                 loading="lazy">
                             </iframe>
                         </div>
@@ -301,21 +305,24 @@
                         <h4 class="sidebar-title">Similar Companies</h4>
                         <div class="similar-companies">
                             <a href="company-detail.php?id=2" class="similar-company-item">
-                                <img src="https://ui-avatars.com/api/?name=Microsoft&background=00a4ef&color=fff&size=50&rounded=true" alt="Microsoft">
+                                <img src="https://ui-avatars.com/api/?name=Microsoft&background=00a4ef&color=fff&size=50&rounded=true"
+                                    alt="Microsoft">
                                 <div>
                                     <h5>Microsoft</h5>
                                     <span>18 Open Jobs</span>
                                 </div>
                             </a>
                             <a href="company-detail.php?id=5" class="similar-company-item">
-                                <img src="https://ui-avatars.com/api/?name=Apple&background=333333&color=fff&size=50&rounded=true" alt="Apple">
+                                <img src="https://ui-avatars.com/api/?name=Apple&background=333333&color=fff&size=50&rounded=true"
+                                    alt="Apple">
                                 <div>
                                     <h5>Apple Inc.</h5>
                                     <span>30 Open Jobs</span>
                                 </div>
                             </a>
                             <a href="company-detail.php?id=7" class="similar-company-item">
-                                <img src="https://ui-avatars.com/api/?name=Meta&background=0668e1&color=fff&size=50&rounded=true" alt="Meta">
+                                <img src="https://ui-avatars.com/api/?name=Meta&background=0668e1&color=fff&size=50&rounded=true"
+                                    alt="Meta">
                                 <div>
                                     <h5>Meta</h5>
                                     <span>28 Open Jobs</span>
@@ -328,60 +335,7 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-widget">
-                        <img src="/photos/job logo.png" alt="CareerHunt" class="footer-logo">
-                        <p>CareerHunt is a leading job portal connecting talented professionals with top companies worldwide.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="bi bi-facebook"></i></a>
-                            <a href="#"><i class="bi bi-twitter-x"></i></a>
-                            <a href="#"><i class="bi bi-linkedin"></i></a>
-                            <a href="#"><i class="bi bi-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-widget">
-                        <h5>For Candidates</h5>
-                        <ul>
-                            <li><a href="#">Browse Jobs</a></li>
-                            <li><a href="companies.php">Browse Companies</a></li>
-                            <li><a href="#">Candidate Dashboard</a></li>
-                            <li><a href="#">Job Alerts</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-widget">
-                        <h5>For Employers</h5>
-                        <ul>
-                            <li><a href="#">Post a Job</a></li>
-                            <li><a href="#">Browse Candidates</a></li>
-                            <li><a href="#">Employer Dashboard</a></li>
-                            <li><a href="#">Pricing</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-widget">
-                        <h5>Contact Us</h5>
-                        <ul class="contact-info">
-                            <li><i class="bi bi-geo-alt"></i> 123 Business Street, NY 10001</li>
-                            <li><i class="bi bi-envelope"></i> contact@careerhunt.com</li>
-                            <li><i class="bi bi-telephone"></i> +1 (555) 123-4567</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> CareerHunt. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <?php include("footer.php") ?>
 
     <!-- Auth Modal -->
     <div class="modal fade" id="authModal" tabindex="-1">
@@ -390,10 +344,12 @@
                 <div class="modal-header">
                     <ul class="nav nav-tabs" id="authTabs">
                         <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#loginTab">Login</button>
+                            <button class="nav-link active" data-bs-toggle="tab"
+                                data-bs-target="#loginTab">Login</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#registerTab">Register</button>
+                            <button class="nav-link" data-bs-toggle="tab"
+                                data-bs-target="#registerTab">Register</button>
                         </li>
                     </ul>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

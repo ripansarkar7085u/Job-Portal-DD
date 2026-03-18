@@ -34,6 +34,7 @@
 }
 
 .company-header-content {
+    padding: 109px 0px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -607,24 +608,24 @@
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .company-actions {
         padding-top: 0;
         width: 100%;
     }
-    
+
     .company-info-text {
         padding-top: 20px;
     }
-    
+
     .company-title-wrapper h1 {
         font-size: 26px;
     }
-    
+
     .company-cover {
         height: 200px;
     }
-    
+
     .company-logo-large img {
         width: 100px;
         height: 100px;
@@ -637,32 +638,32 @@
         align-items: center;
         text-align: center;
     }
-    
+
     .company-quick-info {
         justify-content: center;
     }
-    
+
     .company-tags {
         justify-content: center;
     }
-    
+
     .company-actions {
         justify-content: center;
         flex-wrap: wrap;
     }
-    
+
     .job-listing-card {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .job-listing-right {
         flex-direction: row;
         width: 100%;
         justify-content: space-between;
         align-items: center;
     }
-    
+
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -672,27 +673,27 @@
     .company-cover {
         height: 150px;
     }
-    
+
     .company-logo-large img {
         width: 80px;
         height: 80px;
     }
-    
+
     .company-title-wrapper {
         flex-direction: column;
         gap: 8px;
     }
-    
+
     .btn-primary-action,
     .btn-secondary-action {
         width: 100%;
         justify-content: center;
     }
-    
+
     .content-card {
         padding: 20px;
     }
-    
+
     .sidebar-card {
         padding: 20px;
     }

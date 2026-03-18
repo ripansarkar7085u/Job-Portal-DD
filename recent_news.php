@@ -1,3 +1,33 @@
+<?php
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerHuntt</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="css\companies.css">
+
+
+
+</head>
+
+<body>
 <?php include("header.php") ?>
 
 <button onclick="history.back()" class="back-btn">
@@ -21,7 +51,7 @@
                         <p class="news-date"><i class="bi bi-calendar"></i> 10 March 2026</p>
                         <h5>SSC Recruitment 2026 Released</h5>
                         <p>Apply for multiple posts in SSC with great salary packages.</p>
-                        <a href="#" class="read-btn">Read More</a>
+                        <a href="news-detail.php" class="read-btn">Read More</a>
                     </div>
                 </div>
             </div>
@@ -56,13 +86,4 @@
     </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="footer">
-    <p>© 2026 CareerHunt. All Rights Reserved.</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>
+<?php include("footer.php")?>
