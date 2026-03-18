@@ -46,7 +46,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="job.php">Jobs</a>
+                        <a class="nav-link" href="jobs.php">Jobs</a>
                     </li>
 
                     <li class="nav-item">

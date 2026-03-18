@@ -435,6 +435,21 @@ if (session_status() == PHP_SESSION_NONE) {
     <!-- Mobile Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+    <div class="modal fade" id="jobPreviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Job Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="jobPreviewBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
     <script>
@@ -497,17 +512,13 @@ if (session_status() == PHP_SESSION_NONE) {
             }
         });
 
-        async function saveJobPosting(status) {
-            const form = document.getElementById('jobForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return false;
-            }
+        let editingJobId = null;
 
-            const jobType = document.getElementById('jobType').value;
-            const payload = {
+        function getFormPayload(status) {
+            return {
+                id: editingJobId,
                 title: document.getElementById('jobTitle').value.trim(),
-                employment_type: jobType,
+                employment_type: document.getElementById('jobType').value,
                 experience_level: document.getElementById('experienceLevel').value,
                 category: document.getElementById('category').value,
                 work_style: document.getElementById('workStyle').value,
@@ -521,8 +532,97 @@ if (session_status() == PHP_SESSION_NONE) {
                 requirements: document.getElementById('requirements').value.trim(),
                 status
             };
+        }
+
+        function setFormDisabled(disabled) {
+            document.querySelectorAll('#jobForm button, #jobForm input, #jobForm textarea, #jobForm select').forEach((element) => {
+                element.disabled = disabled;
+            });
+        }
+
+        function populateForm(job) {
+            document.getElementById('jobTitle').value = job.title || '';
+            document.getElementById('jobType').value = job.employment_type || '';
+            document.getElementById('experienceLevel').value = job.experience_level || '';
+            document.getElementById('category').value = job.category || '';
+            document.getElementById('workStyle').value = job.work_style || '';
+            document.getElementById('location').value = job.location || '';
+            document.getElementById('salaryMin').value = job.salary_min ?? '';
+            document.getElementById('salaryMax').value = job.salary_max ?? '';
+            document.getElementById('salaryPeriod').value = job.salary_period || 'year';
+            document.getElementById('currency').value = job.currency || 'USD';
+            document.getElementById('showSalary').checked = !!job.salary_visible;
+            document.getElementById('description').value = job.description || '';
+            document.getElementById('requirements').value = job.requirements || '';
+
+            document.getElementById('salarySection').style.display = document.getElementById('showSalary').checked ? 'grid' : 'none';
+        }
+
+        async function loadJobForEdit(jobId) {
+            try {
+                setFormDisabled(true);
+                const response = await fetch(`../api/company_jobs.php?id=${encodeURIComponent(jobId)}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success || !data.job) {
+                    window.companyDashboard.showToast(data.message || 'Unable to load job for editing', 'error');
+                    return;
+                }
+
+                populateForm(data.job);
+            } catch (error) {
+                window.companyDashboard.showToast('Unable to connect to server', 'error');
+            } finally {
+                setFormDisabled(false);
+            }
+        }
+
+        function renderPreview() {
+            const payload = getFormPayload('published');
+            const escapeHtml = (value) => String(value || '').replace(/[&<>"']/g, (char) => {
+                const entities = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                };
+                return entities[char] || char;
+            });
+
+            const salaryText = payload.salary_visible && payload.salary_min && payload.salary_max
+                ? `${escapeHtml(payload.currency)} ${escapeHtml(payload.salary_min)} - ${escapeHtml(payload.salary_max)} / ${escapeHtml(payload.salary_period)}`
+                : 'Salary not displayed';
+
+            const html = `
+                <div class="preview-wrapper">
+                    <h3 class="mb-2">${escapeHtml(payload.title || 'Untitled Job')}</h3>
+                    <p class="text-muted mb-3">${escapeHtml(payload.employment_type || 'Not set')} | ${escapeHtml(payload.location || 'Location not set')}</p>
+                    <div class="mb-3"><strong>Compensation:</strong> ${salaryText}</div>
+                    <div class="mb-3"><strong>Description</strong><p class="mb-0">${escapeHtml(payload.description || 'No description yet').replace(/\n/g, '<br>')}</p></div>
+                    <div><strong>Requirements</strong><p class="mb-0">${escapeHtml(payload.requirements || 'No requirements yet').replace(/\n/g, '<br>')}</p></div>
+                </div>
+            `;
+
+            document.getElementById('jobPreviewBody').innerHTML = html;
+            const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('jobPreviewModal'));
+            modal.show();
+        }
+
+        async function saveJobPosting(status) {
+            const form = document.getElementById('jobForm');
+            if (status === 'published' && !form.checkValidity()) {
+                form.reportValidity();
+                return false;
+            }
+
+            const payload = getFormPayload(status);
 
             try {
+                setFormDisabled(true);
                 const response = await fetch('../api/company_jobs.php', {
                     method: 'POST',
                     headers: {
@@ -538,10 +638,16 @@ if (session_status() == PHP_SESSION_NONE) {
                     return false;
                 }
 
+                if (data.job_id) {
+                    editingJobId = data.job_id;
+                }
+
                 return true;
             } catch (error) {
                 window.companyDashboard.showToast('Unable to connect to server', 'error');
                 return false;
+            } finally {
+                setFormDisabled(false);
             }
         }
 
@@ -567,21 +673,23 @@ if (session_status() == PHP_SESSION_NONE) {
             if (!saved) {
                 return;
             }
-            window.companyDashboard.showToast('Draft saved successfully!', 'success');
+            window.companyDashboard.showToast(editingJobId ? 'Draft saved successfully!' : 'Draft created successfully!', 'success');
         });
 
         // Preview button
         document.getElementById('previewBtn').addEventListener('click', function() {
-            window.companyDashboard.showToast('Opening preview...', 'info');
+            renderPreview();
         });
 
         // Check for edit mode
         const urlParams = new URLSearchParams(window.location.search);
         const editId = urlParams.get('edit');
         if (editId) {
+            editingJobId = Number(editId);
             document.getElementById('pageTitle').textContent = 'Edit Job';
             document.getElementById('formTitle').textContent = 'Edit Job Posting';
-            // Load existing job data here
+            document.querySelector('button[type="submit"]').innerHTML = '<i class="bi bi-check2-circle"></i> Update Job';
+            loadJobForEdit(editId);
         }
     </script>
 

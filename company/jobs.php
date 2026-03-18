@@ -123,10 +123,10 @@ if (session_status() == PHP_SESSION_NONE) {
 
                 <!-- Filter Tabs -->
                 <div class="tabs">
-                    <div class="tab active" data-filter="all">All Jobs (24)</div>
-                    <div class="tab" data-filter="active">Active (18)</div>
-                    <div class="tab" data-filter="closed">Closed (4)</div>
-                    <div class="tab" data-filter="draft">Drafts (2)</div>
+                    <div class="tab active" data-filter="all">All Jobs (<span id="countAll">0</span>)</div>
+                    <div class="tab" data-filter="active">Active (<span id="countActive">0</span>)</div>
+                    <div class="tab" data-filter="closed">Closed (<span id="countClosed">0</span>)</div>
+                    <div class="tab" data-filter="draft">Drafts (<span id="countDraft">0</span>)</div>
                 </div>
 
                 <!-- Jobs Table -->
@@ -146,137 +146,8 @@ if (session_status() == PHP_SESSION_NONE) {
                                     </tr>
                                 </thead>
                                 <tbody id="jobsTable">
-                                    <tr data-job-id="1">
-                                        <td>
-                                            <div class="job-title-cell">
-                                                <span class="job-title">Senior Frontend Developer</span>
-                                                <span class="job-salary">$120,000 - $150,000/year</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="location-badge"><i class="bi bi-geo-alt"></i> Remote</span>
-                                        </td>
-                                        <td>Full-time</td>
-                                        <td>
-                                            <a href="applications.php?job=1" class="applications-link">32 applicants</a>
-                                        </td>
-                                        <td>Mar 7, 2026</td>
-                                        <td><span class="status-badge active">Active</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Edit"><i class="bi bi-pencil"></i></button>
-                                            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-job-id="2">
-                                        <td>
-                                            <div class="job-title-cell">
-                                                <span class="job-title">UX Designer</span>
-                                                <span class="job-salary">$90,000 - $110,000/year</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="location-badge"><i class="bi bi-geo-alt"></i> New York, NY</span>
-                                        </td>
-                                        <td>Full-time</td>
-                                        <td>
-                                            <a href="applications.php?job=2" class="applications-link">18 applicants</a>
-                                        </td>
-                                        <td>Mar 5, 2026</td>
-                                        <td><span class="status-badge active">Active</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Edit"><i class="bi bi-pencil"></i></button>
-                                            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-job-id="3">
-                                        <td>
-                                            <div class="job-title-cell">
-                                                <span class="job-title">Backend Developer</span>
-                                                <span class="job-salary">$130,000 - $160,000/year</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="location-badge"><i class="bi bi-geo-alt"></i> San Francisco, CA</span>
-                                        </td>
-                                        <td>Full-time</td>
-                                        <td>
-                                            <a href="applications.php?job=3" class="applications-link">24 applicants</a>
-                                        </td>
-                                        <td>Feb 28, 2026</td>
-                                        <td><span class="status-badge active">Active</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Edit"><i class="bi bi-pencil"></i></button>
-                                            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-job-id="4">
-                                        <td>
-                                            <div class="job-title-cell">
-                                                <span class="job-title">Product Manager</span>
-                                                <span class="job-salary">$140,000 - $170,000/year</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="location-badge"><i class="bi bi-geo-alt"></i> Austin, TX</span>
-                                        </td>
-                                        <td>Full-time</td>
-                                        <td>
-                                            <a href="applications.php?job=4" class="applications-link">15 applicants</a>
-                                        </td>
-                                        <td>Feb 20, 2026</td>
-                                        <td><span class="status-badge active">Active</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Edit"><i class="bi bi-pencil"></i></button>
-                                            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-job-id="5">
-                                        <td>
-                                            <div class="job-title-cell">
-                                                <span class="job-title">DevOps Engineer</span>
-                                                <span class="job-salary">$125,000 - $155,000/year</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="location-badge"><i class="bi bi-geo-alt"></i> Remote</span>
-                                        </td>
-                                        <td>Full-time</td>
-                                        <td>
-                                            <a href="applications.php?job=5" class="applications-link">21 applicants</a>
-                                        </td>
-                                        <td>Feb 15, 2026</td>
-                                        <td><span class="status-badge closed">Closed</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Reopen"><i class="bi bi-arrow-counterclockwise"></i></button>
-                                            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-job-id="6">
-                                        <td>
-                                            <div class="job-title-cell">
-                                                <span class="job-title">Data Scientist</span>
-                                                <span class="job-salary">$135,000 - $165,000/year</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="location-badge"><i class="bi bi-geo-alt"></i> Boston, MA</span>
-                                        </td>
-                                        <td>Full-time</td>
-                                        <td>
-                                            <span class="no-applicants">No applicants yet</span>
-                                        </td>
-                                        <td>-</td>
-                                        <td><span class="status-badge draft">Draft</span></td>
-                                        <td>
-                                            <button class="action-btn edit" title="Edit"><i class="bi bi-pencil"></i></button>
-                                            <button class="action-btn accept" title="Publish"><i class="bi bi-send"></i></button>
-                                            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
-                                        </td>
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4 text-muted">Loading jobs...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -302,68 +173,245 @@ if (session_status() == PHP_SESSION_NONE) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
     <script>
-        // Filter tabs functionality
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                const filter = this.dataset.filter;
-                filterJobs(filter);
-            });
-        });
+        const jobsTable = document.getElementById('jobsTable');
+        const jobSearchInput = document.getElementById('jobSearch');
+        const tabs = Array.from(document.querySelectorAll('.tab'));
 
-        function filterJobs(status) {
-            const rows = document.querySelectorAll('#jobsTable tr');
-            rows.forEach(row => {
-                const rowStatus = row.querySelector('.status-badge')?.textContent.toLowerCase();
-                if (status === 'all' || rowStatus === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+        let allJobs = [];
+        let activeFilter = 'all';
+        let searchQuery = '';
+
+        function showToast(message, type = 'info') {
+            if (window.companyDashboard && typeof window.companyDashboard.showToast === 'function') {
+                window.companyDashboard.showToast(message, type);
+                return;
+            }
+
+            console[type === 'error' ? 'error' : 'log'](message);
+        }
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function toTitleCase(value) {
+            return String(value || '')
+                .split('-')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join('-');
+        }
+
+        function formatSalary(job) {
+            if (!job.salary_visible) {
+                return 'Salary not disclosed';
+            }
+
+            const min = job.salary_min !== null ? Number(job.salary_min) : null;
+            const max = job.salary_max !== null ? Number(job.salary_max) : null;
+            if (min === null && max === null) {
+                return 'Salary not specified';
+            }
+
+            const currency = job.currency || 'USD';
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency,
+                maximumFractionDigits: 0
+            });
+
+            let range = '';
+            if (min !== null && max !== null) {
+                range = `${formatter.format(min)} - ${formatter.format(max)}`;
+            } else if (min !== null) {
+                range = `${formatter.format(min)}+`;
+            } else {
+                range = `Up to ${formatter.format(max)}`;
+            }
+
+            const periodSuffix = {
+                year: '/year',
+                month: '/month',
+                hour: '/hour'
+            };
+
+            return `${range}${periodSuffix[job.salary_period] || '/year'}`;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) {
+                return '-';
+            }
+
+            const date = new Date(dateString);
+            if (Number.isNaN(date.getTime())) {
+                return '-';
+            }
+
+            return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
             });
         }
 
-        // Search functionality
-        document.getElementById('jobSearch').addEventListener('input', function() {
-            const query = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#jobsTable tr');
+        function statusMeta(status) {
+            if (status === 'active') {
+                return { label: 'Active', className: 'active' };
+            }
+            if (status === 'closed') {
+                return { label: 'Closed', className: 'closed' };
+            }
+            return { label: 'Draft', className: 'draft' };
+        }
+
+        function computeCounts(jobs) {
+            const counts = { all: jobs.length, active: 0, closed: 0, draft: 0 };
+            jobs.forEach(job => {
+                if (counts[job.status] !== undefined) {
+                    counts[job.status] += 1;
+                }
+            });
+            return counts;
+        }
+
+        function updateTabCounts(counts) {
+            document.getElementById('countAll').textContent = counts.all || 0;
+            document.getElementById('countActive').textContent = counts.active || 0;
+            document.getElementById('countClosed').textContent = counts.closed || 0;
+            document.getElementById('countDraft').textContent = counts.draft || 0;
+        }
+
+        function renderRows() {
+            if (!allJobs.length) {
+                jobsTable.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No jobs posted yet.</td></tr>';
+                return;
+            }
+
+            const rows = allJobs.map(job => {
+                const status = statusMeta(job.status);
+                const searchKey = `${job.title} ${job.location}`.toLowerCase();
+
+                return `
+                    <tr data-job-id="${job.id}" data-status="${job.status}" data-search="${escapeHtml(searchKey)}">
+                        <td>
+                            <div class="job-title-cell">
+                                <span class="job-title">${escapeHtml(job.title)}</span>
+                                <span class="job-salary">${escapeHtml(formatSalary(job))}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="location-badge"><i class="bi bi-geo-alt"></i> ${escapeHtml(job.location || 'N/A')}</span>
+                        </td>
+                        <td>${escapeHtml(toTitleCase(job.employment_type || ''))}</td>
+                        <td>
+                            <span class="no-applicants">No applicants yet</span>
+                        </td>
+                        <td>${escapeHtml(formatDate(job.created_at))}</td>
+                        <td><span class="status-badge ${status.className}">${status.label}</span></td>
+                        <td>
+                            <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
+                            <button class="action-btn edit" title="Edit"><i class="bi bi-pencil"></i></button>
+                            <button class="action-btn delete" title="Delete"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            jobsTable.innerHTML = rows;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const rows = Array.from(jobsTable.querySelectorAll('tr[data-job-id]'));
             rows.forEach(row => {
-                const title = row.querySelector('.job-title')?.textContent.toLowerCase();
-                const location = row.querySelector('.location-badge')?.textContent.toLowerCase();
-                if (title?.includes(query) || location?.includes(query)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
+                const rowStatus = row.dataset.status || '';
+                const rowSearch = row.dataset.search || '';
+                const matchesFilter = activeFilter === 'all' || rowStatus === activeFilter;
+                const matchesSearch = searchQuery === '' || rowSearch.includes(searchQuery);
+                row.style.display = matchesFilter && matchesSearch ? '' : 'none';
+            });
+        }
+
+        async function loadJobs() {
+            try {
+                const response = await fetch('../api/company_jobs.php', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    jobsTable.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-danger">Unable to load jobs.</td></tr>';
+                    showToast(data.message || 'Unable to load jobs', 'error');
+                    return;
                 }
+
+                allJobs = Array.isArray(data.jobs) ? data.jobs : [];
+                const counts = data.counts && typeof data.counts === 'object' ? data.counts : computeCounts(allJobs);
+                updateTabCounts(counts);
+                renderRows();
+            } catch (error) {
+                jobsTable.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-danger">Unable to load jobs.</td></tr>';
+                showToast('Unable to connect to server', 'error');
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+                activeFilter = this.dataset.filter || 'all';
+                applyFilters();
             });
         });
 
-        // Action button handlers
-        document.querySelectorAll('.action-btn.delete').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const row = this.closest('tr');
-                const jobTitle = row.querySelector('.job-title').textContent;
-                if (confirm(`Are you sure you want to delete "${jobTitle}"?`)) {
-                    row.remove();
-                    window.companyDashboard.showToast('Job deleted successfully', 'success');
-                }
-            });
+        jobSearchInput.addEventListener('input', function() {
+            searchQuery = this.value.trim().toLowerCase();
+            applyFilters();
         });
 
-        document.querySelectorAll('.action-btn.edit').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const jobId = this.closest('tr').dataset.jobId;
+        jobsTable.addEventListener('click', function(event) {
+            const button = event.target.closest('.action-btn');
+            if (!button) {
+                return;
+            }
+
+            const row = button.closest('tr[data-job-id]');
+            if (!row) {
+                return;
+            }
+
+            const jobId = row.dataset.jobId;
+
+            if (button.classList.contains('edit')) {
                 window.location.href = `job-create.php?edit=${jobId}`;
-            });
+                return;
+            }
+
+            if (button.classList.contains('view')) {
+                window.location.href = `../index.php#job-${jobId}`;
+                return;
+            }
+
+            if (button.classList.contains('delete')) {
+                const title = row.querySelector('.job-title')?.textContent || 'this job';
+                if (!confirm(`Are you sure you want to delete "${title}"?`)) {
+                    return;
+                }
+
+                allJobs = allJobs.filter(job => String(job.id) !== String(jobId));
+                updateTabCounts(computeCounts(allJobs));
+                renderRows();
+                showToast('Job removed from list.', 'success');
+            }
         });
 
-        document.querySelectorAll('.action-btn.view').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const jobId = this.closest('tr').dataset.jobId;
-                window.location.href = `../index.php#job-${jobId}`;
-            });
-        });
+        loadJobs();
     </script>
 
     <style>
