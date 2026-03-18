@@ -21,7 +21,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <link rel="stylesheet" href="style.css">
 
-    <link rel="stylesheet" href="css/companies.css">
+    <link rel="stylesheet" href="css\companies.css">
 
 </head>
 

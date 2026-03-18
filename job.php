@@ -1,56 +1,5 @@
 <?php include("header.php") ?>
-<style>
-    job-card {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
 
-    .job-info {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-    }
-
-    .company-logo {
-        width: 50px;
-        height: 50px;
-        background: #0d1b3d;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-        font-weight: bold;
-    }
-
-    .job-tags span {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        margin-right: 5px;
-    }
-
-    .tag-blue {
-        background: #e6f0ff;
-        color: #2563eb;
-    }
-
-    .tag-green {
-        background: #e6f6ec;
-        color: #16a34a;
-    }
-
-    .tag-yellow {
-        background: #fff4e5;
-        color: #f59e0b;
-    }
-</style>
 
 <!-- PAGE HEADER -->
 

@@ -1,13 +1,5 @@
 <?php include("header.php")?>
 
-    <!-- PAGE HEADER -->
-    <!-- <section class="page-header">
-        <div class="container">
-            
-        </div>
-    </section> -->
-
-    <!-- SEARCH SECTION -->
     <section class="company-search-section">
         <div class="container">
             <div class="page-header-content">
