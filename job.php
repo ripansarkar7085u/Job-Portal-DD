@@ -29,352 +29,164 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <body>
 <?php include("header.php") ?>
-<style>
-    .job-card {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #eee;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+<section class="jobs-section py-5">
 
-    .job-info {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-    }
+    <div class="container">
 
-    .company-logo {
-        width: 50px;
-        height: 50px;
-        background: #0d1b3d;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-        font-weight: bold;
-    }
-
-    .job-tags span {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        margin-right: 5px;
-    }
-
-    .tag-blue {
-        background: #e6f0ff;
-        color: #2563eb;
-    }
-
-    .tag-green {
-        background: #e6f6ec;
-        color: #16a34a;
-    }
-
-    .tag-yellow {
-        background: #fff4e5;
-        color: #f59e0b;
-    }
-
-    .apply-job-btn {
-        min-width: 120px;
-    }
-</style>
-
-<!-- PAGE HEADER -->
-
-<div class="page-header">
-    <h2>Find Jobs</h2>
-    <p>Home / Jobs</p>
-</div>
+        <!-- Title -->
+        <div class="section-title text-center mb-4">
+            <h2>Browse Jobs</h2>
+            <p>Find your dream job from top companies</p>
+            <p><a href="index.php">Home</a>/Job</p>
+        </div>
 
         <!-- Search Bar -->
         <div class="job-search-box mb-4 p-3 shadow-sm rounded">
             <div class="row g-3">
 
-        <div class="col-md-4">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Job title or keyword">
+                </div>
 
-            <div class="filter-box">
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option>All Locations</option>
+                        <option>Delhi</option>
+                        <option>Mumbai</option>
+                        <option>Bangalore</option>
+                    </select>
+                </div>
 
-                <h5>Search by Keywords</h5>
+                <div class="col-md-3">
+                    <select class="form-select">
+                        <option>All Categories</option>
+                        <option>IT</option>
+                        <option>Finance</option>
+                        <option>Healthcare</option>
+                    </select>
+                </div>
 
-                <input type="text" class="form-control" id="keywordInput" placeholder="Job title, keywords, or company">
-
-                <label>Location</label>
-
-                <input type="text" class="form-control" id="locationInput" placeholder="City or postcode">
-
-                <label>Radius around selected destination</label>
-
-                <input type="range" id="radiusSlider" class="form-range" min="1" max="200" value="100">
-
-                <p><span id="radiusValue">100</span> km</p>
-
-                <label>Category</label>
-
-                <select class="form-control" id="categoryFilter">
-                    <option value="">Choose a category</option>
-                </select>
-
-                <label>Job Type</label>
-
-                <select class="form-control" id="jobTypeFilter">
-                    <option value="">Any Job Type</option>
-                    <option value="full-time">Full Time</option>
-                    <option value="part-time">Part Time</option>
-                    <option value="contract">Contract</option>
-                    <option value="freelance">Freelance</option>
-                    <option value="internship">Internship</option>
-                </select>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100">Search</button>
+                </div>
 
             </div>
         </div>
 
+        <div class="row">
 
-        <!-- JOB LISTINGS -->
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3">
 
-        <div class="col-md-8">
+                <div class="filter-box p-3 shadow-sm rounded mb-4">
 
-            <div class="d-flex justify-content-between mb-3">
+                    <h5>Job Type</h5>
+                    <div>
+                        <input type="checkbox"> Full Time <br>
+                        <input type="checkbox"> Part Time <br>
+                        <input type="checkbox"> Internship <br>
+                        <input type="checkbox"> Remote
+                    </div>
 
-                <p>Show <b id="jobsCount">0</b> jobs</p>
+                    <hr>
 
-                <div>
+                    <h5>Experience</h5>
+                    <div>
+                        <input type="checkbox"> Fresher <br>
+                        <input type="checkbox"> 1-3 Years <br>
+                        <input type="checkbox"> 3-5 Years
+                    </div>
 
-                    <button class="btn btn-danger" id="clearFiltersBtn">Clear All</button>
+                    <hr>
 
-                    <select class="btn btn-light" id="sortSelect">
-                        <option value="newest">Sort by: Newest</option>
-                        <option value="oldest">Sort by: Oldest</option>
-                        <option value="title">Sort by: Title</option>
-                    </select>
+                    <h5>Salary</h5>
+                    <div>
+                        <input type="checkbox"> 0-3 LPA <br>
+                        <input type="checkbox"> 3-6 LPA <br>
+                        <input type="checkbox"> 6+ LPA
+                    </div>
 
                 </div>
 
             </div>
 
+            <!-- Job Cards -->
+            <div class="col-lg-9">
 
-            <div id="jobsList">
-                <div class="job-card">
-                    <p class="mb-0 text-muted">Loading jobs...</p>
+                <div class="d-flex justify-content-between mb-3">
+                    <p>Showing 1-6 of 50 jobs</p>
+
+                    <select class="form-select w-auto">
+                        <option>Newest First</option>
+                        <option>Oldest</option>
+                    </select>
                 </div>
+
+                <div class="row g-4">
+
+                    <!-- Job Card -->
+                    <div class="col-md-6">
+                        <div class="job-card p-3 shadow-sm rounded">
+
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="job-logo me-3">GO</div>
+                                <div>
+                                    <h5 class="mb-0">Frontend Developer</h5>
+                                    <small>Google</small>
+                                </div>
+                            </div>
+
+                            <p class="text-muted">Location: Bangalore</p>
+                            <p class="text-muted">Salary: ₹8 LPA</p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-success">Full Time</span>
+                                <a href="job-details.php" class="btn btn-sm btn-outline-primary">Apply</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Job Card -->
+                    <div class="col-md-6">
+                        <div class="job-card p-3 shadow-sm rounded">
+
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="job-logo me-3">MI</div>
+                                <div>
+                                    <h5 class="mb-0">Backend Developer</h5>
+                                    <small>Microsoft</small>
+                                </div>
+                            </div>
+
+                            <p class="text-muted">Location: Hyderabad</p>
+                            <p class="text-muted">Salary: ₹10 LPA</p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-info">Remote</span>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Apply</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pagination -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    </ul>
+                </nav>
+
             </div>
 
         </div>
 
     </div>
 
-</div>
-<?php include("login_register.php") ?>
+</section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="script.js"></script>
-
-<script>
-    (function initPublicJobsPage() {
-        const jobsList = document.getElementById('jobsList');
-        const jobsCount = document.getElementById('jobsCount');
-        const keywordInput = document.getElementById('keywordInput');
-        const locationInput = document.getElementById('locationInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const jobTypeFilter = document.getElementById('jobTypeFilter');
-        const sortSelect = document.getElementById('sortSelect');
-        const clearFiltersBtn = document.getElementById('clearFiltersBtn');
-        const radiusSlider = document.getElementById('radiusSlider');
-        const radiusValue = document.getElementById('radiusValue');
-
-        let allJobs = [];
-
-        const escapeHtml = (value) => String(value || '')
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-
-        const employmentTypeLabel = (value) => {
-            const map = {
-                'full-time': 'Full Time',
-                'part-time': 'Part Time',
-                'contract': 'Contract',
-                'freelance': 'Freelance',
-                'internship': 'Internship'
-            };
-            return map[value] || 'Full Time';
-        };
-
-        const categoryLabel = (value) => String(value || 'General')
-            .split('-')
-            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-            .join(' ');
-
-        const salaryLabel = (job) => {
-            if (!job.salary_visible || (job.salary_min === null && job.salary_max === null)) {
-                return 'Salary not disclosed';
-            }
-
-            const symbolMap = {
-                USD: '$',
-                EUR: 'EUR ',
-                GBP: 'GBP ',
-                CAD: 'CAD ',
-                AUD: 'AUD '
-            };
-            const symbol = symbolMap[job.currency] || '';
-
-            if (job.salary_min !== null && job.salary_max !== null) {
-                return `${symbol}${job.salary_min} - ${symbol}${job.salary_max}`;
-            }
-            if (job.salary_min !== null) {
-                return `${symbol}${job.salary_min}+`;
-            }
-            return `Up to ${symbol}${job.salary_max}`;
-        };
-
-        const hoursAgoLabel = (createdAt) => {
-            const created = new Date(createdAt);
-            if (Number.isNaN(created.getTime())) {
-                return 'Recently posted';
-            }
-
-            const diffMs = Date.now() - created.getTime();
-            const diffHours = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60)));
-            if (diffHours < 24) {
-                return `${diffHours} hours ago`;
-            }
-
-            const diffDays = Math.floor(diffHours / 24);
-            return `${diffDays} days ago`;
-        };
-
-        function buildCategoryOptions(jobs) {
-            const categories = [...new Set(jobs.map((job) => job.category).filter(Boolean))].sort();
-            const options = ['<option value="">Choose a category</option>'];
-            categories.forEach((category) => {
-                options.push(`<option value="${escapeHtml(category)}">${escapeHtml(categoryLabel(category))}</option>`);
-            });
-            categoryFilter.innerHTML = options.join('');
-        }
-
-        function filteredJobs() {
-            const keyword = keywordInput.value.trim().toLowerCase();
-            const location = locationInput.value.trim().toLowerCase();
-            const category = categoryFilter.value;
-            const type = jobTypeFilter.value;
-
-            let result = allJobs.filter((job) => {
-                const haystack = `${job.title} ${job.company_name} ${job.location}`.toLowerCase();
-                const keywordMatch = !keyword || haystack.includes(keyword);
-                const locationMatch = !location || String(job.location || '').toLowerCase().includes(location);
-                const categoryMatch = !category || job.category === category;
-                const typeMatch = !type || job.employment_type === type;
-                return keywordMatch && locationMatch && categoryMatch && typeMatch;
-            });
-
-            if (sortSelect.value === 'oldest') {
-                result = result.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-            } else if (sortSelect.value === 'title') {
-                result = result.sort((a, b) => String(a.title).localeCompare(String(b.title)));
-            } else {
-                result = result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            }
-
-            return result;
-        }
-
-        function renderJobs() {
-            const list = filteredJobs();
-            jobsCount.textContent = String(list.length);
-
-            if (list.length === 0) {
-                jobsList.innerHTML = '<div class="job-card"><p class="mb-0 text-muted">No jobs found for selected filters.</p></div>';
-                return;
-            }
-
-            jobsList.innerHTML = list.map((job) => {
-                const initials = (job.company_name || 'C')
-                    .split(' ')
-                    .filter(Boolean)
-                    .slice(0, 2)
-                    .map((part) => part.charAt(0).toUpperCase())
-                    .join('') || 'C';
-
-                return `
-                    <div class="job-card">
-                        <div class="job-info">
-                            <div class="company-logo">${escapeHtml(initials)}</div>
-                            <div>
-                                <h5>${escapeHtml(job.title)}</h5>
-                                <p class="text-muted mb-1">
-                                    <i class="bi bi-building"></i> ${escapeHtml(job.company_name || 'Company')}
-                                    &nbsp;&nbsp;
-                                    <i class="bi bi-geo-alt"></i> ${escapeHtml(job.location || 'Not specified')}
-                                    &nbsp;&nbsp;
-                                    <i class="bi bi-clock"></i> ${escapeHtml(hoursAgoLabel(job.created_at))}
-                                    &nbsp;&nbsp;
-                                    <i class="bi bi-cash"></i> ${escapeHtml(salaryLabel(job))}
-                                </p>
-                                <div class="job-tags">
-                                    <span class="tag-blue">${escapeHtml(employmentTypeLabel(job.employment_type))}</span>
-                                    <span class="tag-green">${escapeHtml(categoryLabel(job.category))}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="login.php" class="btn btn-primary apply-job-btn">Apply</a>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        async function loadJobs() {
-            try {
-                const response = await fetch('api/featured_jobs.php?limit=200', {
-                    method: 'GET'
-                });
-
-                const payload = await response.json();
-                if (!response.ok || !payload.success) {
-                    jobsList.innerHTML = '<div class="job-card"><p class="mb-0 text-danger">Unable to load jobs right now.</p></div>';
-                    return;
-                }
-
-                allJobs = Array.isArray(payload.jobs) ? payload.jobs : [];
-                buildCategoryOptions(allJobs);
-                renderJobs();
-            } catch (error) {
-                jobsList.innerHTML = '<div class="job-card"><p class="mb-0 text-danger">Unable to load jobs right now.</p></div>';
-            }
-        }
-
-        [keywordInput, locationInput, categoryFilter, jobTypeFilter, sortSelect].forEach((element) => {
-            element.addEventListener('input', renderJobs);
-            element.addEventListener('change', renderJobs);
-        });
-
-        clearFiltersBtn.addEventListener('click', function() {
-            keywordInput.value = '';
-            locationInput.value = '';
-            categoryFilter.value = '';
-            jobTypeFilter.value = '';
-            sortSelect.value = 'newest';
-            radiusSlider.value = 100;
-            radiusValue.textContent = '100';
-            renderJobs();
-        });
-
-        radiusSlider.addEventListener('input', function() {
-            radiusValue.textContent = this.value;
-        });
-
-        loadJobs();
-    })();
-</script>
-
-</body>
-
-</html>
+<?php include("footer.php")?>
