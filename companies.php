@@ -8,57 +8,30 @@ if (session_status() == PHP_SESSION_NONE) {
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Companies - CareerHunt</title>
+
+    <title>CareerHuntt</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/companies.css">
+
+    <link rel="stylesheet" href="css\companies.css">
+    <link rel="stylesheet" href="css\company-detail.css">
+
+
+
 </head>
 
 <body>
+<?php include("header.php")?>
 
-    <!-- HEADER -->
-    <header class="header">
-        <nav class="navbar navbar-expand-lg container">
-            <a class="navbar-brand" href="index.php">
-                <img src="photos\job_logo.png" alt="CareerHunt">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="jobs.php">Jobs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="companies.php">Companies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.php">About</a>
-                    </li>
-                </ul>
-
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="user/dashboard.php" class="btn login-btn">Dashboard</a>
-                <?php else: ?>
-                    <a href="login.php" class="btn login-btn me-2">Login</a>
-                    <a href="register.php" class="btn login-btn">Register</a>
-                <?php endif; ?>
-            </div>
-        </nav>
-    </header>
-
-    <!-- PAGE HEADER -->
-    <section class="page-header">
+    <section class="company-search-section">
         <div class="container">
             <div class="page-header-content">
                 <h1>Browse Companies</h1>
@@ -69,12 +42,6 @@ if (session_status() == PHP_SESSION_NONE) {
                     </ol>
                 </nav>
             </div>
-        </div>
-    </section>
-
-    <!-- SEARCH SECTION -->
-    <section class="company-search-section">
-        <div class="container">
             <div class="company-search-box">
                 <div class="row g-3 align-items-center">
                     <div class="col-lg-4 col-md-6">
