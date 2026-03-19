@@ -7,6 +7,7 @@
    Page Header
    =================================== */
 .page-header-content {
+    border-radius: 10px;
     background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
     padding: 60px 0;
     text-align: center;
@@ -35,9 +36,12 @@ ol{
     text-decoration: none;
 }
 
+.breadcrumb-item.active{
+    color: #fff;
+}
 .page-header .breadcrumb-item.active {
     
-    color: #fff;
+    color: #ffffff;
 }
 
 .page-header .breadcrumb-item + .breadcrumb-item::before {

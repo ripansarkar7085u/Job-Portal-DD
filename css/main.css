@@ -101,6 +101,10 @@ section {
     margin-top: 30px;
 }
 
+a{
+    color: #fff;
+    text-decoration: none;
+}
 .search-field {
     display: flex;
     align-items: center;
@@ -274,7 +278,7 @@ section {
 }
 
 .section-title p {
-    color: #777;
+    color: #ffff;
     margin-bottom: 40px;
 }
 
@@ -398,6 +402,7 @@ section {
 
 
 .text-center {
+    border-radius: 10px;
     margin-bottom: 20px;
     padding: 25px;
     background: #0d48a1;
@@ -798,6 +803,10 @@ section .section-title h2 {
     padding: 60px 0 20px;
 }
 
+/* .footer a{
+    color:#fff;
+    text-decoration: none;
+} */
 
 /* NEWS CARD */
 .news-card {

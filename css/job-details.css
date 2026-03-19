@@ -1,0 +1,57 @@
+        body {
+            background: #f4f6f9;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Banner */
+        .job-banner {
+            height: 220px;
+            background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d') center/cover;
+            border-radius: 12px;
+        }
+
+        /* Card */
+        .job-card {
+            background: #fff;
+            margin-top: -80px;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Logo */
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            border: 3px solid #fff;
+            margin-top: -50px;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e3f2fd;
+            color: #0d47a1;
+            border-radius: 20px;
+            margin: 4px;
+            font-size: 13px;
+        }
+
+        .section {
+            margin-top: 25px;
+        }
+
+        .meta span {
+            margin-right: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .apply-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+ 
