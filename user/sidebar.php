@@ -1,8 +1,8 @@
 <!-- sidebar.php -->
 <div class="sidebar">
-    <a class="navbar-brand text-center d-block mb-4" href="#">
-        <img src="../photos/job logo.png" alt="CareerHunt" width="120">
-    </a>
+      <div class=image>
+        <img src= "../photos/job_logo.png" alt="CareerHunt" width="120">
+</div>
 
     <div class="sidebar-menu">
         <a href="index.php" class="active"><i class="bi bi-house"></i> Dashboard</a>

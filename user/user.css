@@ -52,12 +52,14 @@
 
 /* Top Navbar */
 .top-navbar {
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
-    background-color: #fff;
+    padding: 12px 40px;
+    background-color: #0d47a1;
     border-bottom: 1px solid #ddd;
+    color: #fff;
 }
 
 .top-navbar .nav-left h5 {
@@ -74,6 +76,11 @@
     border-radius: 50%;
     width: 40px;
     height: 40px;
+}
+
+
+.image {
+    padding: 24px 30px;
 }
 
 /* Stats Cards */
