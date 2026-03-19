@@ -7,7 +7,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     if (($_SESSION['account_type'] ?? '') === 'company') {
         header('Location: /Job-Portal-DD/company/index.php');
     } else {
-        header('Location: /Job-Portal-DD/user/dashboard.php');
+        header('Location: \Job-Portal-DD\user\index.php');
     }
     exit;
 }

@@ -41,7 +41,7 @@
                             <i class="bi bi-building me-1"></i><?php echo htmlspecialchars($_SESSION['company_name']); ?>
                         </a>
                     <?php else: ?>
-                        <a href="user/dashboard.php" class="btn login-btn">
+                        <a href="user/index.php" class="btn login-btn">
                             <i class="bi bi-person me-1"></i><?php echo htmlspecialchars($_SESSION['user_name']); ?>
                         </a>
                     <?php endif; ?>
