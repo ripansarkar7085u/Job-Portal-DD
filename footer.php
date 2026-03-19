@@ -4,7 +4,8 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-widget">
-                        <img src="/photos/job logo.png" alt="CareerHunt" class="footer-logo">
+                        <!-- <img src="photos\job_logo.png" alt="CareerHunt" class="footer-logo"> -->
+                         <a href="index.php">CareerHunt</a>
                         <p>CareerHunt is a leading job portal connecting talented professionals with top companies worldwide.</p>
                         <div class="social-links">
                             <a href="#"><i class="bi bi-facebook"></i></a>

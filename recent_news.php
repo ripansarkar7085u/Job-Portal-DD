@@ -19,7 +19,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css\main.css">
 
     <link rel="stylesheet" href="css\companies.css">
 
@@ -39,6 +39,10 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="section-title text-center">
             <h1>Recent Job News</h1>
             <p>Stay updated with latest government & private job updates</p>
+            <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item active">News</li>
+                    </ol>
 
         </div>
         <div class="row g-4">

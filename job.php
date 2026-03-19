@@ -19,7 +19,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css\main.css">
 
     <link rel="stylesheet" href="css\companies.css">
 
@@ -141,7 +141,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="badge bg-success">Full Time</span>
-                                <a href="job-details.php" class="btn btn-sm btn-outline-primary">Apply</a>
+                                <a href="job-details.php" class="btn btn-sm btn-outline-primary">Get Details</a>
                             </div>
 
                         </div>
@@ -164,7 +164,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="badge bg-info">Remote</span>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Apply</a>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Get Details</a>
                             </div>
 
                         </div>

@@ -1,73 +1,32 @@
+<?php
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Details</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>CareerHuntt</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
 
-    <style>
-        body {
-            background: #f4f6f9;
-            font-family: 'Segoe UI', sans-serif;
-        }
+    <link rel="stylesheet" href="css\main.css">
 
-        /* Banner */
-        .job-banner {
-            height: 220px;
-            background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d') center/cover;
-            border-radius: 12px;
-        }
+    <link rel="stylesheet" href="css\job-details.css">
 
-        /* Card */
-        .job-card {
-            background: #fff;
-            margin-top: -80px;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        }
+    <link rel="stylesheet" href="css\companies.css">
 
-        /* Logo */
-        .company-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            border: 3px solid #fff;
-            margin-top: -50px;
-        }
 
-        /* Tags */
-        .tag {
-            display: inline-block;
-            padding: 6px 12px;
-            background: #e3f2fd;
-            color: #0d47a1;
-            border-radius: 20px;
-            margin: 4px;
-            font-size: 13px;
-        }
 
-        .section {
-            margin-top: 25px;
-        }
-
-        .meta span {
-            margin-right: 15px;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .apply-box {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-        }
-    </style>
 </head>
 
 <body>
