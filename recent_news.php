@@ -36,7 +36,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <!-- NEWS SECTION -->
 <section class="py-5">
     <div class="container">
-        <div class="section-title text-center">
+        <div class="page-header-content">
             <h1>Recent Job News</h1>
             <p>Stay updated with latest government & private job updates</p>
             <ol class="breadcrumb">
