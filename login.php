@@ -20,7 +20,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     <title>Login - CareerHunt</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css\main.css">
     <style>
         .auth-page-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px; background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 100%); }
         .auth-page-card { width: 100%; max-width: 560px; border-radius: 18px; background: #fff; box-shadow: 0 18px 40px rgba(13, 71, 161, 0.15); overflow: hidden; }
