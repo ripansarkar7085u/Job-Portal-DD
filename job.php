@@ -28,165 +28,165 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 
 <body>
-<?php include("header.php") ?>
-<section class="jobs-section py-5">
+    <?php include("header.php") ?>
+    <button onclick="history.back()" class="back-btn">
+        <i class="bi bi-arrow-left"></i>
+    </button>
+    <section class="jobs-section py-5">
 
-    <div class="container">
+        <div class="container">
 
-        <!-- Title -->
-        <div class="section-title text-center mb-4">
-            <h2>Browse Jobs</h2>
-            <p>Find your dream job from top companies</p>
-            <p><a href="index.php">Home</a>/Job</p>
-        </div>
-
-        <!-- Search Bar -->
-        <div class="job-search-box mb-4 p-3 shadow-sm rounded">
-            <div class="row g-3">
-
-                <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Job title or keyword">
-                </div>
-
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option>All Locations</option>
-                        <option>Delhi</option>
-                        <option>Mumbai</option>
-                        <option>Bangalore</option>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option>All Categories</option>
-                        <option>IT</option>
-                        <option>Finance</option>
-                        <option>Healthcare</option>
-                    </select>
-                </div>
-
-                <div class="col-md-2">
-                    <button class="btn btn-primary w-100">Search</button>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="row">
-
-            <!-- Sidebar Filters -->
-            <div class="col-lg-3">
-
-                <div class="filter-box p-3 shadow-sm rounded mb-4">
-
-                    <h5>Job Type</h5>
-                    <div>
-                        <input type="checkbox"> Full Time <br>
-                        <input type="checkbox"> Part Time <br>
-                        <input type="checkbox"> Internship <br>
-                        <input type="checkbox"> Remote
-                    </div>
-
-                    <hr>
-
-                    <h5>Experience</h5>
-                    <div>
-                        <input type="checkbox"> Fresher <br>
-                        <input type="checkbox"> 1-3 Years <br>
-                        <input type="checkbox"> 3-5 Years
-                    </div>
-
-                    <hr>
-
-                    <h5>Salary</h5>
-                    <div>
-                        <input type="checkbox"> 0-3 LPA <br>
-                        <input type="checkbox"> 3-6 LPA <br>
-                        <input type="checkbox"> 6+ LPA
-                    </div>
-
-                </div>
-
+            <!-- Title -->
+            <div class="page-header-content">
+                <h2 class="job">Browse Jobs</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item active">Jobsf</li>
+                </ol>
             </div>
 
-            <!-- Job Cards -->
-            <div class="col-lg-9">
+            <!-- Search -->
+            <div class="job-search-box mb-4 p-3 shadow-sm rounded">
+                <div class="row g-3">
 
-                <div class="d-flex justify-content-between mb-3">
-                    <p>Showing 1-6 of 50 jobs</p>
+                    <div class="col-md-4">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Job title">
+                    </div>
 
-                    <select class="form-select w-auto">
-                        <option>Newest First</option>
-                        <option>Oldest</option>
-                    </select>
+                    <div class="col-md-3">
+                        <select id="locationFilter" class="form-select">
+                            <option value="">All Locations</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select id="categoryFilter" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="IT">IT</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Healthcare">Healthcare</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <!-- Sidebar -->
+                <div class="col-lg-3">
+
+                    <div class="filter-box p-3 shadow-sm rounded mb-4">
+
+                        <!-- Job Type -->
+                        <h5>Job Type</h5>
+                        <input type="checkbox" class="typeFilter" value="Full Time"> Full Time <br>
+                        <input type="checkbox" class="typeFilter" value="Part Time"> Part Time <br>
+                        <input type="checkbox" class="typeFilter" value="Internship"> Internship <br>
+                        <input type="checkbox" class="typeFilter" value="Remote"> Remote
+
+                        <hr>
+
+                        <!-- Experience -->
+                        <h5>Experience</h5>
+                        <input type="checkbox" class="expFilter" value="Fresher"> Fresher <br>
+                        <input type="checkbox" class="expFilter" value="1-3 Years"> 1-3 Years <br>
+                        <input type="checkbox" class="expFilter" value="3-5 Years"> 3-5 Years
+
+                        <hr>
+
+                        <!-- Salary -->
+                        <h5>Salary</h5>
+                        <input type="checkbox" class="salaryFilter" value="0-3"> 0-3 LPA <br>
+                        <input type="checkbox" class="salaryFilter" value="3-6"> 3-6 LPA <br>
+                        <input type="checkbox" class="salaryFilter" value="6+"> 6+ LPA
+
+                    </div>
+
                 </div>
 
-                <div class="row g-4">
+                <!-- Job Cards -->
+                <div class="col-lg-9">
 
-                    <!-- Job Card -->
-                    <div class="col-md-6">
-                        <div class="job-card p-3 shadow-sm rounded">
+                    <div class="d-flex justify-content-between mb-3">
+                        <p id="jobCount">Showing jobs</p>
+                    </div>
 
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="job-logo me-3">GO</div>
-                                <div>
-                                    <h5 class="mb-0">Frontend Developer</h5>
-                                    <small>Google</small>
+                    <div class="row g-4" id="jobContainer">
+
+                        <!-- Job 1 -->
+                        <div class="col-md-6 job-item" data-title="Frontend Developer" data-location="Bangalore"
+                            data-category="IT" data-type="Full Time" data-exp="1-3 Years" data-salary="8"
+                            data-desc="Work on UI using React.">
+
+                            <div class="job-card p-3 shadow-sm rounded">
+                                <h5>Frontend Developer</h5>
+                                <small>Google</small>
+                                <p>📍 Bangalore</p>
+                                <p>💰 ₹8 LPA</p>
+
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-success">Full Time</span>
+                                    <a href="job-details.php">Get Details</a>
                                 </div>
                             </div>
-
-                            <p class="text-muted">Location: Bangalore</p>
-                            <p class="text-muted">Salary: ₹8 LPA</p>
-
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="badge bg-success">Full Time</span>
-                                <a href="job-details.php" class="btn btn-sm btn-outline-primary">Get Details</a>
-                            </div>
-
                         </div>
-                    </div>
 
-                    <!-- Job Card -->
-                    <div class="col-md-6">
-                        <div class="job-card p-3 shadow-sm rounded">
+                        <!-- Job 2 -->
+                        <div class="col-md-6 job-item" data-title="Backend Developer" data-location="Hyderabad"
+                            data-category="IT" data-type="Remote" data-exp="3-5 Years" data-salary="10"
+                            data-desc="Build APIs using Node.js">
 
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="job-logo me-3">MI</div>
-                                <div>
-                                    <h5 class="mb-0">Backend Developer</h5>
-                                    <small>Microsoft</small>
+                            <div class="job-card p-3 shadow-sm rounded">
+                                <h5>Backend Developer</h5>
+                                <small>Microsoft</small>
+                                <p>📍 Hyderabad</p>
+                                <p>💰 ₹10 LPA</p>
+
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-info">Remote</span>
+
+                                    <a href="job-details.php">Get Details</a>
                                 </div>
                             </div>
-
-                            <p class="text-muted">Location: Hyderabad</p>
-                            <p class="text-muted">Salary: ₹10 LPA</p>
-
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="badge bg-info">Remote</span>
-                                <a href="#" class="btn btn-sm btn-outline-primary">Get Details</a>
-                            </div>
-
                         </div>
+
                     </div>
+
+                    <!-- Pagination -->
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center" id="pagination"></ul>
+                    </nav>
 
                 </div>
 
-                <!-- Pagination -->
-                <nav class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    </ul>
-                </nav>
+            </div>
+        </div>
+    </section>
+
+    <?php include("footer.php") ?>
+
+    <script src="js\job.js"></script>
+    <div class="modal fade" id="jobModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 id="modalTitle"></h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p id="modalCompany"></p>
+                    <p id="modalLocation"></p>
+                    <p id="modalSalary"></p>
+                    <p id="modalDesc"></p>
+                </div>
 
             </div>
-
         </div>
-
     </div>
-
-</section>
-
-<?php include("footer.php")?>

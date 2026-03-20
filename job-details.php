@@ -31,6 +31,9 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <body>
     <?php include("header.php") ?>
+    <button onclick="history.back()" class="back-btn">
+        <i class="bi bi-arrow-left"></i>
+    </button>
 
     <div class="container my-5">
 
