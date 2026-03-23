@@ -26,6 +26,7 @@ if (isset($_POST['save_all'])) {
     $email       = trim((string) ($_POST['email'] ?? ''));
     $website     = trim((string) ($_POST['website'] ?? ''));
     $location    = trim((string) ($_POST['location'] ?? ''));
+    $skills      = trim((string) ($_POST['skills'] ?? ''));
     $salary      = trim((string) ($_POST['salary'] ?? ''));
     $experience  = trim((string) ($_POST['experience'] ?? ''));
     $age         = trim((string) ($_POST['age'] ?? ''));
@@ -55,8 +56,8 @@ if (isset($_POST['save_all'])) {
     }
 
     // 3. SQL Prepared Statement
-    $sql = "INSERT INTO profiles (user_id, full_name, job_title, phone, email, website, location, salary, experience, age, description, linkedin, github, twitter, facebook, profile_image) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    $sql = "INSERT INTO profiles (user_id, full_name, job_title, phone, email, website, location, skills, salary, experience, age, description, linkedin, github, twitter, facebook, profile_image) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
                 full_name = VALUES(full_name),
                 job_title = VALUES(job_title),
@@ -64,6 +65,7 @@ if (isset($_POST['save_all'])) {
                 email = VALUES(email),
                 website = VALUES(website),
                 location = VALUES(location),
+                skills = VALUES(skills),
                 salary = VALUES(salary),
                 experience = VALUES(experience),
                 age = VALUES(age),
@@ -75,8 +77,8 @@ if (isset($_POST['save_all'])) {
                 profile_image = VALUES(profile_image)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isssssssssssssss", 
-        $userId, $full_name, $job_title, $phone, $email, $website, $location, 
+    $stmt->bind_param("issssssssssssssss", 
+        $userId, $full_name, $job_title, $phone, $email, $website, $location, $skills,
         $salary, $experience, $age, $description, $linkedin, $github, $twitter, $facebook, $photo_name
     );
 

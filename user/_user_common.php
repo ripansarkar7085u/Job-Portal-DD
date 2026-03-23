@@ -18,6 +18,22 @@ function user_column_exists(mysqli $conn, string $table, string $column): bool
     return $exists;
 }
 
+function user_index_exists(mysqli $conn, string $table, string $indexName): bool
+{
+    $sql = 'SELECT 1 FROM information_schema.statistics WHERE table_schema = DATABASE() AND table_name = ? AND index_name = ? LIMIT 1';
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        return false;
+    }
+
+    $stmt->bind_param('ss', $table, $indexName);
+    $stmt->execute();
+    $exists = (bool) $stmt->get_result()->fetch_row();
+    $stmt->close();
+
+    return $exists;
+}
+
 function user_require_login(): int
 {
     if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || ($_SESSION['account_type'] ?? '') !== 'user' || !isset($_SESSION['user_id'])) {
@@ -49,6 +65,7 @@ function user_ensure_profiles_table(mysqli $conn): void
         email VARCHAR(255) NOT NULL DEFAULT '',
         website VARCHAR(255) NOT NULL DEFAULT '',
         location VARCHAR(255) NOT NULL DEFAULT '',
+        skills TEXT,
         salary VARCHAR(50) NOT NULL DEFAULT '',
         experience VARCHAR(50) NOT NULL DEFAULT '',
         age VARCHAR(10) NOT NULL DEFAULT '',
@@ -68,11 +85,16 @@ function user_ensure_profiles_table(mysqli $conn): void
 
     if (!user_column_exists($conn, 'profiles', 'user_id')) {
         $conn->query('ALTER TABLE profiles ADD COLUMN user_id INT NULL');
-        $conn->query('UPDATE profiles SET user_id = 1 WHERE user_id IS NULL');
-        $conn->query('ALTER TABLE profiles MODIFY COLUMN user_id INT NOT NULL');
     }
 
-    $conn->query('ALTER TABLE profiles ADD UNIQUE KEY uniq_profiles_user (user_id)');
+    if (!user_index_exists($conn, 'profiles', 'uniq_profiles_user')) {
+        $conn->query('ALTER TABLE profiles ADD UNIQUE KEY uniq_profiles_user (user_id)');
+    }
+
+    if (!user_column_exists($conn, 'profiles', 'skills')) {
+        $conn->query('ALTER TABLE profiles ADD COLUMN skills TEXT NULL AFTER location');
+    }
+
     $initialized = true;
 }
 

@@ -24,6 +24,7 @@ if (!$user_data) {
         'email' => '',
         'website' => '',
         'location' => '',
+        'skills' => '',
         'salary' => '',
         'experience' => '',
         'age' => '',
@@ -113,6 +114,13 @@ if (!empty($user_data['profile_image'])) {
                                 <label class="form-label">Location</label>
                                 <input type="text" name="location" class="form-control"
                                     value="<?php echo htmlspecialchars($user_data['location']); ?>">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Skills (comma separated)</label>
+                                <input type="text" name="skills" class="form-control"
+                                    value="<?php echo htmlspecialchars($user_data['skills'] ?? ''); ?>"
+                                    placeholder="e.g. PHP, Laravel, React, MySQL">
                             </div>
 
                             <div class="col-md-6">

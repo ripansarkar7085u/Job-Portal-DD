@@ -18,7 +18,7 @@ if ($limit > 200) {
     $limit = 200;
 }
 
-$sql = "SELECT j.id, j.title, j.category, j.employment_type, j.experience_level, j.location, j.salary_min, j.salary_max, j.salary_period, j.currency, j.salary_visible, j.description, j.created_at, c.company_name
+$sql = "SELECT j.id, j.title, j.category, j.employment_type, j.experience_level, j.location, j.salary_min, j.salary_max, j.salary_period, j.currency, j.salary_visible, j.description, j.requirements, j.created_at, c.company_name
         FROM jobs j
         INNER JOIN companies c ON c.id = j.company_id
         WHERE j.status = 'published'
@@ -50,6 +50,7 @@ while ($row = $result->fetch_assoc()) {
         'currency' => (string) ($row['currency'] ?? 'USD'),
         'salary_visible' => (bool) ((int) $row['salary_visible']),
         'description' => (string) ($row['description'] ?? ''),
+        'requirements' => (string) ($row['requirements'] ?? ''),
         'created_at' => (string) $row['created_at'],
     ];
 }
