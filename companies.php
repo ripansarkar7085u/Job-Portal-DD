@@ -31,10 +31,11 @@ if (session_status() == PHP_SESSION_NONE) {
 <body>
     <?php include("header.php") ?>
     <button onclick="history.back()" class="back-btn">
-    <i class="bi bi-arrow-left"></i>
-</button>
+        <i class="bi bi-arrow-left"></i>
+    </button>
 
-    <section class="company-search-section">
+    <!-- COMPANIES LISTING -->
+    <section class="companies-section">
         <div class="container">
             <div class="page-header-content">
                 <h1>Browse Companies</h1>
@@ -88,12 +89,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- COMPANIES LISTING -->
-    <section class="companies-section">
-        <div class="container">
             <div class="row">
                 <!-- SIDEBAR FILTERS -->
                 <div class="col-lg-3">
@@ -282,104 +278,98 @@ if (session_status() == PHP_SESSION_NONE) {
                         <!-- Company Card 4 -->
                         <div class="company-card-v2" data-name="netflix" data-location="san-francisco"
                             data-industry="entertainment" data-size="5000+" data-founded="before-2010">
-                        <div class="company-card-header">
-                            <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
-                        </div>
-                        <div class="company-card-body">
-                            <div class="company-logo-wrapper">
-                                <img src="https://ui-avatars.com/api/?name=Netflix&background=e50914&color=fff&size=80&rounded=true"
-                                    alt="Netflix">
+                            <div class="company-card-header">
+                                <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
-                            <h4 class="company-name">Netflix</h4>
-                            <span class="company-industry"><i class="bi bi-buildings"></i> Entertainment</span>
-                            <div class="company-meta">
-                                <span><i class="bi bi-geo-alt"></i> Los Gatos, CA</span>
-                                <span><i class="bi bi-people"></i> 5,000+ employees</span>
+                            <div class="company-card-body">
+                                <div class="company-logo-wrapper">
+                                    <img src="https://ui-avatars.com/api/?name=Netflix&background=e50914&color=fff&size=80&rounded=true"
+                                        alt="Netflix">
+                                </div>
+                                <h4 class="company-name">Netflix</h4>
+                                <span class="company-industry"><i class="bi bi-buildings"></i> Entertainment</span>
+                                <div class="company-meta">
+                                    <span><i class="bi bi-geo-alt"></i> Los Gatos, CA</span>
+                                    <span><i class="bi bi-people"></i> 5,000+ employees</span>
+                                </div>
+                            </div>
+                            <div class="company-card-footer">
+                                <span class="open-jobs">12 Open Positions</span>
+                                <a href="company-detail.php?id=4" class="view-btn-link">View Company <i
+                                        class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
-                        <div class="company-card-footer">
-                            <span class="open-jobs">12 Open Positions</span>
-                            <a href="company-detail.php?id=4" class="view-btn-link">View Company <i
-                                    class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
 
-                    <!-- Company Card 5 -->
-                     <div class="company-card-v2" data-name="apple" data-location="san-francisco"
+                        <!-- Company Card 5 -->
+                        <div class="company-card-v2" data-name="apple" data-location="san-francisco"
                             data-industry="technology" data-size="10000+" data-founded="present-2020">
-                        <div class="company-card-header">
-                            <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
-                        </div>
-                        <div class="company-card-body">
-                            <div class="company-logo-wrapper">
-                                <img src="https://ui-avatars.com/api/?name=Apple&background=333333&color=fff&size=80&rounded=true"
-                                    alt="Apple">
+                            <div class="company-card-header">
+                                <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
-                            <h4 class="company-name">Apple Inc.</h4>
-                            <span class="company-industry"><i class="bi bi-buildings"></i> Technology</span>
-                            <div class="company-meta">
-                                <span><i class="bi bi-geo-alt"></i> Cupertino, CA</span>
-                                <span><i class="bi bi-people"></i> 10,000+ employees</span>
+                            <div class="company-card-body">
+                                <div class="company-logo-wrapper">
+                                    <img src="https://ui-avatars.com/api/?name=Apple&background=333333&color=fff&size=80&rounded=true"
+                                        alt="Apple">
+                                </div>
+                                <h4 class="company-name">Apple Inc.</h4>
+                                <span class="company-industry"><i class="bi bi-buildings"></i> Technology</span>
+                                <div class="company-meta">
+                                    <span><i class="bi bi-geo-alt"></i> Cupertino, CA</span>
+                                    <span><i class="bi bi-people"></i> 10,000+ employees</span>
+                                </div>
+                            </div>
+                            <div class="company-card-footer">
+                                <span class="open-jobs">30 Open Positions</span>
+                                <a href="company-detail.php?id=5" class="view-btn-link">View Company <i
+                                        class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
-                        <div class="company-card-footer">
-                            <span class="open-jobs">30 Open Positions</span>
-                            <a href="company-detail.php?id=5" class="view-btn-link">View Company <i
-                                    class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
 
-                    <!-- Company Card 6 -->
-                     <div class="company-card-v2" data-name="netflix" data-location="san-francisco"
+                        <!-- Company Card 6 -->
+                        <div class="company-card-v2" data-name="netflix" data-location="san-francisco"
                             data-industry="music/technology" data-size="5000+" data-founded="2010-2014">
-                        <div class="company-card-header">
-                            <span class="featured-badge">Featured</span>
-                            <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
-                        </div>
-                        <div class="company-card-body">
-                            <div class="company-logo-wrapper">
-                                <img src="https://ui-avatars.com/api/?name=Spotify&background=1db954&color=fff&size=80&rounded=true"
-                                    alt="Spotify">
+                            <div class="company-card-header">
+                                <span class="featured-badge">Featured</span>
+                                <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
-                            <h4 class="company-name">Spotify</h4>
-                            <span class="company-industry"><i class="bi bi-buildings"></i> Music / Technology</span>
-                            <div class="company-meta">
-                                <span><i class="bi bi-geo-alt"></i> Stockholm, Sweden</span>
-                                <span><i class="bi bi-people"></i> 5,000+ employees</span>
+                            <div class="company-card-body">
+                                <div class="company-logo-wrapper">
+                                    <img src="https://ui-avatars.com/api/?name=Spotify&background=1db954&color=fff&size=80&rounded=true"
+                                        alt="Spotify">
+                                </div>
+                                <h4 class="company-name">Spotify</h4>
+                                <span class="company-industry"><i class="bi bi-buildings"></i> Music / Technology</span>
+                                <div class="company-meta">
+                                    <span><i class="bi bi-geo-alt"></i> Stockholm, Sweden</span>
+                                    <span><i class="bi bi-people"></i> 5,000+ employees</span>
+                                </div>
+                            </div>
+                            <div class="company-card-footer">
+                                <span class="open-jobs">15 Open Positions</span>
+                                <a href="company-detail.php?id=6" class="view-btn-link">View Company <i
+                                        class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
-                        <div class="company-card-footer">
-                            <span class="open-jobs">15 Open Positions</span>
-                            <a href="company-detail.php?id=6" class="view-btn-link">View Company <i
-                                    class="bi bi-arrow-right"></i></a>
-                        </div>
+
                     </div>
 
+                    <!-- Pagination -->
+                    <nav class="pagination-wrapper">
+                        <ul class="pagination">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-
-                <!-- Pagination -->
-                <nav class="pagination-wrapper">
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
-        </div>
-        </div>
-    </section>
-
-    <!-- NEWSLETTER SECTION -->
-    <section class="newsletter-section">
-        <div class="container">
             <div class="newsletter-box">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -396,7 +386,7 @@ if (session_status() == PHP_SESSION_NONE) {
             </div>
         </div>
     </section>
-
+    
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
