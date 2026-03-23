@@ -1,16 +1,12 @@
 <?php
-// 1. Database Connection
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "job-portal";
+require_once __DIR__ . '/_user_common.php';
 
-$conn = new mysqli($host, $user, $pass, $db);
+user_ensure_profiles_table($conn);
 
 // 2. Fetch the latest profile data
 // Note: In a real app, you would use WHERE id = $user_id
 $result = $conn->query("SELECT * FROM profiles ORDER BY id DESC LIMIT 1");
-$user_data = $result->fetch_assoc();
+$user_data = $result ? $result->fetch_assoc() : null;
 
 // 3. Fallback if database is empty
 if (!$user_data) {
@@ -34,9 +30,12 @@ if (!$user_data) {
 }
 
 // Determine image path
-$image_src = (strpos($user_data['profile_image'], 'http') !== false)
-    ? $user_data['profile_image']
-    : 'uploads/' . $user_data['profile_image'];
+$image_src = 'https://ui-avatars.com/api/?name=User&background=0d47a1&color=fff';
+if (!empty($user_data['profile_image'])) {
+    $image_src = (strpos($user_data['profile_image'], 'http') !== false)
+        ? $user_data['profile_image']
+        : 'uploads/' . $user_data['profile_image'];
+}
 ?>
 
 <!DOCTYPE html>
