@@ -4,6 +4,7 @@ require_once __DIR__ . '/_user_common.php';
 $userId = user_require_login();
 user_ensure_profiles_table($conn);
 
+<<<<<<< Updated upstream
 // Fetch profile data for the logged-in user.
 $stmt = $conn->prepare('SELECT * FROM profiles WHERE user_id = ? LIMIT 1');
 $user_data = null;
@@ -14,10 +15,16 @@ if ($stmt) {
     $user_data = $result ? $result->fetch_assoc() : null;
     $stmt->close();
 }
+=======
+// 2. Fetch the latest profile data
+$result = $conn->query("SELECT * FROM profiles ORDER BY id DESC LIMIT 1");
+$user_data = $result ? $result->fetch_assoc() : null;
+>>>>>>> Stashed changes
 
 // 3. Fallback if database is empty
 if (!$user_data) {
     $user_data = [
+<<<<<<< Updated upstream
         'full_name' => '',
         'job_title' => '',
         'phone' => '',
@@ -34,6 +41,12 @@ if (!$user_data) {
         'twitter' => '',
         'facebook' => '',
         'profile_image' => ''
+=======
+        'full_name' => '', 'job_title' => '', 'phone' => '', 'email' => '',
+        'website' => '', 'location' => '', 'salary' => '', 'experience' => '',
+        'age' => '', 'description' => '', 'linkedin' => '', 'github' => '',
+        'twitter' => '', 'facebook' => '', 'profile_image' => ''
+>>>>>>> Stashed changes
     ];
 }
 
@@ -56,6 +69,7 @@ if (!empty($user_data['profile_image'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="user.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -64,13 +78,6 @@ if (!empty($user_data['profile_image'])) {
 
     <div class="content">
         <h2 class="page-title">My Profile</h2>
-
-        <?php if (isset($_GET['status']) && $_GET['status'] == 'success'): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success!</strong> Profile details updated and loaded from database.
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php endif; ?>
 
         <form action="save_profile.php" method="POST" enctype="multipart/form-data">
             <div class="card-box">
@@ -126,29 +133,18 @@ if (!empty($user_data['profile_image'])) {
                             <div class="col-md-6">
                                 <label class="form-label">Current Salary</label>
                                 <select name="salary" class="form-select">
-                                    <option <?php if ($user_data['salary'] == '40-70K')
-                                        echo 'selected'; ?>>40-70K</option>
-                                    <option <?php if ($user_data['salary'] == '70-100K')
-                                        echo 'selected'; ?>>70-100K
-                                    </option>
-                                    <option <?php if ($user_data['salary'] == '100-150K')
-                                        echo 'selected'; ?>>100-150K
-                                    </option>
+                                    <option <?php if ($user_data['salary'] == '40-70K') echo 'selected'; ?>>40-70K</option>
+                                    <option <?php if ($user_data['salary'] == '70-100K') echo 'selected'; ?>>70-100K</option>
+                                    <option <?php if ($user_data['salary'] == '100-150K') echo 'selected'; ?>>100-150K</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label">Experience</label>
                                 <select name="experience" class="form-select">
-                                    <option <?php if ($user_data['experience'] == 'Fresher')
-                                        echo 'selected'; ?>>Fresher
-                                    </option>
-                                    <option <?php if ($user_data['experience'] == '1-3 Years')
-                                        echo 'selected'; ?>>1-3
-                                        Years</option>
-                                    <option <?php if ($user_data['experience'] == '3-5 Years')
-                                        echo 'selected'; ?>>3-5
-                                        Years</option>
+                                    <option <?php if ($user_data['experience'] == 'Fresher') echo 'selected'; ?>>Fresher</option>
+                                    <option <?php if ($user_data['experience'] == '1-3 Years') echo 'selected'; ?>>1-3 Years</option>
+                                    <option <?php if ($user_data['experience'] == '3-5 Years') echo 'selected'; ?>>3-5 Years</option>
                                 </select>
                             </div>
 
@@ -200,7 +196,9 @@ if (!empty($user_data['profile_image'])) {
         </form>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // 2. Function to preview image
         function previewImage(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -210,8 +208,24 @@ if (!empty($user_data['profile_image'])) {
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        // 3. Trigger SweetAlert if status is success in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Profile Updated!',
+                text: 'Your details have been saved to the database.',
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+            
+            // Optional: Clean the URL so the alert doesn't show again on manual refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

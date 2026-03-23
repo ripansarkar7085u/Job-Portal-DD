@@ -7,7 +7,7 @@
     <div class="sidebar-menu">
         <a href="index.php" class="active"><i class="bi bi-house"></i> Dashboard</a>
         <a href="profile.php"><i class="bi bi-person"></i> My Profile</a>
-        <a href="resume.php"><i class="bi bi-file-earmark-text"></i> My Resume</a>
+        <a href="resume.php"><i class="bi bi-file-earmark-text"></i> My CV</a>
         <a href="applied.php"><i class="bi bi-briefcase"></i> Applied Jobs</a>
         <a href="alerts.php"><i class="bi bi-bell"></i> Job Alerts</a>
         <a href="shortlisted.php"><i class="bi bi-bookmark"></i> Shortlisted Jobs</a>

@@ -42,7 +42,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <h2 class="job">Browse Jobs</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item active">Jobsf</li>
+                    <li class="breadcrumb-item active">Jobs</li>
                 </ol>
             </div>
 
