@@ -115,6 +115,10 @@ if (session_status() == PHP_SESSION_NONE) {
 
                     <div class="row g-4" id="jobContainer"></div>
 
+                    <div id="noJobsMessage" class="alert alert-light border mt-3" style="display:none;">
+                        No jobs under this category.
+                    </div>
+
                     <!-- Pagination -->
                     <nav class="mt-4">
                         <ul class="pagination justify-content-center" id="pagination"></ul>

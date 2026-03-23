@@ -34,6 +34,7 @@
                             <li><a href="#">Browse Candidates</a></li>
                             <li><a href="#">Employer Dashboard</a></li>
                             <li><a href="#">Pricing</a></li>
+                            <li><small>Company accounts are created by super admin. Contact admin for credentials.</small></li>
                         </ul>
                     </div>
                 </div>
@@ -59,6 +60,83 @@
     <script src="script.js"></script>
 
     <script>
+        (async function renderPopularCategories() {
+            const categoriesContainer = document.getElementById('popularCategoriesList');
+            if (!categoriesContainer) {
+                return;
+            }
+
+            const summary = document.getElementById('popularCategoriesSummary');
+
+            try {
+                const response = await fetch('api/job_categories.php?limit=8', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const payload = await response.json();
+                const categories = Array.isArray(payload.categories) ? payload.categories : [];
+                const totalJobs = Number(payload.total_jobs || 0);
+
+                if (summary) {
+                    summary.textContent = categories.length > 0
+                        ? `${totalJobs} published jobs across ${categories.length} popular categories`
+                        : 'No category data available right now.';
+                }
+
+                if (categories.length === 0) {
+                    categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-light border">No jobs under this category right now.</div></div>';
+                    return;
+                }
+
+                const iconMap = {
+                    development: 'bi-code-slash',
+                    engineering: 'bi-cpu',
+                    design: 'bi-palette',
+                    marketing: 'bi-megaphone',
+                    finance: 'bi-bar-chart',
+                    sales: 'bi-graph-up-arrow',
+                    'human resource': 'bi-people',
+                    hr: 'bi-people',
+                    operations: 'bi-gear',
+                    'customer service': 'bi-headset',
+                    business: 'bi-briefcase',
+                    it: 'bi-laptop'
+                };
+
+                const cardsHtml = categories.map((category) => {
+                    const raw = String(category.category || '').trim();
+                    const normalized = raw.toLowerCase().replace(/[_-]+/g, ' ');
+                    const icon = iconMap[normalized] || 'bi-briefcase';
+                    const label = String(category.display_name || raw || 'Category');
+                    const count = Number(category.jobs_count || 0);
+                    const categoryId = String(category.id || '');
+                    const categoryParam = encodeURIComponent(raw);
+
+                    return `
+                        <div class="col-lg-3 col-md-6">
+                            <div class="category-card">
+                                <i class="bi ${icon}"></i>
+                                <h5>${label}</h5>
+                                <p>(${count} Jobs)</p>
+                                <a href="job.php?category_id=${encodeURIComponent(categoryId)}&category=${categoryParam}">View Jobs</a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                categoriesContainer.innerHTML = cardsHtml;
+            } catch (error) {
+                if (summary) {
+                    summary.textContent = 'Unable to load categories right now.';
+                }
+            }
+        })();
+
         (async function renderFeaturedJobs() {
             const jobsContainer = document.getElementById('featuredJobsList');
             if (!jobsContainer) {

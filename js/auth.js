@@ -404,6 +404,9 @@ async function handleCompanyLogin(event) {
 async function handleCompanyRegister(event) {
     event.preventDefault();
 
+    showAlert('Company self-registration is disabled. Please contact super admin for company credentials.', 'danger');
+    return;
+
     const form = event.currentTarget;
     const companyNameInput = form.querySelector('input[name="company_name"]');
     const emailInput = form.querySelector('input[name="email"]');

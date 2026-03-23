@@ -167,91 +167,14 @@ if (session_status() == PHP_SESSION_NONE) {
 
                 <h2>Popular Job Categories</h2>
 
-                <p>2020 jobs live - 293 added today.</p>
+                <p id="popularCategoriesSummary">Loading categories...</p>
 
             </div>
 
-            <div class="row">
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-code-slash"></i>
-                        <h5>Development</h5>
-                        <p>(120 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
+            <div class="row" id="popularCategoriesList">
+                <div class="col-12">
+                    <div class="alert alert-light border">No categories available right now.</div>
                 </div>
-
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-palette"></i>
-                        <h5>Design</h5>
-                        <p>(85 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-megaphone"></i>
-                        <h5>Marketing</h5>
-                        <p>(70 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-bar-chart"></i>
-                        <h5>Finance</h5>
-                        <p>(60 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-people"></i>
-                        <h5>Human Resource</h5>
-                        <p>(45 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-headset"></i>
-                        <h5>Customer Support</h5>
-                        <p>(50 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-gear"></i>
-                        <h5>Engineering</h5>
-                        <p>(40 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
-
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="category-card">
-                        <i class="bi bi-briefcase"></i>
-                        <h5>Business</h5>
-                        <p>(30 Jobs)</p>
-                        <a href="#">Learn More</a>
-                    </div>
-                </div>
-
             </div>
 
         </div>

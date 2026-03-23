@@ -31,6 +31,19 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         .account-switch button { flex: 1; border: 0; padding: 10px; border-radius: 10px; background: #eef2f8; font-weight: 600; }
         .account-switch button.active { background: #0d47a1; color: #fff; }
         .alt-links { margin-top: 16px; text-align: center; font-size: 0.95rem; }
+        .password-input-wrap { position: relative; }
+        .password-input-wrap .form-control { padding-right: 44px; }
+        .password-toggle-btn {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            color: #6c757d;
+            padding: 0;
+            line-height: 1;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +72,12 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                     </div>
                     <div class="form-group mb-3">
                         <label>Password</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <div class="password-input-wrap">
+                            <input type="password" name="password" id="userLoginPassword" class="form-control" required>
+                            <button type="button" class="password-toggle-btn" id="toggleUserLoginPassword" aria-label="Show password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                         <div class="error-message"></div>
                     </div>
                     <div class="form-options mb-3">
@@ -78,7 +96,12 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                     </div>
                     <div class="form-group mb-3">
                         <label>Password</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <div class="password-input-wrap">
+                            <input type="password" name="password" id="companyLoginPassword" class="form-control" required>
+                            <button type="button" class="password-toggle-btn" id="toggleCompanyLoginPassword" aria-label="Show password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                         <div class="error-message"></div>
                     </div>
                     <div class="form-options mb-3">
@@ -115,6 +138,28 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         companyForms.style.display = 'block';
         userForms.style.display = 'none';
     });
+
+    const userPasswordInput = document.getElementById('userLoginPassword');
+    const toggleUserPasswordBtn = document.getElementById('toggleUserLoginPassword');
+    const companyPasswordInput = document.getElementById('companyLoginPassword');
+    const toggleCompanyPasswordBtn = document.getElementById('toggleCompanyLoginPassword');
+
+    function setupPasswordToggle(inputElement, toggleButton) {
+        if (inputElement && toggleButton) {
+            toggleButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const showPassword = inputElement.type === 'password';
+                inputElement.type = showPassword ? 'text' : 'password';
+                toggleButton.innerHTML = showPassword
+                    ? '<i class="bi bi-eye-slash"></i>'
+                    : '<i class="bi bi-eye"></i>';
+                toggleButton.setAttribute('aria-label', showPassword ? 'Hide password' : 'Show password');
+            });
+        }
+    }
+
+    setupPasswordToggle(userPasswordInput, toggleUserPasswordBtn);
+    setupPasswordToggle(companyPasswordInput, toggleCompanyPasswordBtn);
 </script>
 </body>
 </html>

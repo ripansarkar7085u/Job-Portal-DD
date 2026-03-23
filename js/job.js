@@ -7,15 +7,109 @@ document.addEventListener("DOMContentLoaded", function () {
 	const searchInput = document.getElementById("searchInput");
 	const locationFilter = document.getElementById("locationFilter");
 	const categoryFilter = document.getElementById("categoryFilter");
+	const noJobsMessage = document.getElementById("noJobsMessage");
 
 	const typeFilters = document.querySelectorAll(".typeFilter");
 	const expFilters = document.querySelectorAll(".expFilter");
 	const salaryFilters = document.querySelectorAll(".salaryFilter");
 
 	let allJobs = [];
+	let userSkills = [];
 	let filteredJobs = [];
+	let requestedCategory = "";
 	let currentPage = 1;
 	const perPage = 6;
+
+	async function resolveRequestedCategory() {
+		const params = new URLSearchParams(window.location.search);
+		const explicitCategory = (params.get("category") || "").trim();
+		if (explicitCategory) {
+			return explicitCategory;
+		}
+
+		const categoryId = (params.get("category_id") || "").trim();
+		if (!categoryId) {
+			return "";
+		}
+
+		try {
+			const response = await fetch("api/job_categories.php?limit=100", {
+				method: "GET",
+				credentials: "include",
+			});
+
+			if (!response.ok) {
+				return "";
+			}
+
+			const payload = await response.json();
+			const categories = Array.isArray(payload.categories) ? payload.categories : [];
+			const match = categories.find((item) => String(item.id) === categoryId);
+			return match ? String(match.category || "") : "";
+		} catch {
+			return "";
+		}
+	}
+
+	function parseDate(value) {
+		if (!value) return 0;
+		const ts = Date.parse(value);
+		return Number.isFinite(ts) ? ts : 0;
+	}
+
+	function normalizeSkills(skills) {
+		if (!Array.isArray(skills)) {
+			return [];
+		}
+		const map = new Map();
+		skills.forEach((skill) => {
+			const normalized = String(skill || "").trim().toLowerCase();
+			if (normalized.length >= 2) {
+				map.set(normalized, true);
+			}
+		});
+		return Array.from(map.keys());
+	}
+
+	function scoreJobBySkills(job, skills) {
+		if (!skills.length) {
+			return 0;
+		}
+
+		const haystack = [
+			job.title,
+			job.category,
+			job.description,
+			job.requirements,
+		]
+			.map((value) => String(value || "").toLowerCase())
+			.join(" ");
+
+		let score = 0;
+		skills.forEach((skill) => {
+			if (haystack.includes(skill)) {
+				score += 1;
+			}
+		});
+
+		return score;
+	}
+
+	function sortJobsBySkills(jobs, skills) {
+		const normalizedSkills = normalizeSkills(skills);
+		if (!normalizedSkills.length) {
+			return [...jobs].sort((a, b) => parseDate(b.created_at) - parseDate(a.created_at));
+		}
+
+		return [...jobs].sort((a, b) => {
+			const scoreA = scoreJobBySkills(a, normalizedSkills);
+			const scoreB = scoreJobBySkills(b, normalizedSkills);
+			if (scoreA !== scoreB) {
+				return scoreB - scoreA;
+			}
+			return parseDate(b.created_at) - parseDate(a.created_at);
+		});
+	}
 
 	function escapeHtml(value) {
 		return String(value || "")
@@ -247,6 +341,10 @@ document.addEventListener("DOMContentLoaded", function () {
 			job.style.display = "block";
 		});
 
+		if (noJobsMessage) {
+			noJobsMessage.style.display = filteredJobs.length === 0 ? "block" : "none";
+		}
+
 		updateJobCount(filteredJobs.length, jobs.length);
 		renderPagination();
 	}
@@ -277,6 +375,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (!Array.isArray(jobs) || jobs.length === 0) {
 			jobContainer.innerHTML = '<div class="col-12"><div class="alert alert-info mb-0">No jobs found.</div></div>';
 			filteredJobs = [];
+			if (noJobsMessage) {
+				noJobsMessage.style.display = "none";
+			}
 			updateJobCount(0, 0);
 			pagination.innerHTML = "";
 			return;
@@ -290,25 +391,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	async function loadJobs() {
 		try {
-			const response = await fetch("api/featured_jobs.php?limit=200", {
-				method: "GET",
-				credentials: "include",
-			});
+			requestedCategory = await resolveRequestedCategory();
 
-			if (!response.ok) {
+			const [jobsResponse, skillsResponse] = await Promise.all([
+				fetch("api/featured_jobs.php?limit=200", {
+					method: "GET",
+					credentials: "include",
+				}),
+				fetch("api/user_profile_skills.php", {
+					method: "GET",
+					credentials: "include",
+				}),
+			]);
+
+			if (!jobsResponse.ok) {
 				throw new Error("Unable to fetch jobs.");
 			}
 
-			const payload = await response.json();
+			const payload = await jobsResponse.json();
 			allJobs = Array.isArray(payload.jobs) ? payload.jobs : [];
+
+			if (skillsResponse.ok) {
+				const skillsPayload = await skillsResponse.json();
+				userSkills = Array.isArray(skillsPayload.skills) ? skillsPayload.skills : [];
+			}
+
+			allJobs = sortJobsBySkills(allJobs, userSkills);
 
 			buildSelectOptions(locationFilter, allJobs.map((job) => job.location || ""), "All Locations");
 			buildSelectOptions(categoryFilter, allJobs.map((job) => job.category || ""), "All Categories");
 
 			renderJobs(allJobs);
+
+			if (requestedCategory) {
+				const options = Array.from(categoryFilter.options);
+				const matchingOption = options.find((option) => option.value.toLowerCase() === requestedCategory.toLowerCase());
+				if (matchingOption) {
+					categoryFilter.value = matchingOption.value;
+				}
+				filterJobs();
+			}
 		} catch (error) {
 			jobContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger mb-0">Unable to load jobs right now. Please try again later.</div></div>';
 			filteredJobs = [];
+			if (noJobsMessage) {
+				noJobsMessage.style.display = "none";
+			}
 			updateJobCount(0, 0);
 			pagination.innerHTML = "";
 		}
