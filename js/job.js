@@ -390,56 +390,71 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function loadJobs() {
-		try {
-			requestedCategory = await resolveRequestedCategory();
+		   try {
+			   requestedCategory = await resolveRequestedCategory();
 
-			const [jobsResponse, skillsResponse] = await Promise.all([
-				fetch("api/featured_jobs.php?limit=200", {
-					method: "GET",
-					credentials: "include",
-				}),
-				fetch("api/user_profile_skills.php", {
-					method: "GET",
-					credentials: "include",
-				}),
-			]);
+			   const [jobsResponse, skillsResponse] = await Promise.all([
+				   fetch("api/featured_jobs.php?limit=200", {
+					   method: "GET",
+					   credentials: "include",
+				   }),
+				   fetch("api/user_profile_skills.php", {
+					   method: "GET",
+					   credentials: "include",
+				   }),
+			   ]);
 
-			if (!jobsResponse.ok) {
-				throw new Error("Unable to fetch jobs.");
-			}
+			   if (!jobsResponse.ok) {
+				   console.error("Jobs API error:", jobsResponse.status, jobsResponse.statusText);
+				   throw new Error("Unable to fetch jobs.");
+			   }
 
-			const payload = await jobsResponse.json();
-			allJobs = Array.isArray(payload.jobs) ? payload.jobs : [];
+			   let payload;
+			   try {
+				   payload = await jobsResponse.json();
+			   } catch (jsonErr) {
+				   console.error("Jobs API JSON error:", jsonErr);
+				   throw new Error("Invalid jobs API response.");
+			   }
+			   allJobs = Array.isArray(payload.jobs) ? payload.jobs : [];
 
-			if (skillsResponse.ok) {
-				const skillsPayload = await skillsResponse.json();
-				userSkills = Array.isArray(skillsPayload.skills) ? skillsPayload.skills : [];
-			}
+			   if (skillsResponse.ok) {
+				   try {
+					   const skillsPayload = await skillsResponse.json();
+					   userSkills = Array.isArray(skillsPayload.skills) ? skillsPayload.skills : [];
+				   } catch (jsonErr) {
+					   console.error("Skills API JSON error:", jsonErr);
+					   userSkills = [];
+				   }
+			   } else {
+				   console.error("Skills API error:", skillsResponse.status, skillsResponse.statusText);
+			   }
 
-			allJobs = sortJobsBySkills(allJobs, userSkills);
+			   allJobs = sortJobsBySkills(allJobs, userSkills);
 
-			buildSelectOptions(locationFilter, allJobs.map((job) => job.location || ""), "All Locations");
-			buildSelectOptions(categoryFilter, allJobs.map((job) => job.category || ""), "All Categories");
+			   buildSelectOptions(locationFilter, allJobs.map((job) => job.location || ""), "All Locations");
+			   buildSelectOptions(categoryFilter, allJobs.map((job) => job.category || ""), "All Categories");
 
-			renderJobs(allJobs);
+			   renderJobs(allJobs);
 
-			if (requestedCategory) {
-				const options = Array.from(categoryFilter.options);
-				const matchingOption = options.find((option) => option.value.toLowerCase() === requestedCategory.toLowerCase());
-				if (matchingOption) {
-					categoryFilter.value = matchingOption.value;
-				}
-				filterJobs();
-			}
-		} catch (error) {
-			jobContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger mb-0">Unable to load jobs right now. Please try again later.</div></div>';
-			filteredJobs = [];
-			if (noJobsMessage) {
-				noJobsMessage.style.display = "none";
-			}
-			updateJobCount(0, 0);
-			pagination.innerHTML = "";
-		}
+			   if (requestedCategory) {
+				   const options = Array.from(categoryFilter.options);
+				   const matchingOption = options.find((option) => option.value.toLowerCase() === requestedCategory.toLowerCase());
+				   if (matchingOption) {
+					   categoryFilter.value = matchingOption.value;
+				   }
+				   filterJobs();
+			   }
+		   } catch (error) {
+			   console.error("Job loading error:", error);
+			   jobContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger mb-0">Unable to load jobs right now. Please try again later.</div></div>';
+			   filteredJobs = [];
+			   if (noJobsMessage) {
+				   noJobsMessage.style.display = "none";
+			   }
+			   updateJobCount(0, 0);
+			   pagination.innerHTML = "";
+		   }
 	}
 
 	document.addEventListener("click", function (event) {
