@@ -57,19 +57,12 @@ if (session_status() == PHP_SESSION_NONE) {
                     <div class="col-md-3">
                         <select id="locationFilter" class="form-select">
                             <option value="">All Locations</option>
-                            <option value="Delhi">Delhi</option>
-                            <option value="Mumbai">Mumbai</option>
-                            <option value="Bangalore">Bangalore</option>
-                            <option value="Hyderabad">Hyderabad</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
                         <select id="categoryFilter" class="form-select">
                             <option value="">All Categories</option>
-                            <option value="IT">IT</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Healthcare">Healthcare</option>
                         </select>
                     </div>
 
@@ -85,18 +78,21 @@ if (session_status() == PHP_SESSION_NONE) {
 
                         <!-- Job Type -->
                         <h5>Job Type</h5>
-                        <input type="checkbox" class="typeFilter" value="Full Time"> Full Time <br>
-                        <input type="checkbox" class="typeFilter" value="Part Time"> Part Time <br>
-                        <input type="checkbox" class="typeFilter" value="Internship"> Internship <br>
-                        <input type="checkbox" class="typeFilter" value="Remote"> Remote
+                        <input type="checkbox" class="typeFilter" value="full-time"> Full Time <br>
+                        <input type="checkbox" class="typeFilter" value="part-time"> Part Time <br>
+                        <input type="checkbox" class="typeFilter" value="internship"> Internship <br>
+                        <input type="checkbox" class="typeFilter" value="contract"> Contract <br>
+                        <input type="checkbox" class="typeFilter" value="freelance"> Freelance
 
                         <hr>
 
                         <!-- Experience -->
                         <h5>Experience</h5>
-                        <input type="checkbox" class="expFilter" value="Fresher"> Fresher <br>
-                        <input type="checkbox" class="expFilter" value="1-3 Years"> 1-3 Years <br>
-                        <input type="checkbox" class="expFilter" value="3-5 Years"> 3-5 Years
+                        <input type="checkbox" class="expFilter" value="entry"> Entry Level <br>
+                        <input type="checkbox" class="expFilter" value="mid"> Mid Level <br>
+                        <input type="checkbox" class="expFilter" value="senior"> Senior Level <br>
+                        <input type="checkbox" class="expFilter" value="lead"> Lead / Manager <br>
+                        <input type="checkbox" class="expFilter" value="executive"> Executive
 
                         <hr>
 
@@ -117,46 +113,7 @@ if (session_status() == PHP_SESSION_NONE) {
                         <p id="jobCount">Showing jobs</p>
                     </div>
 
-                    <div class="row g-4" id="jobContainer">
-
-                        <!-- Job 1 -->
-                        <div class="col-md-6 job-item" data-title="Frontend Developer" data-location="Bangalore"
-                            data-category="IT" data-type="Full Time" data-exp="1-3 Years" data-salary="8"
-                            data-desc="Work on UI using React.">
-
-                            <div class="job-card p-3 shadow-sm rounded">
-                                <h5>Frontend Developer</h5>
-                                <small>Google</small>
-                                <p>📍 Bangalore</p>
-                                <p>💰 ₹8 LPA</p>
-
-                                <div class="d-flex justify-content-between">
-                                    <span class="badge bg-success">Full Time</span>
-                                    <a href="job-details.php">Get Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Job 2 -->
-                        <div class="col-md-6 job-item" data-title="Backend Developer" data-location="Hyderabad"
-                            data-category="IT" data-type="Remote" data-exp="3-5 Years" data-salary="10"
-                            data-desc="Build APIs using Node.js">
-
-                            <div class="job-card p-3 shadow-sm rounded">
-                                <h5>Backend Developer</h5>
-                                <small>Microsoft</small>
-                                <p>📍 Hyderabad</p>
-                                <p>💰 ₹10 LPA</p>
-
-                                <div class="d-flex justify-content-between">
-                                    <span class="badge bg-info">Remote</span>
-
-                                    <a href="job-details.php">Get Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <div class="row g-4" id="jobContainer"></div>
 
                     <!-- Pagination -->
                     <nav class="mt-4">
