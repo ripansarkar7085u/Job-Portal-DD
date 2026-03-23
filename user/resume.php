@@ -8,22 +8,30 @@ if (isset($_POST['upload'])) {
     $file = $_FILES['resume']['name'];
     $tmp = $_FILES['resume']['tmp_name'];
     $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    $size = $_FILES['resume']['size'];
+    $maxSize = 2 * 1024 * 1024; // 2MB
+    $allowedExt = 'pdf';
+    $uploadDir = dirname(__DIR__) . '/user_uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0700, true);
+    }
 
-    if ($ext == "pdf") {
-        $target_dir = "uploads/";
-        if (!is_dir($target_dir))
-            mkdir($target_dir, 0777, true);
-
-        $new_filename = time() . "_" . preg_replace("/[^a-zA-Z0-9.]/", "_", $file);
-
-        if (move_uploaded_file($tmp, $target_dir . $new_filename)) {
+    if ($ext !== $allowedExt) {
+        $upload_error = "Only PDF files are allowed!";
+    } elseif ($size > $maxSize) {
+        $upload_error = "File size exceeds 2MB limit.";
+    } else {
+        $random = bin2hex(random_bytes(8));
+        $safeName = 'resume_' . time() . '_' . $random . '.pdf';
+        $dest = $uploadDir . $safeName;
+        if (move_uploaded_file($tmp, $dest)) {
             $stmt = $conn->prepare("INSERT INTO user_resumes (file_name, display_name, status) VALUES (?, ?, 'Active')");
-            $stmt->bind_param("ss", $new_filename, $file);
+            $stmt->bind_param("ss", $safeName, $file);
             $stmt->execute();
             $upload_success = true;
+        } else {
+            $upload_error = "Failed to upload file. Try again.";
         }
-    } else {
-        $upload_error = "Only PDF files are allowed!";
     }
 }
 ?>

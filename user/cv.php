@@ -74,7 +74,7 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="uploads/<?php echo $row['file_name']; ?>" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
+                                    <a href="download_resume.php?id=<?php echo $row['id']; ?>" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
                                     
                                     <button onclick="confirmStatus(<?php echo $row['id']; ?>, '<?php echo ($row['status'] == 'Active') ? 'Deactive' : 'Active'; ?>')" 
                                             class="btn btn-sm <?php echo ($row['status'] == 'Active') ? 'btn-warning' : 'btn-success'; ?>">
