@@ -1,8 +1,10 @@
 <!-- sidebar.php -->
 <div class="sidebar">
-      <div class=image>
-        <img src= "../photos/job_logo.png" alt="CareerHunt" width="120">
-</div>
+    <div class="image">
+        <a href="../index.php">
+            <img src="../photos/job_logo.png" alt="CareerHunt" width="120">
+        </a>
+    </div>
 
     <div class="sidebar-menu">
         <a href="index.php" class="active"><i class="bi bi-house"></i> Dashboard</a>
