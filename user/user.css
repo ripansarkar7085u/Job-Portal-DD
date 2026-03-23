@@ -203,7 +203,7 @@
 
 /* Page content spacing */
 .content {
-    margin-left: 220px;
+    margin-left: 0px;
     /* same as sidebar width */
     padding: 30px;
     background: #eef7ff;
