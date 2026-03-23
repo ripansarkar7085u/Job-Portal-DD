@@ -22,6 +22,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <link rel="stylesheet" href="css\main.css">
 
     <link rel="stylesheet" href="css\companies.css">
+   
 
 
 

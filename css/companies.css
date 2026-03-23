@@ -11,7 +11,7 @@
     background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
     padding: 60px 0;
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 35px;
 }
 
 .page-header-content h1 {
@@ -26,25 +26,26 @@
     margin: 0;
 }
 
-ol{
+ol {
     justify-content: center;
 }
 
 .page-header .breadcrumb-item a {
-    
+
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
 }
 
-.breadcrumb-item.active{
+.breadcrumb-item.active {
     color: #fff;
 }
+
 .page-header .breadcrumb-item.active {
-    
+
     color: #ffffff;
 }
 
-.page-header .breadcrumb-item + .breadcrumb-item::before {
+.page-header .breadcrumb-item+.breadcrumb-item::before {
     color: rgba(255, 255, 255, 0.6);
 }
 
@@ -64,6 +65,7 @@ ol{
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    margin-bottom: 35px;
 }
 
 .company-search-box .search-field {
@@ -132,6 +134,7 @@ ol{
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 20px;
+    margin-bottom: 35px;
 }
 
 .filter-widget {
@@ -471,6 +474,7 @@ ol{
     margin-top: 40px;
     display: flex;
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 .pagination {
@@ -684,20 +688,20 @@ ol{
         margin-bottom: 30px;
         position: static;
     }
-    
+
     .page-header {
         padding: 40px 0;
     }
-    
+
     .page-header-content h1 {
         font-size: 28px;
     }
-    
+
     .newsletter-box {
         text-align: center;
         padding: 40px 30px;
     }
-    
+
     .newsletter-form {
         flex-direction: column;
         margin-top: 20px;
@@ -708,29 +712,29 @@ ol{
     .companies-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .results-header {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .company-search-box .row {
         gap: 15px;
     }
-    
+
     .companies-grid.list-view .company-card-v2 {
         flex-direction: column;
     }
-    
+
     .companies-grid.list-view .company-card-body {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .companies-grid.list-view .company-meta {
         flex-direction: column;
     }
-    
+
     .companies-grid.list-view .company-card-footer {
         width: 100%;
         border-left: none;
@@ -743,11 +747,11 @@ ol{
     .company-search-section {
         padding: 20px 0;
     }
-    
+
     .companies-section {
         padding: 40px 0;
     }
-    
+
     .view-toggle {
         display: none;
     }
