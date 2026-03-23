@@ -26,7 +26,7 @@
     font-size: 18px;
 }
 
-.sidebar a:hover,
+.sidebar-menu:hover,
 .sidebar a.active {
     background-color: #3a3a50;
     color: #fff;
