@@ -3,6 +3,8 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+$jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -153,24 +155,26 @@ if (session_status() == PHP_SESSION_NONE) {
                 <form id="applyForm">
                     <div class="modal-body">
 
+                        <input type="hidden" id="applyJobId" value="<?php echo $jobId; ?>">
+
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" id="applyFullName" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" required>
+                            <input type="email" id="applyEmail" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Upload CV</label>
-                            <input type="file" class="form-control" accept=".pdf,.doc,.docx" required>
+                            <input type="file" id="applyCv" class="form-control" accept=".pdf,.doc,.docx">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Cover Letter</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea id="applyCoverLetter" class="form-control" rows="3"></textarea>
                         </div>
 
                     </div>
@@ -188,13 +192,44 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <?php include("footer.php") ?>
     <script>
-        document.getElementById('applyForm').addEventListener('submit', function (e) {
+        document.getElementById('applyForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Simulate form submission
-            alert("Application submitted successfully!");
+            const jobId = Number(document.getElementById('applyJobId').value || 0);
+            if (!jobId) {
+                alert('This job is not available for application.');
+                return;
+            }
 
-            // Redirect to applied page
-            window.location.href = "user/applied.php";
+            const coverLetter = document.getElementById('applyCoverLetter').value.trim();
+
+            try {
+                const response = await fetch('api/user_apply_job.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        job_id: jobId,
+                        cover_letter: coverLetter
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    if (response.status === 401) {
+                        window.location.href = 'login.php';
+                        return;
+                    }
+                    alert(data.message || 'Unable to submit application.');
+                    return;
+                }
+
+                alert('Application submitted successfully!');
+                window.location.href = 'user/applied.php';
+            } catch (error) {
+                alert('Unable to connect to server. Please try again.');
+            }
         });
     </script>

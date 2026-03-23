@@ -4,8 +4,114 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/../api/_auth_common.php';
+require_once __DIR__ . '/../user/_user_common.php';
+
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || ($_SESSION['account_type'] ?? '') !== 'company' || !isset($_SESSION['company_id'])) {
+    header('Location: ../login.php');
+    exit();
+}
+
+auth_ensure_core_tables($conn);
+auth_ensure_jobs_table($conn);
+user_ensure_profiles_table($conn);
+user_ensure_applications_table($conn);
+
+$companyId = (int) $_SESSION['company_id'];
+
 // Get job filter if provided
-$jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
+$jobFilter = isset($_GET['job']) ? (int) $_GET['job'] : 0;
+
+$applications = [];
+$jobs = [];
+
+$jobsStmt = $conn->prepare('SELECT id, title FROM jobs WHERE company_id = ? ORDER BY created_at DESC');
+if ($jobsStmt) {
+    $jobsStmt->bind_param('i', $companyId);
+    $jobsStmt->execute();
+    $jobsResult = $jobsStmt->get_result();
+    while ($jobsResult && ($jobRow = $jobsResult->fetch_assoc())) {
+        $jobs[] = $jobRow;
+    }
+    $jobsStmt->close();
+}
+
+$sql = "SELECT a.id, a.user_id, a.job_id, a.status, a.applied_at, a.cover_letter,
+    j.title AS job_title,
+    u.full_name, u.email, u.phone,
+    p.job_title AS profile_job_title, p.experience AS profile_experience, p.location AS profile_location, p.profile_image
+    FROM user_job_applications a
+    INNER JOIN jobs j ON j.id = a.job_id
+    INNER JOIN users u ON u.id = a.user_id
+    LEFT JOIN profiles p ON p.user_id = u.id
+    WHERE j.company_id = ?";
+
+if ($jobFilter > 0) {
+    $sql .= ' AND a.job_id = ?';
+}
+
+$sql .= ' ORDER BY a.applied_at DESC';
+
+$stmt = $conn->prepare($sql);
+if ($stmt) {
+    if ($jobFilter > 0) {
+        $stmt->bind_param('ii', $companyId, $jobFilter);
+    } else {
+        $stmt->bind_param('i', $companyId);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($result && ($row = $result->fetch_assoc())) {
+        $applications[] = $row;
+    }
+    $stmt->close();
+}
+
+$counts = [
+    'all' => count($applications),
+    'new' => 0,
+    'reviewing' => 0,
+    'shortlisted' => 0,
+    'rejected' => 0,
+];
+
+foreach ($applications as $application) {
+    $status = strtolower((string) $application['status']);
+    if (isset($counts[$status])) {
+        $counts[$status]++;
+    }
+}
+
+function application_status_class(string $status): string
+{
+    $normalized = strtolower(trim($status));
+    if ($normalized === 'reviewing') {
+        return 'reviewing';
+    }
+    if ($normalized === 'shortlisted') {
+        return 'shortlisted';
+    }
+    if ($normalized === 'rejected') {
+        return 'rejected';
+    }
+    return 'new';
+}
+
+function application_status_label(string $status): string
+{
+    $normalized = strtolower(trim($status));
+    if ($normalized === 'reviewing') {
+        return 'In Review';
+    }
+    if ($normalized === 'shortlisted') {
+        return 'Shortlisted';
+    }
+    if ($normalized === 'rejected') {
+        return 'Rejected';
+    }
+    return 'New';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -122,10 +228,9 @@ $jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
                     <div class="header-actions">
                         <select class="form-control" id="jobFilter">
                             <option value="all">All Jobs</option>
-                            <option value="1">Senior Frontend Developer</option>
-                            <option value="2">UX Designer</option>
-                            <option value="3">Backend Developer</option>
-                            <option value="4">Product Manager</option>
+                            <?php foreach ($jobs as $job): ?>
+                                <option value="<?php echo (int) $job['id']; ?>" <?php echo ($jobFilter === (int) $job['id']) ? 'selected' : ''; ?>><?php echo user_esc((string) $job['title']); ?></option>
+                            <?php endforeach; ?>
                         </select>
                         <button class="btn btn-outline" id="exportBtn">
                             <i class="bi bi-download"></i> Export
@@ -136,30 +241,30 @@ $jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
                 <!-- Stats -->
                 <div class="application-stats">
                     <div class="stat-item">
-                        <span class="stat-number">156</span>
+                        <span class="stat-number"><?php echo (int) $counts['all']; ?></span>
                         <span class="stat-label">Total Applications</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">42</span>
-                        <span class="stat-label">New (This Week)</span>
+                        <span class="stat-number"><?php echo (int) $counts['new']; ?></span>
+                        <span class="stat-label">New</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">28</span>
+                        <span class="stat-number"><?php echo (int) $counts['reviewing']; ?></span>
                         <span class="stat-label">In Review</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">15</span>
+                        <span class="stat-number"><?php echo (int) $counts['shortlisted']; ?></span>
                         <span class="stat-label">Shortlisted</span>
                     </div>
                 </div>
 
                 <!-- Filter Tabs -->
                 <div class="tabs">
-                    <div class="tab active" data-filter="all">All (156)</div>
-                    <div class="tab" data-filter="new">New (42)</div>
-                    <div class="tab" data-filter="reviewing">In Review (28)</div>
-                    <div class="tab" data-filter="shortlisted">Shortlisted (15)</div>
-                    <div class="tab" data-filter="rejected">Rejected (71)</div>
+                    <div class="tab active" data-filter="all">All (<?php echo (int) $counts['all']; ?>)</div>
+                    <div class="tab" data-filter="new">New (<?php echo (int) $counts['new']; ?>)</div>
+                    <div class="tab" data-filter="reviewing">In Review (<?php echo (int) $counts['reviewing']; ?>)</div>
+                    <div class="tab" data-filter="shortlisted">Shortlisted (<?php echo (int) $counts['shortlisted']; ?>)</div>
+                    <div class="tab" data-filter="rejected">Rejected (<?php echo (int) $counts['rejected']; ?>)</div>
                 </div>
 
                 <!-- Applications Table -->
@@ -181,131 +286,54 @@ $jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
                                     </tr>
                                 </thead>
                                 <tbody id="applicationsTable">
-                                    <tr data-application-id="1" data-status="new">
-                                        <td><input type="checkbox" class="form-check-input row-select"></td>
-                                        <td>
-                                            <div class="applicant-info">
-                                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=0d47a1&color=fff" alt="John Doe">
-                                                <div>
-                                                    <span class="name">John Doe</span>
-                                                    <span class="email">john.doe@email.com</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Senior Frontend Developer</td>
-                                        <td>5 years</td>
-                                        <td>Mar 11, 2026</td>
-                                        <td><span class="status-badge new">New</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View Application"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn accept" title="Shortlist"><i class="bi bi-check-lg"></i></button>
-                                            <button class="action-btn delete" title="Reject"><i class="bi bi-x-lg"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-application-id="2" data-status="new">
-                                        <td><input type="checkbox" class="form-check-input row-select"></td>
-                                        <td>
-                                            <div class="applicant-info">
-                                                <img src="https://ui-avatars.com/api/?name=Sarah+Miller&background=e91e63&color=fff" alt="Sarah Miller">
-                                                <div>
-                                                    <span class="name">Sarah Miller</span>
-                                                    <span class="email">sarah.miller@email.com</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>UX Designer</td>
-                                        <td>3 years</td>
-                                        <td>Mar 10, 2026</td>
-                                        <td><span class="status-badge new">New</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View Application"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn accept" title="Shortlist"><i class="bi bi-check-lg"></i></button>
-                                            <button class="action-btn delete" title="Reject"><i class="bi bi-x-lg"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-application-id="3" data-status="reviewing">
-                                        <td><input type="checkbox" class="form-check-input row-select"></td>
-                                        <td>
-                                            <div class="applicant-info">
-                                                <img src="https://ui-avatars.com/api/?name=Michael+Chen&background=4caf50&color=fff" alt="Michael Chen">
-                                                <div>
-                                                    <span class="name">Michael Chen</span>
-                                                    <span class="email">m.chen@email.com</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Backend Developer</td>
-                                        <td>7 years</td>
-                                        <td>Mar 9, 2026</td>
-                                        <td><span class="status-badge reviewing">In Review</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View Application"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn accept" title="Shortlist"><i class="bi bi-check-lg"></i></button>
-                                            <button class="action-btn delete" title="Reject"><i class="bi bi-x-lg"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-application-id="4" data-status="shortlisted">
-                                        <td><input type="checkbox" class="form-check-input row-select"></td>
-                                        <td>
-                                            <div class="applicant-info">
-                                                <img src="https://ui-avatars.com/api/?name=Emily+Johnson&background=ff9800&color=fff" alt="Emily Johnson">
-                                                <div>
-                                                    <span class="name">Emily Johnson</span>
-                                                    <span class="email">emily.j@email.com</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Senior Frontend Developer</td>
-                                        <td>6 years</td>
-                                        <td>Mar 8, 2026</td>
-                                        <td><span class="status-badge shortlisted">Shortlisted</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View Application"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Schedule Interview"><i class="bi bi-calendar-check"></i></button>
-                                            <button class="action-btn delete" title="Reject"><i class="bi bi-x-lg"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-application-id="5" data-status="shortlisted">
-                                        <td><input type="checkbox" class="form-check-input row-select"></td>
-                                        <td>
-                                            <div class="applicant-info">
-                                                <img src="https://ui-avatars.com/api/?name=David+Wilson&background=9c27b0&color=fff" alt="David Wilson">
-                                                <div>
-                                                    <span class="name">David Wilson</span>
-                                                    <span class="email">d.wilson@email.com</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Product Manager</td>
-                                        <td>8 years</td>
-                                        <td>Mar 7, 2026</td>
-                                        <td><span class="status-badge shortlisted">Shortlisted</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View Application"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Schedule Interview"><i class="bi bi-calendar-check"></i></button>
-                                            <button class="action-btn delete" title="Reject"><i class="bi bi-x-lg"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr data-application-id="6" data-status="rejected">
-                                        <td><input type="checkbox" class="form-check-input row-select"></td>
-                                        <td>
-                                            <div class="applicant-info">
-                                                <img src="https://ui-avatars.com/api/?name=Alex+Brown&background=607d8b&color=fff" alt="Alex Brown">
-                                                <div>
-                                                    <span class="name">Alex Brown</span>
-                                                    <span class="email">alex.b@email.com</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Backend Developer</td>
-                                        <td>2 years</td>
-                                        <td>Mar 5, 2026</td>
-                                        <td><span class="status-badge rejected">Rejected</span></td>
-                                        <td>
-                                            <button class="action-btn view" title="View Application"><i class="bi bi-eye"></i></button>
-                                            <button class="action-btn edit" title="Reconsider"><i class="bi bi-arrow-counterclockwise"></i></button>
-                                        </td>
-                                    </tr>
+                                    <?php if (empty($applications)): ?>
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-4">No applications received yet.</td>
+                                        </tr>
+                                    <?php else: ?>
+                                        <?php foreach ($applications as $application): ?>
+                                            <?php
+                                                $status = strtolower((string) $application['status']);
+                                                $badgeClass = application_status_class($status);
+                                                $statusLabel = application_status_label($status);
+                                                $avatarName = (string) ($application['full_name'] ?: 'Candidate');
+                                                $avatarUrl = !empty($application['profile_image'])
+                                                    ? ((strpos((string) $application['profile_image'], 'http') === 0) ? (string) $application['profile_image'] : '../user/uploads/' . (string) $application['profile_image'])
+                                                    : 'https://ui-avatars.com/api/?name=' . urlencode($avatarName) . '&background=0d47a1&color=fff';
+                                            ?>
+                                            <tr data-application-id="<?php echo (int) $application['id']; ?>" data-status="<?php echo user_esc($badgeClass); ?>"
+                                                data-name="<?php echo user_esc((string) $application['full_name']); ?>"
+                                                data-email="<?php echo user_esc((string) $application['email']); ?>"
+                                                data-phone="<?php echo user_esc((string) ($application['phone'] ?? '')); ?>"
+                                                data-position="<?php echo user_esc((string) $application['job_title']); ?>"
+                                                data-experience="<?php echo user_esc((string) ($application['profile_experience'] ?: 'Not specified')); ?>"
+                                                data-date="<?php echo user_esc(date('F j, Y', strtotime((string) $application['applied_at']))); ?>"
+                                                data-status-label="<?php echo user_esc($statusLabel); ?>"
+                                                data-cover-letter="<?php echo user_esc((string) ($application['cover_letter'] ?: 'No cover letter provided.')); ?>"
+                                                data-photo="<?php echo user_esc($avatarUrl); ?>">
+                                                <td><input type="checkbox" class="form-check-input row-select"></td>
+                                                <td>
+                                                    <div class="applicant-info">
+                                                        <img src="<?php echo user_esc($avatarUrl); ?>" alt="<?php echo user_esc($avatarName); ?>">
+                                                        <div>
+                                                            <span class="name"><?php echo user_esc((string) $application['full_name']); ?></span>
+                                                            <span class="email"><?php echo user_esc((string) $application['email']); ?></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><?php echo user_esc((string) $application['job_title']); ?></td>
+                                                <td><?php echo user_esc((string) ($application['profile_experience'] ?: 'Not specified')); ?></td>
+                                                <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
+                                                <td><span class="status-badge <?php echo user_esc($badgeClass); ?>"><?php echo user_esc($statusLabel); ?></span></td>
+                                                <td>
+                                                    <button class="action-btn app-view" title="View Application"><i class="bi bi-eye"></i></button>
+                                                    <button class="action-btn app-review" title="Mark as Reviewing"><i class="bi bi-eye"></i></button>
+                                                    <button class="action-btn app-shortlist" title="Shortlist"><i class="bi bi-check-lg"></i></button>
+                                                    <button class="action-btn app-reject" title="Reject"><i class="bi bi-x-lg"></i></button>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -460,6 +488,16 @@ $jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
             });
         });
 
+        // Job filter change
+        document.getElementById('jobFilter').addEventListener('change', function() {
+            const value = this.value;
+            if (value === 'all') {
+                window.location.href = 'applications.php';
+                return;
+            }
+            window.location.href = `applications.php?job=${encodeURIComponent(value)}`;
+        });
+
         // Select all checkbox
         document.getElementById('selectAll').addEventListener('change', function() {
             const checkboxes = document.querySelectorAll('.row-select');
@@ -478,15 +516,81 @@ $jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
             document.getElementById('bulkActions').style.display = selected > 0 ? 'flex' : 'none';
         }
 
+        const modal = document.getElementById('applicationModal');
+        let activeApplicationId = 0;
+
+        function updateRowStatus(row, status) {
+            const badge = row.querySelector('.status-badge');
+            if (!badge) {
+                return;
+            }
+
+            const map = {
+                new: { label: 'New', className: 'new' },
+                applied: { label: 'New', className: 'new' },
+                reviewing: { label: 'In Review', className: 'reviewing' },
+                shortlisted: { label: 'Shortlisted', className: 'shortlisted' },
+                rejected: { label: 'Rejected', className: 'rejected' }
+            };
+
+            const item = map[status] || map.new;
+            row.dataset.status = status;
+            badge.className = `status-badge ${item.className}`;
+            badge.textContent = item.label;
+        }
+
+        async function updateApplicationStatus(applicationId, action, rowToUpdate) {
+            try {
+                const response = await fetch('../api/company_application_action.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ applicationId, action })
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    window.companyDashboard.showToast(data.message || 'Failed to update status', 'error');
+                    return false;
+                }
+
+                if (rowToUpdate && data.status) {
+                    updateRowStatus(rowToUpdate, data.status);
+                }
+
+                window.companyDashboard.showToast('Application status updated successfully.', 'success');
+                return true;
+            } catch (error) {
+                window.companyDashboard.showToast('Unable to connect to server', 'error');
+                return false;
+            }
+        }
+
         // View application modal
-        document.querySelectorAll('.action-btn.view').forEach(btn => {
+        document.querySelectorAll('.action-btn.app-view').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.getElementById('applicationModal').classList.add('active');
+                const row = this.closest('tr');
+                if (!row) {
+                    return;
+                }
+
+                activeApplicationId = Number(row.dataset.applicationId || 0);
+                document.getElementById('modalPhoto').src = row.dataset.photo || 'https://ui-avatars.com/api/?name=Candidate&background=0d47a1&color=fff&size=100';
+                document.getElementById('modalName').textContent = row.dataset.name || 'Candidate';
+                document.getElementById('modalEmail').textContent = row.dataset.email || '';
+                document.getElementById('modalPhone').textContent = row.dataset.phone || 'Phone not provided';
+                document.getElementById('modalPosition').textContent = row.dataset.position || 'N/A';
+                document.getElementById('modalExperience').textContent = row.dataset.experience || 'Not specified';
+                document.getElementById('modalDate').textContent = row.dataset.date || '';
+                document.getElementById('modalStatus').textContent = row.dataset.statusLabel || 'New';
+                document.getElementById('modalCoverLetter').textContent = row.dataset.coverLetter || 'No cover letter provided.';
+
+                modal.classList.add('active');
             });
         });
 
         document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('applicationModal').classList.remove('active');
+            modal.classList.remove('active');
         });
 
         document.getElementById('applicationModal').addEventListener('click', function(e) {
@@ -496,53 +600,101 @@ $jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
         });
 
         // Status change actions
-        document.querySelectorAll('.action-btn.accept').forEach(btn => {
-            btn.addEventListener('click', function() {
+        document.querySelectorAll('.action-btn.app-review').forEach(btn => {
+            btn.addEventListener('click', async function() {
                 const row = this.closest('tr');
-                row.querySelector('.status-badge').className = 'status-badge shortlisted';
-                row.querySelector('.status-badge').textContent = 'Shortlisted';
-                row.dataset.status = 'shortlisted';
-                window.companyDashboard.showToast('Application shortlisted!', 'success');
+                const applicationId = Number(row?.dataset.applicationId || 0);
+                if (!applicationId) {
+                    return;
+                }
+                await updateApplicationStatus(applicationId, 'review', row);
             });
         });
 
-        document.querySelectorAll('.action-btn.delete').forEach(btn => {
-            btn.addEventListener('click', function() {
+        document.querySelectorAll('.action-btn.app-shortlist').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const row = this.closest('tr');
+                const applicationId = Number(row?.dataset.applicationId || 0);
+                if (!applicationId) {
+                    return;
+                }
+                await updateApplicationStatus(applicationId, 'shortlist', row);
+            });
+        });
+
+        document.querySelectorAll('.action-btn.app-reject').forEach(btn => {
+            btn.addEventListener('click', async function() {
                 if (confirm('Are you sure you want to reject this application?')) {
                     const row = this.closest('tr');
-                    row.querySelector('.status-badge').className = 'status-badge rejected';
-                    row.querySelector('.status-badge').textContent = 'Rejected';
-                    row.dataset.status = 'rejected';
-                    window.companyDashboard.showToast('Application rejected', 'warning');
+                    const applicationId = Number(row?.dataset.applicationId || 0);
+                    if (!applicationId) {
+                        return;
+                    }
+                    await updateApplicationStatus(applicationId, 'reject', row);
                 }
             });
         });
 
+        document.getElementById('modalReview').addEventListener('click', async function() {
+            if (!activeApplicationId) {
+                return;
+            }
+            const row = document.querySelector(`tr[data-application-id="${activeApplicationId}"]`);
+            const ok = await updateApplicationStatus(activeApplicationId, 'review', row);
+            if (ok) {
+                modal.classList.remove('active');
+            }
+        });
+
+        document.getElementById('modalShortlist').addEventListener('click', async function() {
+            if (!activeApplicationId) {
+                return;
+            }
+            const row = document.querySelector(`tr[data-application-id="${activeApplicationId}"]`);
+            const ok = await updateApplicationStatus(activeApplicationId, 'shortlist', row);
+            if (ok) {
+                modal.classList.remove('active');
+            }
+        });
+
+        document.getElementById('modalReject').addEventListener('click', async function() {
+            if (!activeApplicationId) {
+                return;
+            }
+            const row = document.querySelector(`tr[data-application-id="${activeApplicationId}"]`);
+            const ok = await updateApplicationStatus(activeApplicationId, 'reject', row);
+            if (ok) {
+                modal.classList.remove('active');
+            }
+        });
+
         // Bulk actions
-        document.getElementById('bulkShortlist').addEventListener('click', function() {
+        document.getElementById('bulkShortlist').addEventListener('click', async function() {
             const selected = document.querySelectorAll('.row-select:checked');
-            selected.forEach(cb => {
+            for (const cb of selected) {
                 const row = cb.closest('tr');
-                row.querySelector('.status-badge').className = 'status-badge shortlisted';
-                row.querySelector('.status-badge').textContent = 'Shortlisted';
-                row.dataset.status = 'shortlisted';
+                const applicationId = Number(row?.dataset.applicationId || 0);
+                if (applicationId) {
+                    await updateApplicationStatus(applicationId, 'shortlist', row);
+                }
                 cb.checked = false;
-            });
+            }
             document.getElementById('selectAll').checked = false;
             updateBulkActions();
             window.companyDashboard.showToast(`${selected.length} applications shortlisted!`, 'success');
         });
 
-        document.getElementById('bulkReject').addEventListener('click', function() {
+        document.getElementById('bulkReject').addEventListener('click', async function() {
             if (confirm('Are you sure you want to reject the selected applications?')) {
                 const selected = document.querySelectorAll('.row-select:checked');
-                selected.forEach(cb => {
+                for (const cb of selected) {
                     const row = cb.closest('tr');
-                    row.querySelector('.status-badge').className = 'status-badge rejected';
-                    row.querySelector('.status-badge').textContent = 'Rejected';
-                    row.dataset.status = 'rejected';
+                    const applicationId = Number(row?.dataset.applicationId || 0);
+                    if (applicationId) {
+                        await updateApplicationStatus(applicationId, 'reject', row);
+                    }
                     cb.checked = false;
-                });
+                }
                 document.getElementById('selectAll').checked = false;
                 updateBulkActions();
                 window.companyDashboard.showToast(`${selected.length} applications rejected`, 'warning');

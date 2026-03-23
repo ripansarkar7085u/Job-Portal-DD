@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/_user_common.php';
 
+$userId = user_require_login();
 user_ensure_profiles_table($conn);
 
 // 2. Process Form Submission
@@ -34,13 +35,48 @@ if (isset($_POST['save_all'])) {
     $twitter     = trim((string) ($_POST['twitter'] ?? ''));
     $facebook    = trim((string) ($_POST['facebook'] ?? ''));
 
+    // Keep the current profile image if no new image was uploaded.
+    if ($photo_name === '_') {
+        $imageStmt = $conn->prepare('SELECT profile_image FROM profiles WHERE user_id = ? LIMIT 1');
+        if ($imageStmt) {
+            $imageStmt->bind_param('i', $userId);
+            $imageStmt->execute();
+            $imageResult = $imageStmt->get_result();
+            $existing = $imageResult ? $imageResult->fetch_assoc() : null;
+            if (!empty($existing['profile_image'])) {
+                $photo_name = (string) $existing['profile_image'];
+            } else {
+                $photo_name = '';
+            }
+            $imageStmt->close();
+        } else {
+            $photo_name = '';
+        }
+    }
+
     // 3. SQL Prepared Statement
-    $sql = "INSERT INTO profiles (full_name, job_title, phone, email, website, location, salary, experience, age, description, linkedin, github, twitter, facebook, profile_image) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO profiles (user_id, full_name, job_title, phone, email, website, location, salary, experience, age, description, linkedin, github, twitter, facebook, profile_image) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                full_name = VALUES(full_name),
+                job_title = VALUES(job_title),
+                phone = VALUES(phone),
+                email = VALUES(email),
+                website = VALUES(website),
+                location = VALUES(location),
+                salary = VALUES(salary),
+                experience = VALUES(experience),
+                age = VALUES(age),
+                description = VALUES(description),
+                linkedin = VALUES(linkedin),
+                github = VALUES(github),
+                twitter = VALUES(twitter),
+                facebook = VALUES(facebook),
+                profile_image = VALUES(profile_image)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssssssssss", 
-        $full_name, $job_title, $phone, $email, $website, $location, 
+    $stmt->bind_param("isssssssssssssss", 
+        $userId, $full_name, $job_title, $phone, $email, $website, $location, 
         $salary, $experience, $age, $description, $linkedin, $github, $twitter, $facebook, $photo_name
     );
 
