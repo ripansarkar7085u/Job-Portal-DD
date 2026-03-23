@@ -53,7 +53,7 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
                         <tr>
                             <th>CV Name</th>
                             <th>Date Uploaded</th>
-                            <th>Status</th>
+                            <th>Statu</th>
                             <th>Action</th>
                         </tr>
                     </thead>
