@@ -4,7 +4,6 @@ require_once __DIR__ . '/_user_common.php';
 $userId = user_require_login();
 user_ensure_profiles_table($conn);
 
-<<<<<<< Updated upstream
 // Fetch profile data for the logged-in user.
 $stmt = $conn->prepare('SELECT * FROM profiles WHERE user_id = ? LIMIT 1');
 $user_data = null;
@@ -15,16 +14,10 @@ if ($stmt) {
     $user_data = $result ? $result->fetch_assoc() : null;
     $stmt->close();
 }
-=======
-// 2. Fetch the latest profile data
-$result = $conn->query("SELECT * FROM profiles ORDER BY id DESC LIMIT 1");
-$user_data = $result ? $result->fetch_assoc() : null;
->>>>>>> Stashed changes
 
 // 3. Fallback if database is empty
 if (!$user_data) {
     $user_data = [
-<<<<<<< Updated upstream
         'full_name' => '',
         'job_title' => '',
         'phone' => '',
@@ -41,12 +34,6 @@ if (!$user_data) {
         'twitter' => '',
         'facebook' => '',
         'profile_image' => ''
-=======
-        'full_name' => '', 'job_title' => '', 'phone' => '', 'email' => '',
-        'website' => '', 'location' => '', 'salary' => '', 'experience' => '',
-        'age' => '', 'description' => '', 'linkedin' => '', 'github' => '',
-        'twitter' => '', 'facebook' => '', 'profile_image' => ''
->>>>>>> Stashed changes
     ];
 }
 
