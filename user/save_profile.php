@@ -1,15 +1,7 @@
 <?php
-// 1. Database Connection
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "job-portal";
+require_once __DIR__ . '/_user_common.php';
 
-$conn = new mysqli($host, $user, $pass, $db);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+user_ensure_profiles_table($conn);
 
 // 2. Process Form Submission
 if (isset($_POST['save_all'])) {
@@ -27,20 +19,20 @@ if (isset($_POST['save_all'])) {
     }
 
     // Capture POST data
-    $full_name   = $_POST['full_name'];
-    $job_title   = $_POST['job_title'];
-    $phone       = $_POST['phone'];
-    $email       = $_POST['email'];
-    $website     = $_POST['website'];
-    $location    = $_POST['location'];
-    $salary      = $_POST['salary'];
-    $experience  = $_POST['experience'];
-    $age         = $_POST['age'];
-    $description = $_POST['description'];
-    $linkedin    = $_POST['linkedin'];
-    $github      = $_POST['github'];
-    $twitter     = $_POST['twitter'];
-    $facebook    = $_POST['facebook'];
+    $full_name   = trim((string) ($_POST['full_name'] ?? ''));
+    $job_title   = trim((string) ($_POST['job_title'] ?? ''));
+    $phone       = trim((string) ($_POST['phone'] ?? ''));
+    $email       = trim((string) ($_POST['email'] ?? ''));
+    $website     = trim((string) ($_POST['website'] ?? ''));
+    $location    = trim((string) ($_POST['location'] ?? ''));
+    $salary      = trim((string) ($_POST['salary'] ?? ''));
+    $experience  = trim((string) ($_POST['experience'] ?? ''));
+    $age         = trim((string) ($_POST['age'] ?? ''));
+    $description = trim((string) ($_POST['description'] ?? ''));
+    $linkedin    = trim((string) ($_POST['linkedin'] ?? ''));
+    $github      = trim((string) ($_POST['github'] ?? ''));
+    $twitter     = trim((string) ($_POST['twitter'] ?? ''));
+    $facebook    = trim((string) ($_POST['facebook'] ?? ''));
 
     // 3. SQL Prepared Statement
     $sql = "INSERT INTO profiles (full_name, job_title, phone, email, website, location, salary, experience, age, description, linkedin, github, twitter, facebook, profile_image) 
@@ -62,4 +54,7 @@ if (isset($_POST['save_all'])) {
     $stmt->close();
     $conn->close();
 }
+
+header("Location: profile.php");
+exit();
 ?>

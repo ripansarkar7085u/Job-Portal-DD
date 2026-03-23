@@ -1,3 +1,71 @@
+<?php
+require_once __DIR__ . '/_user_common.php';
+
+$userId = user_require_login();
+user_ensure_applications_table($conn);
+user_ensure_messages_table($conn);
+user_ensure_alerts_table($conn);
+
+$stats = [
+    'applied_jobs' => 0,
+    'shortlisted' => 0,
+    'alerts' => 0,
+    'messages' => 0,
+];
+
+$stmtStats = $conn->prepare("SELECT
+    (SELECT COUNT(*) FROM user_job_applications WHERE user_id = ?) AS applied_jobs,
+    (SELECT COUNT(*) FROM user_job_applications WHERE user_id = ? AND LOWER(status) = 'shortlisted') AS shortlisted,
+    (SELECT COUNT(*) FROM user_alerts WHERE user_id = ? AND is_read = 0) AS alerts,
+    (SELECT COUNT(*) FROM user_messages WHERE user_id = ? AND sender_type = 'company' AND is_read = 0) AS messages");
+
+if ($stmtStats) {
+    $stmtStats->bind_param('iiii', $userId, $userId, $userId, $userId);
+    $stmtStats->execute();
+    $resultStats = $stmtStats->get_result();
+    $row = $resultStats ? $resultStats->fetch_assoc() : null;
+    if ($row) {
+        $stats = [
+            'applied_jobs' => (int) $row['applied_jobs'],
+            'shortlisted' => (int) $row['shortlisted'],
+            'alerts' => (int) $row['alerts'],
+            'messages' => (int) $row['messages'],
+        ];
+    }
+    $stmtStats->close();
+}
+
+$recentApplied = [];
+$stmtRecent = $conn->prepare("SELECT a.applied_at, a.status, j.id AS job_id, j.title, c.company_name
+    FROM user_job_applications a
+    INNER JOIN jobs j ON j.id = a.job_id
+    INNER JOIN companies c ON c.id = j.company_id
+    WHERE a.user_id = ?
+    ORDER BY a.applied_at DESC
+    LIMIT 5");
+
+if ($stmtRecent) {
+    $stmtRecent->bind_param('i', $userId);
+    $stmtRecent->execute();
+    $resultRecent = $stmtRecent->get_result();
+    while ($resultRecent && ($row = $resultRecent->fetch_assoc())) {
+        $recentApplied[] = $row;
+    }
+    $stmtRecent->close();
+}
+
+function dashboard_status_class(string $status): string
+{
+    $normalized = strtolower(trim($status));
+    if ($normalized === 'shortlisted') {
+        return 'status-active';
+    }
+    if (in_array($normalized, ['rejected', 'closed'], true)) {
+        return 'status-rejected';
+    }
+    return 'status-pending';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,28 +108,28 @@
             <div class="stat-card">
                 <div class="stat-icon blue"><i class="bi bi-briefcase"></i></div>
                 <div class="stat-info">
-                    <h4>12</h4>
+                    <h4><?php echo (int) $stats['applied_jobs']; ?></h4>
                     <p>Applied Jobs</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon orange"><i class="bi bi-star"></i></div>
                 <div class="stat-info">
-                    <h4>05</h4>
+                    <h4><?php echo (int) $stats['shortlisted']; ?></h4>
                     <p>Shortlisted</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon green"><i class="bi bi-bell"></i></div>
                 <div class="stat-info">
-                    <h4>08</h4>
+                    <h4><?php echo (int) $stats['alerts']; ?></h4>
                     <p>Job Alerts</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon purple"><i class="bi bi-chat-dots"></i></div>
                 <div class="stat-info">
-                    <h4>03</h4>
+                    <h4><?php echo (int) $stats['messages']; ?></h4>
                     <p>Messages</p>
                 </div>
             </div>
@@ -85,20 +153,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>UI/UX Designer</strong></td>
-                            <td>TechFlow Solutions</td>
-                            <td>Oct 24, 2023</td>
-                            <td><span class="badge status-pending">Pending</span></td>
-                            <td><button class="btn-action"><i class="bi bi-eye"></i></button></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Frontend Developer</strong></td>
-                            <td>Creative Agency</td>
-                            <td>Oct 20, 2023</td>
-                            <td><span class="badge status-active">Interview</span></td>
-                            <td><button class="btn-action"><i class="bi bi-eye"></i></button></td>
-                        </tr>
+                        <?php if (empty($recentApplied)): ?>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">No applications found for your account.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($recentApplied as $application): ?>
+                                <tr>
+                                    <td><strong><?php echo user_esc((string) $application['title']); ?></strong></td>
+                                    <td><?php echo user_esc((string) $application['company_name']); ?></td>
+                                    <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
+                                    <td><span class="badge <?php echo dashboard_status_class((string) $application['status']); ?>"><?php echo user_esc(ucfirst((string) $application['status'])); ?></span></td>
+                                    <td><a class="btn-action" href="../job-details.php?id=<?php echo (int) $application['job_id']; ?>"><i class="bi bi-eye"></i></a></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
