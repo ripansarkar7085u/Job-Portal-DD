@@ -28,7 +28,7 @@
             <h2>Change Password</h2>
 
             <div class="card mt-3 shadow-sm">
-                <div class="card-body w-50">
+                <div class="card-body w-100">
 
                     <form method="POST">
 
@@ -41,7 +41,7 @@
                         <input type="password" name="confirm_password" class="form-control mb-3"
                             placeholder="Confirm Password" required>
 
-                        <button class="btn btn-theme mt-2" name="update_password">
+                        <button class="btn btn-primary btn-theme mt-2" name="update_password">
                             Update Password
                         </button>
 
