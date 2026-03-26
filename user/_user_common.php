@@ -1,3 +1,20 @@
+function user_ensure_resumes_table(mysqli $conn): void
+{
+    static $initialized = false;
+    if ($initialized) {
+        return;
+    }
+    $sql = "CREATE TABLE IF NOT EXISTS user_resumes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT DEFAULT NULL,
+        file_name VARCHAR(255) NOT NULL,
+        display_name VARCHAR(255) NOT NULL,
+        status VARCHAR(20) NOT NULL DEFAULT 'Active',
+        upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    $conn->query($sql);
+    $initialized = true;
+}
 <?php
 
 require_once __DIR__ . '/../config/database.php';

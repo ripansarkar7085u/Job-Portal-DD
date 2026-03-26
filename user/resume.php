@@ -1,5 +1,6 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "job-portal");
+
+require_once __DIR__ . '/_user_common.php';
 
 $upload_success = false;
 $upload_error = "";
@@ -69,18 +70,7 @@ if (isset($_POST['upload'])) {
             Swal.fire({
                 title: 'Uploaded!',
                 text: 'Your resume has been saved.',
-                icon: 'success',
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => { window.location.href = 'cv.php'; });
+                icon: 'success'
+            });
         </script>
     <?php endif; ?>
-
-    <?php if ($upload_error != ""): ?>
-        <script>
-            Swal.fire('Error', '<?php echo $upload_error; ?>', 'error');
-        </script>
-    <?php endif; ?>
-</body>
-
-</html>
