@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 <?php
 require_once __DIR__ . '/_user_common.php';
 
@@ -90,15 +89,10 @@ function dashboard_status_class(string $status): string
 <!DOCTYPE html>
 <html lang="en">
 
-=======
-<!DOCTYPE html>
-<html lang="en">
->>>>>>> Stashed changes
 <head>
     <meta charset="UTF-8">
     <title>CareerHunt Dashboard</title>
     <link rel="stylesheet" href="user.css">
-<<<<<<< Updated upstream
     <link rel="stylesheet" href="user\css\index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -106,10 +100,6 @@ function dashboard_status_class(string $status): string
 
 </head>
 
-=======
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-</head>
->>>>>>> Stashed changes
 <body>
     <?php include 'sidebar.php'; ?>
 
@@ -122,19 +112,13 @@ function dashboard_status_class(string $status): string
                 <i class="bi bi-search"></i>
                 <i class="bi bi-bell"></i>
                 <div class="profile-box">
-<<<<<<< Updated upstream
                     <img src="<?php echo htmlspecialchars($profile_image_src); ?>" class="nav-profile"
                         style="object-fit:cover;width:40px;height:40px;">
                     <span><?php echo htmlspecialchars($profile_full_name); ?></span>
-=======
-                    <img src="https://i.pravatar.cc/40" class="nav-profile">
-                    <span>Candidate</span>
->>>>>>> Stashed changes
                 </div>
             </div>
         </nav>
 
-<<<<<<< Updated upstream
         <div class="container-fluid p-4">
             <!-- Welcome Section -->
             <div class="mb-4">
@@ -218,7 +202,38 @@ function dashboard_status_class(string $status): string
                 </div>
             </div>
         </div>
-=======
+    </div>
+
+    <script src="user.js"></script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CareerHunt Dashboard</title>
+    <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+    <?php include 'sidebar.php'; ?>
+
+    <div class="main-content">
+        <nav class="top-navbar">
+            <div class="nav-left">
+                <h5 class="mb-0">CareerHunt Dashboard</h5>
+            </div>
+            <div class="nav-right">
+                <i class="bi bi-search"></i>
+                <i class="bi bi-bell"></i>
+                <div class="profile-box">
+                    <img src="https://i.pravatar.cc/40" class="nav-profile">
+                    <span>Candidate</span>
+                </div>
+            </div>
+        </nav>
+
           <div class="container-fluid p-4">
         <!-- Welcome Section -->
         <div class="mb-4">
@@ -295,13 +310,8 @@ function dashboard_status_class(string $status): string
             </div>
         </div>
     </div>
->>>>>>> Stashed changes
     </div>
 
     <script src="user.js"></script>
 </body>
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 </html>
