@@ -97,9 +97,5 @@ auth_start_user_session([
 auth_json_response(201, [
     'success' => true,
     'message' => 'Registration successful.',
-<<<<<<< Updated upstream
     'redirect' => auth_path('user\index.php'),
-=======
-    'redirect' => auth_path('/user/dashboard.php'),
->>>>>>> Stashed changes
 ]);
