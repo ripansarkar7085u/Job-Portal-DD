@@ -34,7 +34,10 @@
 }
 
 .company-header-content {
+<<<<<<< Updated upstream
     padding: 109px 0px;
+=======
+>>>>>>> Stashed changes
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -608,11 +611,16 @@
         flex-direction: column;
         align-items: flex-start;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .company-actions {
         padding-top: 0;
         width: 100%;
     }
+<<<<<<< Updated upstream
 
     .company-info-text {
         padding-top: 20px;
@@ -626,6 +634,21 @@
         height: 200px;
     }
 
+=======
+    
+    .company-info-text {
+        padding-top: 20px;
+    }
+    
+    .company-title-wrapper h1 {
+        font-size: 26px;
+    }
+    
+    .company-cover {
+        height: 200px;
+    }
+    
+>>>>>>> Stashed changes
     .company-logo-large img {
         width: 100px;
         height: 100px;
@@ -638,6 +661,7 @@
         align-items: center;
         text-align: center;
     }
+<<<<<<< Updated upstream
 
     .company-quick-info {
         justify-content: center;
@@ -647,23 +671,46 @@
         justify-content: center;
     }
 
+=======
+    
+    .company-quick-info {
+        justify-content: center;
+    }
+    
+    .company-tags {
+        justify-content: center;
+    }
+    
+>>>>>>> Stashed changes
     .company-actions {
         justify-content: center;
         flex-wrap: wrap;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .job-listing-card {
         flex-direction: column;
         align-items: flex-start;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .job-listing-right {
         flex-direction: row;
         width: 100%;
         justify-content: space-between;
         align-items: center;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -673,22 +720,35 @@
     .company-cover {
         height: 150px;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .company-logo-large img {
         width: 80px;
         height: 80px;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .company-title-wrapper {
         flex-direction: column;
         gap: 8px;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .btn-primary-action,
     .btn-secondary-action {
         width: 100%;
         justify-content: center;
     }
+<<<<<<< Updated upstream
 
     .content-card {
         padding: 20px;
@@ -698,3 +758,14 @@
         padding: 20px;
     }
 }
+=======
+    
+    .content-card {
+        padding: 20px;
+    }
+    
+    .sidebar-card {
+        padding: 20px;
+    }
+}
+>>>>>>> Stashed changes

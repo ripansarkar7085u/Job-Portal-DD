@@ -2,7 +2,11 @@ const patterns = {
     fullName: /^[a-zA-Z\s.'-]{2,100}$/,
     companyName: /^.{2,255}$/,
     email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+<<<<<<< Updated upstream
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,128}$/,
+=======
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,128}$/,
+>>>>>>> Stashed changes
     phone: /^[0-9+\-\s()]{10,20}$/
 };
 
@@ -53,7 +57,10 @@ function showError(inputElement, message) {
         errorDiv.className = 'error-message';
         formGroup.appendChild(errorDiv);
     }
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
 
     errorDiv.textContent = message;
     inputElement.classList.add('is-invalid');
@@ -230,8 +237,11 @@ async function postAuth(endpoint, formData) {
     return data;
 }
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 async function handleUserLogin(event) {
     event.preventDefault();
 
@@ -404,9 +414,12 @@ async function handleCompanyLogin(event) {
 async function handleCompanyRegister(event) {
     event.preventDefault();
 
+<<<<<<< Updated upstream
     showAlert('Company self-registration is disabled. Please contact super admin for company credentials.', 'danger');
     return;
 
+=======
+>>>>>>> Stashed changes
     const form = event.currentTarget;
     const companyNameInput = form.querySelector('input[name="company_name"]');
     const emailInput = form.querySelector('input[name="email"]');
@@ -656,4 +669,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function logout() {
     window.location.href = apiUrl('logout.php');
+<<<<<<< Updated upstream
 }        
+=======
+}
+>>>>>>> Stashed changes

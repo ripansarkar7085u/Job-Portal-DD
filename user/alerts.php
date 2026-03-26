@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <?php
 require_once __DIR__ . '/_user_common.php';
 
@@ -22,6 +23,8 @@ if ($stmt) {
     $stmt->close();
 }
 ?>
+=======
+>>>>>>> Stashed changes
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,9 +32,15 @@ if ($stmt) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Alerts</title>
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="user.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+=======
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="user.css">
+>>>>>>> Stashed changes
 </head>
 
 <body>
@@ -40,7 +49,11 @@ if ($stmt) {
 
     <div class="main-content">
         <h2 class="mb-3">Job Alerts</h2>
+<<<<<<< Updated upstream
         <p><?php echo empty($alerts) ? 'No alerts available.' : 'Latest alerts for your account.'; ?></p>
+=======
+        <p>No alerts available.</p>
+>>>>>>> Stashed changes
 
         <div class="card p-3 shadow-sm border-0">
             <table class="table align-middle table-hover mb-0">
@@ -53,6 +66,7 @@ if ($stmt) {
                     </tr>
                 </thead>
                 <tbody>
+<<<<<<< Updated upstream
                     <?php if (empty($alerts)): ?>
                         <tr>
                             <td colspan="4" class="text-center text-muted py-4">No alerts found for your account.</td>
@@ -84,6 +98,48 @@ if ($stmt) {
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
+=======
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="job-logo bg-danger text-white">IN</div>
+                                <div>
+                                    <strong>Product Manager, Studio</strong><br>
+                                    <small class="text-muted">
+                                        <i class="bi bi-briefcase"></i> Segment
+                                        <i class="bi bi-geo-alt"></i> London, UK
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Dec 5, 2020</td>
+                        <td class="text-success fw-semibold">Active</td>
+                        <td>
+                            <button class="btn btn-light btn-sm"><i class="bi bi-eye"></i></button>
+                            <button class="btn btn-light btn-sm"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="job-logo bg-success text-white">UP</div>
+                                <div>
+                                    <strong>Senior Product Designer</strong><br>
+                                    <small class="text-muted">
+                                        <i class="bi bi-briefcase"></i> Segment
+                                        <i class="bi bi-geo-alt"></i> London, UK
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Dec 5, 2020</td>
+                        <td class="text-success fw-semibold">Active</td>
+                        <td>
+                            <button class="btn btn-light btn-sm"><i class="bi bi-eye"></i></button>
+                            <button class="btn btn-light btn-sm"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+>>>>>>> Stashed changes
                 </tbody>
             </table>
         </div>

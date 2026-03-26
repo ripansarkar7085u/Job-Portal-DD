@@ -720,6 +720,13 @@ color:white;
     color: #333;
 }
 
+<<<<<<< Updated upstream
+=======
+.container {
+    /* max-width: 0px;
+    margin: 0px; */
+}
+>>>>>>> Stashed changes
 
 .about-content {
     display: flex;
