@@ -30,21 +30,18 @@
             <div class="card mt-3 shadow-sm">
                 <div class="card-body w-100">
 
-                    <form method="POST">
 
+                    <form id="passwordForm" autocomplete="off">
+                        <div id="passwordMsg"></div>
                         <input type="password" name="current_password" class="form-control mb-3"
                             placeholder="Current Password" required>
-
                         <input type="password" name="new_password" class="form-control mb-3" placeholder="New Password"
                             required>
-
                         <input type="password" name="confirm_password" class="form-control mb-3"
                             placeholder="Confirm Password" required>
-
-                        <button class="btn btn-primary btn-theme mt-2" name="update_password">
+                        <button type="submit" class="btn btn-theme mt-2">
                             Update Password
                         </button>
-
                     </form>
 
                 </div>
@@ -54,6 +51,39 @@
 
     </div>
 
+
+<script src="user.js"></script>
+<script>
+// Password update AJAX
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('passwordForm');
+    const msgDiv = document.getElementById('passwordMsg');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            msgDiv.innerHTML = '';
+            const data = {
+                current_password: form.current_password.value,
+                new_password: form.new_password.value,
+                confirm_password: form.confirm_password.value
+            };
+            fetch('../api/user_update_password.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(res => {
+                msgDiv.innerHTML = `<div class='alert alert-${res.success ? 'success' : 'danger'}'>${res.message}</div>`;
+                if (res.success) form.reset();
+            })
+            .catch(() => {
+                msgDiv.innerHTML = `<div class='alert alert-danger'>An error occurred. Please try again.</div>`;
+            });
+        });
+    }
+});
+</script>
 </body>
 
 </html>

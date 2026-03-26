@@ -1,3 +1,54 @@
+// Create Company Logic
+
+document.addEventListener('DOMContentLoaded', function() {
+    const createCompanyBtn = document.getElementById('createCompanyBtn');
+    const createCompanyModal = document.getElementById('createCompanyModal');
+    const closeCreateCompanyModal = document.getElementById('closeCreateCompanyModal');
+    const cancelCreateCompany = document.getElementById('cancelCreateCompany');
+    const createCompanyForm = document.getElementById('createCompanyForm');
+    const createCompanyError = document.getElementById('createCompanyError');
+
+    if (createCompanyBtn && createCompanyModal) {
+        createCompanyBtn.onclick = () => { createCompanyModal.style.display = 'flex'; };
+    }
+    if (closeCreateCompanyModal) {
+        closeCreateCompanyModal.onclick = () => { createCompanyModal.style.display = 'none'; };
+    }
+    if (cancelCreateCompany) {
+        cancelCreateCompany.onclick = () => { createCompanyModal.style.display = 'none'; };
+    }
+    if (createCompanyForm) {
+        createCompanyForm.onsubmit = async function(e) {
+            e.preventDefault();
+            createCompanyError.textContent = '';
+            const company_name = document.getElementById('companyName').value.trim();
+            const company_email = document.getElementById('companyEmail').value.trim();
+            const company_password = document.getElementById('companyPassword').value;
+            if (!company_name || !company_email || !company_password) {
+                createCompanyError.textContent = 'All fields are required.';
+                return;
+            }
+            try {
+                const res = await fetch('../api/admin_create_company.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ company_name, company_email, company_password })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    createCompanyModal.style.display = 'none';
+                    showToast('Company created successfully', 'success');
+                    
+                } else {
+                    createCompanyError.textContent = data.message || 'Failed to create company.';
+                }
+            } catch (err) {
+                createCompanyError.textContent = 'Error: ' + err.message;
+            }
+        };
+    }
+});
+
 // Admin Authentication
 
 let currentAdmin = null;
@@ -137,88 +188,55 @@ function togglePasswordVisibility() {
 }
 
 
-// Sample Data (Development Only)
-const sampleUsers = [
-    { id: 1, name: "John Doe", email: "john@example.com", phone: "+1 234-567-8901", status: "active", joined: "2026-02-15", avatar: "https://ui-avatars.com/api/?name=John+Doe&background=0d47a1&color=fff" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "+1 234-567-8902", status: "active", joined: "2026-02-20", avatar: "https://ui-avatars.com/api/?name=Jane+Smith&background=22c55e&color=fff" },
-    { id: 3, name: "Mike Johnson", email: "mike@example.com", phone: "+1 234-567-8903", status: "blocked", joined: "2026-01-10", avatar: "https://ui-avatars.com/api/?name=Mike+Johnson&background=ff4b4b&color=fff" },
-    { id: 4, name: "Sarah Williams", email: "sarah@example.com", phone: "+1 234-567-8904", status: "active", joined: "2026-03-01", avatar: "https://ui-avatars.com/api/?name=Sarah+Williams&background=ff7a00&color=fff" },
-    { id: 5, name: "David Brown", email: "david@example.com", phone: "+1 234-567-8905", status: "active", joined: "2026-02-28", avatar: "https://ui-avatars.com/api/?name=David+Brown&background=1565c0&color=fff" },
-    { id: 6, name: "Emily Davis", email: "emily@example.com", phone: "+1 234-567-8906", status: "active", joined: "2026-03-02", avatar: "https://ui-avatars.com/api/?name=Emily+Davis&background=0a3d8f&color=fff" },
-    { id: 7, name: "Chris Wilson", email: "chris@example.com", phone: "+1 234-567-8907", status: "blocked", joined: "2026-01-25", avatar: "https://ui-avatars.com/api/?name=Chris+Wilson&background=e66a00&color=fff" },
-    { id: 8, name: "Lisa Anderson", email: "lisa@example.com", phone: "+1 234-567-8908", status: "active", joined: "2026-03-03", avatar: "https://ui-avatars.com/api/?name=Lisa+Anderson&background=14b8a6&color=fff" },
-];
-
-const sampleCompanies = [
-    { id: 1, name: "TechCorp Inc.", industry: "Technology", email: "hr@techcorp.com", jobsPosted: 15, status: "active", logo: "https://ui-avatars.com/api/?name=TC&background=0d47a1&color=fff&rounded=false" },
-    { id: 2, name: "FinanceHub", industry: "Finance", email: "careers@financehub.com", jobsPosted: 8, status: "active", logo: "https://ui-avatars.com/api/?name=FH&background=22c55e&color=fff&rounded=false" },
-    { id: 3, name: "HealthPlus", industry: "Healthcare", email: "jobs@healthplus.com", jobsPosted: 12, status: "blocked", logo: "https://ui-avatars.com/api/?name=HP&background=ff4b4b&color=fff&rounded=false" },
-    { id: 4, name: "EduLearn", industry: "Education", email: "hr@edulearn.com", jobsPosted: 5, status: "active", logo: "https://ui-avatars.com/api/?name=EL&background=ff7a00&color=fff&rounded=false" },
-    { id: 5, name: "RetailMax", industry: "Retail", email: "careers@retailmax.com", jobsPosted: 20, status: "active", logo: "https://ui-avatars.com/api/?name=RM&background=1565c0&color=fff&rounded=false" },
-    { id: 6, name: "BuildRight", industry: "Construction", email: "jobs@buildright.com", jobsPosted: 7, status: "active", logo: "https://ui-avatars.com/api/?name=BR&background=0a3d8f&color=fff&rounded=false" },
-];
-
-const sampleJobs = [
-    { id: 1, title: "Senior Software Engineer", company: "TechCorp Inc.", location: "New York, NY", type: "Full-time", posted: "2026-03-01", status: "active" },
-    { id: 2, title: "Financial Analyst", company: "FinanceHub", location: "Chicago, IL", type: "Full-time", posted: "2026-02-28", status: "active" },
-    { id: 3, title: "Registered Nurse", company: "HealthPlus", location: "Los Angeles, CA", type: "Part-time", posted: "2026-02-25", status: "expired" },
-    { id: 4, title: "Math Teacher", company: "EduLearn", location: "Boston, MA", type: "Full-time", posted: "2026-03-02", status: "active" },
-    { id: 5, title: "Store Manager", company: "RetailMax", location: "Miami, FL", type: "Full-time", posted: "2026-02-20", status: "active" },
-    { id: 6, title: "Project Manager", company: "BuildRight", location: "Seattle, WA", type: "Contract", posted: "2026-03-03", status: "active" },
-    { id: 7, title: "Frontend Developer", company: "TechCorp Inc.", location: "Remote", type: "Full-time", posted: "2026-02-15", status: "active" },
-    { id: 8, title: "HR Coordinator", company: "RetailMax", location: "Dallas, TX", type: "Full-time", posted: "2026-01-30", status: "expired" },
-    { id: 9, title: "Data Scientist", company: "TechCorp Inc.", location: "San Francisco, CA", type: "Full-time", posted: "2026-03-04", status: "active" },
-    { id: 10, title: "Marketing Manager", company: "FinanceHub", location: "New York, NY", type: "Full-time", posted: "2026-02-10", status: "active" },
-];
-
-
 // State Management
+let users = [];
+let companies = [];
+let jobs = [];
 
-let users = [...sampleUsers];
-let companies = [...sampleCompanies];
-let jobs = [...sampleJobs];
+// Fetch users from backend
+async function fetchUsers() {
+    try {
+        const res = await fetch('../api/admin_get_users.php');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.users)) {
+            users = data.users;
+        } else {
+            users = [];
+        }
+    } catch (err) {
+        users = [];
+    }
+}
 
-let currentUserPage = 1;
-let currentCompanyPage = 1;
-let currentJobPage = 1;
-const itemsPerPage = 5;
+// Fetch companies from backend
+async function fetchCompanies() {
+    try {
+        const res = await fetch('../api/admin_get_companies.php');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.companies)) {
+            companies = data.companies;
+        } else {
+            companies = [];
+        }
+    } catch (err) {
+        companies = [];
+    }
+}
 
-let pendingAction = null;
-
-// DOM Elements
-
-const sidebar = document.querySelector('.sidebar');
-const menuToggle = document.getElementById('menuToggle');
-const navItems = document.querySelectorAll('.nav-item');
-const contentSections = document.querySelectorAll('.content-section');
-const pageTitle = document.querySelector('.page-title');
-
-const modal = document.getElementById('confirmModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalMessage = document.getElementById('modalMessage');
-const modalConfirm = document.getElementById('modalConfirm');
-const modalCancel = document.getElementById('modalCancel');
-const modalClose = document.getElementById('modalClose');
-const modalOverlay = document.querySelector('.modal-overlay');
-
-const toast = document.getElementById('toast');
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Check admin session first
-    checkAdminSession();
-    
-    // Initialize login event listeners
-    initializeLoginListeners();
-    
-    // Initialize dashboard
-    updateDashboardStats();
-    renderRecentUsers();
-    renderRecentCompanies();
-    renderUsersTable();
-    renderCompaniesTable();
-    renderJobsTable();
-    initializeEventListeners();
-});
+// Fetch jobs from backend
+async function fetchJobs() {
+    try {
+        const res = await fetch('../api/admin_get_jobs.php');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.jobs)) {
+            jobs = data.jobs;
+        } else {
+            jobs = [];
+        }
+    } catch (err) {
+        jobs = [];
+    }
+}
 
 // Login Event Listeners
 function initializeLoginListeners() {

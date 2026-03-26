@@ -176,12 +176,87 @@ if (!empty($user_data['profile_image'])) {
                             value="<?php echo htmlspecialchars($user_data['facebook']); ?>">
                     </div>
                 </div>
-                <div class="mt-4">
+                <div class="mt-4 d-flex gap-2">
                     <button type="submit" name="save_all" class="btn btn-primary">Update Profile</button>
+                    <button type="button" id="deleteProfileBtn" class="btn btn-danger ms-2">Delete Profile</button>
                 </div>
             </div>
         </form>
-    </div>
+
+    <script src="user.js"></script>
+    <script>
+    // 2. Function to preview image
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('profilePhoto').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+        // 3. Trigger SweetAlert if status is success in URL
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Profile Updated!',
+                text: 'Your details have been saved to the database.',
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+            // Optional: Clean the URL so the alert doesn't show again on manual refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+    // Delete Profile logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const delBtn = document.getElementById('deleteProfileBtn');
+        if (delBtn) {
+            delBtn.addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will permanently delete your account and all data!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('../api/user_delete_profile.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                        })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted!',
+                                    text: res.message,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                setTimeout(() => {
+                                    window.location.href = '../login.php';
+                                }, 2000);
+                            } else {
+                                Swal.fire('Error', res.message, 'error');
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire('Error', 'Failed to delete profile.', 'error');
+                        });
+                    }
+                });
+            });
+        }
+    });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
