@@ -6,12 +6,32 @@ user_ensure_applications_table($conn);
 user_ensure_messages_table($conn);
 user_ensure_alerts_table($conn);
 
+
 $stats = [
     'applied_jobs' => 0,
     'shortlisted' => 0,
     'alerts' => 0,
     'messages' => 0,
 ];
+
+// Fetch user profile image
+$profile_image_src = 'https://ui-avatars.com/api/?name=User&background=0d47a1&color=fff';
+$stmtProfile = $conn->prepare('SELECT profile_image, full_name FROM profiles WHERE user_id = ? LIMIT 1');
+if ($stmtProfile) {
+    $stmtProfile->bind_param('i', $userId);
+    $stmtProfile->execute();
+    $resultProfile = $stmtProfile->get_result();
+    $profileData = $resultProfile ? $resultProfile->fetch_assoc() : null;
+    if ($profileData && !empty($profileData['profile_image'])) {
+        $profile_image_src = (strpos($profileData['profile_image'], 'http') !== false)
+            ? $profileData['profile_image']
+            : 'uploads/' . $profileData['profile_image'];
+    }
+    $profile_full_name = $profileData && !empty($profileData['full_name']) ? $profileData['full_name'] : 'Candidate';
+    $stmtProfile->close();
+} else {
+    $profile_full_name = 'Candidate';
+}
 
 $stmtStats = $conn->prepare("SELECT
     (SELECT COUNT(*) FROM user_job_applications WHERE user_id = ?) AS applied_jobs,
@@ -90,8 +110,8 @@ function dashboard_status_class(string $status): string
                 <i class="bi bi-search"></i>
                 <i class="bi bi-bell"></i>
                 <div class="profile-box">
-                    <img src="https://i.pravatar.cc/40" class="nav-profile">
-                    <span>Candidate</span>
+                    <img src="<?php echo htmlspecialchars($profile_image_src); ?>" class="nav-profile" style="object-fit:cover;width:40px;height:40px;">
+                    <span><?php echo htmlspecialchars($profile_full_name); ?></span>
                 </div>
             </div>
         </nav>
