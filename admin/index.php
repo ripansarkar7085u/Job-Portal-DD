@@ -289,6 +289,41 @@ if (session_status() == PHP_SESSION_NONE) {
                             <i class="bi bi-search"></i>
                             <input type="text" placeholder="Search companies..." id="companySearch">
                         </div>
+                        <button class="btn btn-primary" id="createCompanyBtn" style="margin-left: 1rem;">
+                            <i class="bi bi-plus-circle"></i> Create Company
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Create Company Modal -->
+                <div class="modal" id="createCompanyModal" style="display:none;">
+                    <div class="modal-overlay"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Create Company Account</h3>
+                            <button class="modal-close" id="closeCreateCompanyModal">&times;</button>
+                        </div>
+                        <form id="createCompanyForm">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="companyName">Company Name</label>
+                                    <input type="text" id="companyName" name="company_name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyEmail">Email</label>
+                                    <input type="email" id="companyEmail" name="company_email" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyPassword">Password</label>
+                                    <input type="text" id="companyPassword" name="company_password" class="form-control" required>
+                                </div>
+                                <div class="form-error" id="createCompanyError"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelCreateCompany">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 

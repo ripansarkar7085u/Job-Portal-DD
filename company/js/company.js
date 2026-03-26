@@ -1,3 +1,186 @@
+// =============================
+// Company Profile Update Logic
+// =============================
+document.addEventListener('DOMContentLoaded', function() {
+    // Profile form submit
+    const profileForm = document.getElementById('profileForm');
+    if (profileForm) {
+        profileForm.onsubmit = async function(e) {
+            e.preventDefault();
+            const data = {
+                company_name: document.getElementById('companyName').value,
+                industry: document.getElementById('industry').value,
+                company_size: document.getElementById('companySize').value,
+                founded: document.getElementById('founded').value,
+                tagline: document.getElementById('tagline').value,
+                description: document.getElementById('description').value,
+                website: document.getElementById('website').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                linkedin: document.querySelector('input[placeholder="LinkedIn URL"]').value,
+                twitter: document.querySelector('input[placeholder="Twitter/X URL"]').value,
+                facebook: document.querySelector('input[placeholder="Facebook URL"]').value,
+                instagram: document.querySelector('input[placeholder="Instagram URL"]').value,
+            };
+            try {
+                const res = await fetch('../api/company_update_profile.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Profile updated successfully', 'success');
+                    checkSession();
+                } else {
+                    showToast(result.message || 'Failed to update profile', 'error');
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        };
+    }
+
+    // Benefits CRUD
+    fetchBenefits();
+    const addBenefitForm = document.getElementById('addBenefitForm');
+    if (addBenefitForm) {
+        addBenefitForm.onsubmit = async function(e) {
+            e.preventDefault();
+            const input = document.getElementById('newBenefitInput');
+            const benefit = input.value.trim();
+            if (!benefit) return;
+            const res = await fetch('../api/company_benefits.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ benefit })
+            });
+            const data = await res.json();
+            if (data.success) {
+                input.value = '';
+                fetchBenefits();
+            } else {
+                showToast(data.message || 'Failed to add benefit', 'error');
+            }
+        };
+    }
+
+    // Photos CRUD
+    fetchPhotos();
+    const addPhotoForm = document.getElementById('addPhotoForm');
+    if (addPhotoForm) {
+        addPhotoForm.onsubmit = async function(e) {
+            e.preventDefault();
+            const input = document.getElementById('newPhotoUrl');
+            const url = input.value.trim();
+            if (!url) return;
+            const res = await fetch('../api/company_photos.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ url })
+            });
+            const data = await res.json();
+            if (data.success) {
+                input.value = '';
+                fetchPhotos();
+            } else {
+                showToast(data.message || 'Failed to add photo', 'error');
+            }
+        };
+    }
+});
+
+// Fetch and render company benefits
+async function fetchBenefits() {
+    const grid = document.getElementById('benefitsGrid');
+    if (!grid) return;
+    grid.innerHTML = '<span>Loading...</span>';
+    try {
+        const res = await fetch('../api/company_benefits.php', { credentials: 'include' });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.benefits)) {
+            if (data.benefits.length === 0) {
+                grid.innerHTML = '<span class="text-muted">No benefits added yet.</span>';
+            } else {
+                grid.innerHTML = '';
+                data.benefits.forEach(b => {
+                    const div = document.createElement('div');
+                    div.className = 'benefit-item';
+                    div.innerHTML = `<span>${b.benefit}</span> <button class="btn btn-sm btn-link text-danger" title="Delete" onclick="deleteBenefit(${b.id})"><i class='bi bi-x'></i></button>`;
+                    grid.appendChild(div);
+                });
+            }
+        } else {
+            grid.innerHTML = '<span class="text-danger">Failed to load benefits.</span>';
+        }
+    } catch {
+        grid.innerHTML = '<span class="text-danger">Failed to load benefits.</span>';
+    }
+}
+
+async function deleteBenefit(id) {
+    if (!confirm('Delete this benefit?')) return;
+    const res = await fetch('../api/company_benefits.php', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ id })
+    });
+    const data = await res.json();
+    if (data.success) {
+        fetchBenefits();
+    } else {
+        showToast(data.message || 'Failed to delete benefit', 'error');
+    }
+}
+
+// Fetch and render company photos
+async function fetchPhotos() {
+    const grid = document.getElementById('photosGrid');
+    if (!grid) return;
+    grid.innerHTML = '<span>Loading...</span>';
+    try {
+        const res = await fetch('../api/company_photos.php', { credentials: 'include' });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.photos)) {
+            if (data.photos.length === 0) {
+                grid.innerHTML = '<span class="text-muted">No photos uploaded yet.</span>';
+            } else {
+                grid.innerHTML = '';
+                data.photos.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'photo-item';
+                    div.innerHTML = `<img src="${p.url}" alt="Photo"><button class="photo-delete" title="Delete" onclick="deletePhoto(${p.id})"><i class='bi bi-x'></i></button>`;
+                    grid.appendChild(div);
+                });
+            }
+        } else {
+            grid.innerHTML = '<span class="text-danger">Failed to load photos.</span>';
+        }
+    } catch {
+        grid.innerHTML = '<span class="text-danger">Failed to load photos.</span>';
+    }
+}
+
+async function deletePhoto(id) {
+    if (!confirm('Delete this photo?')) return;
+    const res = await fetch('../api/company_photos.php', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ id })
+    });
+    const data = await res.json();
+    if (data.success) {
+        fetchPhotos();
+    } else {
+        showToast(data.message || 'Failed to delete photo', 'error');
+    }
+}
 
 
 // DOM Elements
@@ -65,30 +248,43 @@ async function checkSession() {
  
 function updateCompanyInfo(company) {
     companyData = { ...companyData, ...company };
-    
-    // Update sidebar
+
+    // Sidebar
     const companyNameDisplay = document.getElementById('companyNameDisplay');
     const companyAvatar = document.getElementById('companyAvatar');
-    
-    if (companyNameDisplay) {
-        companyNameDisplay.textContent = companyData.name;
-    }
-    
-    if (companyAvatar) {
-        companyAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.name)}&background=0d47a1&color=fff`;
-    }
-    
-    // Update header
+    if (companyNameDisplay) companyNameDisplay.textContent = companyData.company_name || companyData.name || '';
+    if (companyAvatar) companyAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff`;
+
+    // Header
     const headerCompanyName = document.getElementById('headerCompanyName');
     const headerAvatar = document.getElementById('headerAvatar');
-    
-    if (headerCompanyName) {
-        headerCompanyName.textContent = companyData.name;
-    }
-    
-    if (headerAvatar) {
-        headerAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.name)}&background=0d47a1&color=fff`;
-    }
+    if (headerCompanyName) headerCompanyName.textContent = companyData.company_name || companyData.name || '';
+    if (headerAvatar) headerAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff`;
+
+    // Profile Form
+    if (document.getElementById('companyName')) document.getElementById('companyName').value = companyData.company_name || '';
+    if (document.getElementById('industry')) document.getElementById('industry').value = companyData.industry || '';
+    if (document.getElementById('companySize')) document.getElementById('companySize').value = companyData.company_size || '';
+    if (document.getElementById('founded')) document.getElementById('founded').value = companyData.founded || '';
+    if (document.getElementById('tagline')) document.getElementById('tagline').value = companyData.tagline || '';
+    if (document.getElementById('description')) document.getElementById('description').value = companyData.description || '';
+    if (document.getElementById('website')) document.getElementById('website').value = companyData.website || '';
+    if (document.getElementById('email')) document.getElementById('email').value = companyData.email || '';
+    if (document.getElementById('phone')) document.getElementById('phone').value = companyData.phone || '';
+    if (document.getElementById('location')) document.getElementById('location').value = companyData.location || '';
+    if (document.querySelector('input[placeholder="LinkedIn URL"]')) document.querySelector('input[placeholder="LinkedIn URL"]').value = companyData.linkedin || '';
+    if (document.querySelector('input[placeholder="Twitter/X URL"]')) document.querySelector('input[placeholder="Twitter/X URL"]').value = companyData.twitter || '';
+    if (document.querySelector('input[placeholder="Facebook URL"]')) document.querySelector('input[placeholder="Facebook URL"]').value = companyData.facebook || '';
+    if (document.querySelector('input[placeholder="Instagram URL"]')) document.querySelector('input[placeholder="Instagram URL"]').value = companyData.instagram || '';
+    if (document.getElementById('logoPreview')) document.getElementById('logoPreview').src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff`;
+
+    // Profile Preview Card
+    if (document.getElementById('previewLogo')) document.getElementById('previewLogo').src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff&size=100`;
+    if (document.getElementById('previewCompanyName')) document.getElementById('previewCompanyName').textContent = companyData.company_name || '';
+    if (document.getElementById('previewTagline')) document.getElementById('previewTagline').textContent = companyData.tagline || '';
+    if (document.getElementById('previewLocation')) document.getElementById('previewLocation').textContent = companyData.location || '';
+    if (document.getElementById('previewIndustry')) document.getElementById('previewIndustry').textContent = companyData.industry || '';
+    if (document.getElementById('previewSize')) document.getElementById('previewSize').textContent = companyData.company_size || '';
 }
 
 
@@ -142,33 +338,19 @@ function handleNavigation() {
     });
 }
 
-// ===================================
-// Profile Dropdown
-// ===================================
 
-/**
- * Toggle profile dropdown
- */
+
 function toggleProfileDropdown() {
     profileDropdown.classList.toggle('show');
 }
 
-/**
- * Close profile dropdown when clicking outside
- */
+
 function closeProfileDropdown(event) {
     if (profileDropdown && !profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
         profileDropdown.classList.remove('show');
     }
 }
 
-// ===================================
-// Dashboard Functions
-// ===================================
-
-/**
- * Update dashboard statistics
- */
 function updateDashboardStats() {
     const totalJobsEl = document.getElementById('totalJobs');
     const activeJobsEl = document.getElementById('activeJobs');
@@ -183,9 +365,7 @@ function updateDashboardStats() {
     if (notificationCountEl) notificationCountEl.textContent = dashboardStats.newApplicationsToday;
 }
 
-/**
- * Fetch dashboard data from API
- */
+
 async function fetchDashboardData() {
     try {
         const response = await fetch('../api/company_dashboard.php', {
@@ -206,21 +386,12 @@ async function fetchDashboardData() {
     }
 }
 
-// ===================================
-// Utility Functions
-// ===================================
-
-/**
- * Format date to readable string
- */
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
 }
 
-/**
- * Format number with commas
- */
+
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

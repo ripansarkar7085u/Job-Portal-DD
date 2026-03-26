@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/database.php';
 // Start session
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

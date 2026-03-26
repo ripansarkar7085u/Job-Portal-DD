@@ -44,32 +44,26 @@ $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
             <div class="company-header-content">
                 <div class="company-info-main">
                     <div class="company-logo-large">
-                        <img src="https://ui-avatars.com/api/?name=Google&background=4285f4&color=fff&size=120&rounded=true"
-                            alt="Google">
+                        <img id="companyLogo" src="" alt="Company Logo">
                     </div>
                     <div class="company-info-text">
                         <div class="company-title-wrapper">
-                            <h1>Google Inc.</h1>
-                            <span class="verified-badge"><i class="bi bi-patch-check-fill"></i> Verified</span>
+                            <h1 id="companyName"></h1>
+                            <span class="verified-badge" id="companyVerified"><i class="bi bi-patch-check-fill"></i> Verified</span>
                         </div>
                         <div class="company-quick-info">
-                            <span><i class="bi bi-buildings"></i> Technology</span>
-                            <span><i class="bi bi-geo-alt"></i> Mountain View, CA</span>
-                            <span><i class="bi bi-calendar3"></i> Founded 1998</span>
-                            <span><i class="bi bi-people"></i> 10,000+ employees</span>
+                            <span><i class="bi bi-buildings"></i> <span id="companyIndustry"></span></span>
+                            <span><i class="bi bi-geo-alt"></i> <span id="companyLocation"></span></span>
+                            <span><i class="bi bi-calendar3"></i> Founded <span id="companyFounded"></span></span>
+                            <span><i class="bi bi-people"></i> <span id="companySize"></span></span>
                         </div>
-                        <div class="company-tags">
-                            <span class="tag">Software Development</span>
-                            <span class="tag">AI & Machine Learning</span>
-                            <span class="tag">Cloud Computing</span>
-                            <span class="tag">Search Engine</span>
-                        </div>
+                        <div class="company-tags" id="companyTags"></div>
                     </div>
                 </div>
                 <div class="company-actions">
                     <a href="#open-positions" class="btn-primary-action">
                         <i class="bi bi-briefcase"></i> View Open Jobs
-                        <span class="job-count">25</span>
+                        <span class="job-count" id="openJobsCount"></span>
                     </a>
                     <button class="btn-secondary-action">
                         <i class="bi bi-bookmark"></i> Save Company
@@ -86,140 +80,22 @@ $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
                     <!-- About Section -->
                     <div class="content-card">
                         <h3 class="card-title">About Company</h3>
-                        <div class="about-content">
-                            <p>Google LLC is an American multinational technology company focusing on search engine
-                                technology, online advertising, cloud computing, computer software, quantum computing,
-                                e-commerce, artificial intelligence, and consumer electronics.</p>
-                            <p>It has been referred to as "the most powerful company in the world" and one of the
-                                world's most valuable brands due to its market dominance, data collection, and
-                                technological advantages in the area of artificial intelligence.</p>
-                            <p>Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were
-                                PhD students at Stanford University in California. Together they own about 14% of its
-                                publicly listed shares and control 56% of the stockholder voting power through
-                                super-voting stock.</p>
-                            <h5>Our Mission</h5>
-                            <p>To organize the world's information and make it universally accessible and useful.</p>
-                            <h5>Our Culture</h5>
-                            <p>We strive to create an environment where every employee feels empowered to share their
-                                ideas and collaborate across teams. Innovation is at the heart of everything we do, and
-                                we believe diverse perspectives lead to better solutions.</p>
-                        </div>
+                        <div class="about-content" id="aboutContent"></div>
                     </div>
 
                     <!-- Gallery Section -->
                     <div class="content-card">
                         <h3 class="card-title">Company Gallery</h3>
-                        <div class="gallery-grid">
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop"
-                                    alt="Office">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1497215842964-222b430dc094?w=400&h=300&fit=crop"
-                                    alt="Workspace">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop"
-                                    alt="Team">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?w=400&h=300&fit=crop"
-                                    alt="Meeting">
-                            </div>
-                        </div>
+                        <div class="gallery-grid" id="companyGallery"></div>
                     </div>
 
                     <!-- Open Positions Section -->
                     <div class="content-card" id="open-positions">
                         <div class="card-header-flex">
-                            <h3 class="card-title">Open Positions <span class="count-badge">25</span></h3>
-                            <a href="jobs.php?company=google" class="view-all-link">View All Jobs <i
-                                    class="bi bi-arrow-right"></i></a>
+                            <h3 class="card-title">Open Positions <span class="count-badge" id="openJobsCount2"></span></h3>
+                            <a href="#" id="viewAllJobsLink" class="view-all-link">View All Jobs <i class="bi bi-arrow-right"></i></a>
                         </div>
-
-                        <!-- Job Listing 1 -->
-                        <div class="job-listing-card">
-                            <div class="job-listing-left">
-                                <h4 class="job-title">Senior Software Engineer</h4>
-                                <div class="job-meta">
-                                    <span><i class="bi bi-geo-alt"></i> Mountain View, CA</span>
-                                    <span><i class="bi bi-clock"></i> Full-time</span>
-                                    <span><i class="bi bi-currency-dollar"></i> $180k - $250k</span>
-                                </div>
-                                <div class="job-tags">
-                                    <span>Python</span>
-                                    <span>Go</span>
-                                    <span>Kubernetes</span>
-                                </div>
-                            </div>
-                            <div class="job-listing-right">
-                                <span class="posted-time"><i class="bi bi-clock-history"></i> 2 days ago</span>
-                                <a href="job-detail.php" class="apply-btn">Apply Now</a>
-                            </div>
-                        </div>
-
-                        <!-- Job Listing 2 -->
-                        <div class="job-listing-card">
-                            <div class="job-listing-left">
-                                <h4 class="job-title">Product Manager - Cloud</h4>
-                                <div class="job-meta">
-                                    <span><i class="bi bi-geo-alt"></i> New York, NY</span>
-                                    <span><i class="bi bi-clock"></i> Full-time</span>
-                                    <span><i class="bi bi-currency-dollar"></i> $160k - $220k</span>
-                                </div>
-                                <div class="job-tags">
-                                    <span>Product Strategy</span>
-                                    <span>Cloud</span>
-                                    <span>Agile</span>
-                                </div>
-                            </div>
-                            <div class="job-listing-right">
-                                <span class="posted-time"><i class="bi bi-clock-history"></i> 3 days ago</span>
-                                <a href="job-detail.php" class="apply-btn">Apply Now</a>
-                            </div>
-                        </div>
-
-                        <!-- Job Listing 3 -->
-                        <div class="job-listing-card">
-                            <div class="job-listing-left">
-                                <h4 class="job-title">UX Designer</h4>
-                                <div class="job-meta">
-                                    <span><i class="bi bi-geo-alt"></i> San Francisco, CA</span>
-                                    <span><i class="bi bi-clock"></i> Full-time</span>
-                                    <span><i class="bi bi-currency-dollar"></i> $130k - $180k</span>
-                                </div>
-                                <div class="job-tags">
-                                    <span>Figma</span>
-                                    <span>User Research</span>
-                                    <span>Prototyping</span>
-                                </div>
-                            </div>
-                            <div class="job-listing-right">
-                                <span class="posted-time"><i class="bi bi-clock-history"></i> 5 days ago</span>
-                                <a href="job-detail.php" class="apply-btn">Apply Now</a>
-                            </div>
-                        </div>
-
-                        <!-- Job Listing 4 -->
-                        <div class="job-listing-card">
-                            <div class="job-listing-left">
-                                <h4 class="job-title">Data Scientist - AI Research</h4>
-                                <div class="job-meta">
-                                    <span><i class="bi bi-geo-alt"></i> Remote</span>
-                                    <span><i class="bi bi-clock"></i> Full-time</span>
-                                    <span><i class="bi bi-currency-dollar"></i> $200k - $280k</span>
-                                </div>
-                                <div class="job-tags">
-                                    <span>Machine Learning</span>
-                                    <span>TensorFlow</span>
-                                    <span>PyTorch</span>
-                                </div>
-                            </div>
-                            <div class="job-listing-right">
-                                <span class="posted-time"><i class="bi bi-clock-history"></i> 1 week ago</span>
-                                <a href="job-detail.php" class="apply-btn">Apply Now</a>
-                            </div>
-                        </div>
+                        <div id="jobsList"></div>
                     </div>
                 </div>
 
@@ -403,6 +279,112 @@ $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/auth.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const companyId = urlParams.get('id') || 1;
+        fetch(`api/company_public_profile.php?id=${companyId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success) {
+                    document.body.innerHTML = `<div class='container mt-5'><div class='alert alert-danger'>${data.message || 'Company not found.'}</div></div>`;
+                    return;
+                }
+                const c = data.company;
+                // Main header
+                document.getElementById('companyLogo').src = c.logo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(c.company_name || 'Company');
+                document.getElementById('companyLogo').alt = c.company_name || 'Company Logo';
+                document.getElementById('companyName').textContent = c.company_name || '';
+                document.getElementById('companyIndustry').textContent = c.industry || '';
+                document.getElementById('companyLocation').textContent = c.location || '';
+                document.getElementById('companyFounded').textContent = c.founded || '';
+                document.getElementById('companySize').textContent = c.company_size || '';
+                // Tags
+                const tagsDiv = document.getElementById('companyTags');
+                tagsDiv.innerHTML = '';
+                if (c.tags && Array.isArray(c.tags)) {
+                    c.tags.forEach(tag => {
+                        const span = document.createElement('span');
+                        span.className = 'tag';
+                        span.textContent = tag;
+                        tagsDiv.appendChild(span);
+                    });
+                } else if (c.tags) {
+                    c.tags.split(',').forEach(tag => {
+                        const span = document.createElement('span');
+                        span.className = 'tag';
+                        span.textContent = tag.trim();
+                        tagsDiv.appendChild(span);
+                    });
+                }
+                // About
+                document.getElementById('aboutContent').innerHTML = c.description ? `<p>${c.description.replace(/\n/g, '</p><p>')}</p>` : '<span class="text-muted">No description provided.</span>';
+                // Gallery
+                const gallery = document.getElementById('companyGallery');
+                gallery.innerHTML = '';
+                if (c.photos && c.photos.length) {
+                    c.photos.forEach(url => {
+                        const div = document.createElement('div');
+                        div.className = 'gallery-item';
+                        div.innerHTML = `<img src="${url}" alt="Photo">`;
+                        gallery.appendChild(div);
+                    });
+                } else {
+                    gallery.innerHTML = '<span class="text-muted">No photos uploaded yet.</span>';
+                }
+                // Open Jobs
+                document.getElementById('openJobsCount').textContent = c.jobs ? c.jobs.length : 0;
+                document.getElementById('openJobsCount2').textContent = c.jobs ? c.jobs.length : 0;
+                const jobsList = document.getElementById('jobsList');
+                jobsList.innerHTML = '';
+                if (c.jobs && c.jobs.length) {
+                    c.jobs.forEach(job => {
+                        const div = document.createElement('div');
+                        div.className = 'job-listing-card';
+                        div.innerHTML = `
+                            <div class='job-listing-left'>
+                                <h4 class='job-title'>${job.title}</h4>
+                                <div class='job-meta'>
+                                    <span><i class='bi bi-geo-alt'></i> ${job.location || ''}</span>
+                                    <span><i class='bi bi-clock'></i> ${job.type || ''}</span>
+                                    <span><i class='bi bi-currency-dollar'></i> ${job.salary || ''}</span>
+                                </div>
+                                <div class='job-tags'>${(job.tags||[]).map(t => `<span>${t}</span>`).join('')}</div>
+                            </div>
+                            <div class='job-listing-right'>
+                                <span class='posted-time'><i class='bi bi-clock-history'></i> ${job.posted_at ? timeAgo(job.posted_at) : ''}</span>
+                                <a href='job-details.php?id=${job.id}' class='apply-btn'>Apply Now</a>
+                            </div>
+                        `;
+                        jobsList.appendChild(div);
+                    });
+                } else {
+                    jobsList.innerHTML = '<span class="text-muted">No open positions.</span>';
+                }
+                // View all jobs link
+                document.getElementById('viewAllJobsLink').href = `jobs.php?company=${encodeURIComponent(c.company_name || '')}`;
+            });
+
+        // Helper: time ago
+        function timeAgo(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            let interval = Math.floor(seconds / 31536000);
+            if (interval >= 1) return interval + ' year' + (interval > 1 ? 's' : '') + ' ago';
+            interval = Math.floor(seconds / 2592000);
+            if (interval >= 1) return interval + ' month' + (interval > 1 ? 's' : '') + ' ago';
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) return interval + ' day' + (interval > 1 ? 's' : '') + ' ago';
+            interval = Math.floor(seconds / 3600);
+            if (interval >= 1) return interval + ' hour' + (interval > 1 ? 's' : '') + ' ago';
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) return interval + ' minute' + (interval > 1 ? 's' : '') + ' ago';
+            return 'just now';
+        }
+    });
+    </script>
 </body>
 
 </html>
