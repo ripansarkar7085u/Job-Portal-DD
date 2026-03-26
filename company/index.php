@@ -1,5 +1,8 @@
 <?php
+<<<<<<< Updated upstream
 require_once __DIR__ . '/../config/database.php';
+=======
+>>>>>>> Stashed changes
 // Start session
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -20,6 +23,7 @@ if (!isset($_SESSION['account_type']) || $_SESSION['account_type'] !== 'company'
 // Get company info from session
 $companyName = $_SESSION['company_name'] ?? 'Company';
 $companyEmail = $_SESSION['company_email'] ?? '';
+<<<<<<< Updated upstream
 
 // Fetch recent applicants 
 $recentApplications = [];
@@ -44,6 +48,8 @@ if ($companyId) {
         $stmt->close();
     }
 }
+=======
+>>>>>>> Stashed changes
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +68,11 @@ if ($companyId) {
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="../index.php" class="logo">
+<<<<<<< Updated upstream
                     <img src="..\photos\job_logo.png" alt="CareerHunt">
+=======
+                    <img src="../photos/job logo.png" alt="CareerHunt">
+>>>>>>> Stashed changes
                 </a>
                 <span class="company-badge">Company</span>
             </div>
@@ -229,6 +239,7 @@ if ($companyId) {
                                         </tr>
                                     </thead>
                                     <tbody id="recentApplicationsTable">
+<<<<<<< Updated upstream
                                         <?php if (empty($recentApplications)): ?>
                                             <tr><td colspan="5" class="text-center text-muted">No recent applicants found.</td></tr>
                                         <?php else: ?>
@@ -252,6 +263,25 @@ if ($companyId) {
                                                 </tr>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
+=======
+                                        <tr>
+                                            <td>
+                                                <div class="applicant-info">
+                                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=0d47a1&color=fff" alt="John Doe">
+                                                    <div>
+                                                        <span class="name">John Doe</span>
+                                                        <span class="email">john.doe@email.com</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Senior Frontend Developer</td>
+                                            <td>Mar 11, 2026</td>
+                                            <td><span class="status-badge pending">Pending</span></td>
+                                            <td>
+                                                <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
+                                            </td>
+                                        </tr>
+>>>>>>> Stashed changes
                                     </tbody>
                                 </table>
                             </div>
@@ -266,6 +296,10 @@ if ($companyId) {
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<<<<<<< Updated upstream
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
+=======
+    <script src="js/company.js"></script>
+>>>>>>> Stashed changes
 </body>
 </html>

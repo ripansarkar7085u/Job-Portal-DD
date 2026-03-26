@@ -6,11 +6,14 @@ auth_set_security_headers();
 auth_require_post();
 auth_ensure_core_tables($conn);
 
+<<<<<<< Updated upstream
 auth_json_response(403, [
     'success' => false,
     'message' => 'Company self-registration is disabled. Please contact super admin for company credentials.',
 ]);
 
+=======
+>>>>>>> Stashed changes
 if (!auth_validate_same_origin()) {
     auth_json_response(403, ['success' => false, 'message' => 'Request origin is not allowed.']);
 }

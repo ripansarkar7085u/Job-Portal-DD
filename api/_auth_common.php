@@ -287,6 +287,7 @@ function auth_ensure_core_tables(mysqli $conn): void
     $initialized = true;
 }
 
+<<<<<<< Updated upstream
 function auth_ensure_jobs_table(mysqli $conn): void
 {
     static $initialized = false;
@@ -322,6 +323,8 @@ function auth_ensure_jobs_table(mysqli $conn): void
     $initialized = true;
 }
 
+=======
+>>>>>>> Stashed changes
 function auth_rate_limit_check(mysqli $conn, string $scope, string $key, int $maxAttempts = 6, int $windowSeconds = 900, int $blockSeconds = 900): bool
 {
     auth_ensure_rate_limit_table($conn);

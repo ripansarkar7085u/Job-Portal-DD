@@ -20,7 +20,11 @@ if (session_status() == PHP_SESSION_NONE) {
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="../index.php" class="logo">
+<<<<<<< Updated upstream
                    <img src="..\photos\job_logo.png" alt="CareerHunt">
+=======
+                    <img src="../photos/job logo.png" alt="CareerHunt">
+>>>>>>> Stashed changes
                 </a>
                 <span class="company-badge">Company</span>
             </div>
@@ -321,7 +325,11 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<<<<<<< Updated upstream
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
+=======
+    <script src="js/company.js"></script>
+>>>>>>> Stashed changes
     <script>
         // Account form submission
         document.getElementById('accountForm').addEventListener('submit', function(e) {
