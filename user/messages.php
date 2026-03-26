@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <?php
 require_once __DIR__ . '/_user_common.php';
 
@@ -56,6 +57,8 @@ if ($activeCompanyName === '' && !empty($conversations)) {
     $activeCompanyName = (string) $conversations[0]['company_name'];
 }
 ?>
+=======
+>>>>>>> Stashed changes
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,13 +68,21 @@ if ($activeCompanyName === '' && !empty($conversations)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Messages</title>
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="user\css\message.css">
+=======
+>>>>>>> Stashed changes
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
+<<<<<<< Updated upstream
+=======
+    <link rel="stylesheet" href="user.css">
+
+>>>>>>> Stashed changes
 </head>
 
 <body>
@@ -94,6 +105,7 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                         <i class="bi bi-search"></i>
                         <input type="text" placeholder="Search conversation">
                     </div>
+<<<<<<< Updated upstream
                     <?php if (empty($conversations)): ?>
                         <div class="p-3 text-muted">No conversations found.</div>
                     <?php else: ?>
@@ -113,6 +125,57 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                             </a>
                         <?php endforeach; ?>
                     <?php endif; ?>
+=======
+
+
+                    <div class="chat-user active">
+
+                        <img src="https://i.pravatar.cc/40?img=1">
+
+                        <div class="user-info">
+                            <h6>Darlene Robertson</h6>
+                            <small>See you tomorrow!</small>
+                        </div>
+
+                        <div class="meta">
+                            <span class="time">10:30</span>
+                            <span class="status online"></span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chat-user">
+
+                        <img src="https://i.pravatar.cc/40?img=2">
+
+                        <div class="user-info">
+                            <h6>Jane Cooper</h6>
+                            <small>Sent the documents.</small>
+                        </div>
+
+                        <div class="meta">
+                            <span class="badge bg-danger">2</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="chat-user">
+
+                        <img src="https://i.pravatar.cc/40?img=3">
+
+                        <div class="user-info">
+                            <h6>Guy Hawkins</h6>
+                            <small>Thanks!</small>
+                        </div>
+
+                        <div class="meta">
+                            <span class="time">Yesterday</span>
+                        </div>
+
+                    </div>
+>>>>>>> Stashed changes
 
                 </div>
 
@@ -125,11 +188,19 @@ if ($activeCompanyName === '' && !empty($conversations)) {
 
                     <div class="chat-header">
 
+<<<<<<< Updated upstream
                         <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($activeCompanyName !== '' ? $activeCompanyName : 'Company'); ?>&background=0d47a1&color=fff">
 
                         <div>
                             <h6 class="mb-0"><?php echo user_esc($activeCompanyName !== '' ? $activeCompanyName : 'No conversation selected'); ?></h6>
                             <small class="text-success">Messages</small>
+=======
+                        <img src="https://i.pravatar.cc/40?img=1">
+
+                        <div>
+                            <h6 class="mb-0">Darlene Robertson</h6>
+                            <small class="text-success">Online</small>
+>>>>>>> Stashed changes
                         </div>
 
                         <div class="header-actions ms-auto">
@@ -144,6 +215,7 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                     <!-- MESSAGES -->
 
                     <div class="chat-messages">
+<<<<<<< Updated upstream
                         <?php if (empty($messages)): ?>
                             <div class="message received">
                                 <p>No messages found for this conversation.</p>
@@ -156,6 +228,28 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
+=======
+
+                        <div class="message received">
+                            <p>Hello 👋</p>
+                            <span class="msg-time">10:20</span>
+                        </div>
+
+                        <div class="message received">
+                            <p>How likely are you to recommend our company?</p>
+                            <span class="msg-time">10:21</span>
+                        </div>
+
+                        <div class="message sent">
+                            <p>I would definitely recommend it 👍</p>
+                            <span class="msg-time">10:25</span>
+                        </div>
+
+                        <div class="message received">
+                            <p>Great! Thank you.</p>
+                            <span class="msg-time">10:27</span>
+                        </div>
+>>>>>>> Stashed changes
 
                     </div>
 
@@ -163,11 +257,23 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                     <!-- MESSAGE INPUT -->
 
                     <div class="chat-input">
+<<<<<<< Updated upstream
                         <i class="bi bi-chat-dots"></i>
                         <input type="text" placeholder="Read-only message history">
                         <button disabled>
                             <i class="bi bi-send"></i>
                         </button>
+=======
+
+                        <i class="bi bi-emoji-smile"></i>
+
+                        <input type="text" placeholder="Type a message...">
+
+                        <button>
+                            <i class="bi bi-send"></i>
+                        </button>
+
+>>>>>>> Stashed changes
                     </div>
 
                 </div>

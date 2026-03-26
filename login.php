@@ -7,7 +7,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     if (($_SESSION['account_type'] ?? '') === 'company') {
         header('Location: /Job-Portal-DD/company/index.php');
     } else {
+<<<<<<< Updated upstream
         header('Location: \Job-Portal-DD\user\index.php');
+=======
+        header('Location: /Job-Portal-DD/user/dashboard.php');
+>>>>>>> Stashed changes
     }
     exit;
 }
@@ -20,7 +24,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     <title>Login - CareerHunt</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="css\main.css">
+=======
+    <link rel="stylesheet" href="style.css">
+>>>>>>> Stashed changes
     <style>
         .auth-page-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px; background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 100%); }
         .auth-page-card { width: 100%; max-width: 560px; border-radius: 18px; background: #fff; box-shadow: 0 18px 40px rgba(13, 71, 161, 0.15); overflow: hidden; }
@@ -31,6 +39,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         .account-switch button { flex: 1; border: 0; padding: 10px; border-radius: 10px; background: #eef2f8; font-weight: 600; }
         .account-switch button.active { background: #0d47a1; color: #fff; }
         .alt-links { margin-top: 16px; text-align: center; font-size: 0.95rem; }
+<<<<<<< Updated upstream
         .password-input-wrap { position: relative; }
         .password-input-wrap .form-control { padding-right: 44px; }
         .password-toggle-btn {
@@ -44,6 +53,8 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
             padding: 0;
             line-height: 1;
         }
+=======
+>>>>>>> Stashed changes
     </style>
 </head>
 <body>
@@ -72,12 +83,16 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                     </div>
                     <div class="form-group mb-3">
                         <label>Password</label>
+<<<<<<< Updated upstream
                         <div class="password-input-wrap">
                             <input type="password" name="password" id="userLoginPassword" class="form-control" required>
                             <button type="button" class="password-toggle-btn" id="toggleUserLoginPassword" aria-label="Show password">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
+=======
+                        <input type="password" name="password" class="form-control" required>
+>>>>>>> Stashed changes
                         <div class="error-message"></div>
                     </div>
                     <div class="form-options mb-3">
@@ -96,12 +111,16 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                     </div>
                     <div class="form-group mb-3">
                         <label>Password</label>
+<<<<<<< Updated upstream
                         <div class="password-input-wrap">
                             <input type="password" name="password" id="companyLoginPassword" class="form-control" required>
                             <button type="button" class="password-toggle-btn" id="toggleCompanyLoginPassword" aria-label="Show password">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
+=======
+                        <input type="password" name="password" class="form-control" required>
+>>>>>>> Stashed changes
                         <div class="error-message"></div>
                     </div>
                     <div class="form-options mb-3">
@@ -138,6 +157,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         companyForms.style.display = 'block';
         userForms.style.display = 'none';
     });
+<<<<<<< Updated upstream
 
     const userPasswordInput = document.getElementById('userLoginPassword');
     const toggleUserPasswordBtn = document.getElementById('toggleUserLoginPassword');
@@ -160,6 +180,8 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 
     setupPasswordToggle(userPasswordInput, toggleUserPasswordBtn);
     setupPasswordToggle(companyPasswordInput, toggleCompanyPasswordBtn);
+=======
+>>>>>>> Stashed changes
 </script>
 </body>
 </html>

@@ -57,7 +57,11 @@ if ($remember) {
 auth_json_response(200, [
     'success' => true,
     'message' => 'Login successful.',
+<<<<<<< Updated upstream
     'redirect' => auth_path('/user/index.php'),
+=======
+    'redirect' => auth_path('/user/dashboard.php'),
+>>>>>>> Stashed changes
     'user' => [
         'id' => (int) $user['id'],
         'name' => $user['full_name'],

@@ -28,6 +28,7 @@
             <h2>Change Password</h2>
 
             <div class="card mt-3 shadow-sm">
+<<<<<<< Updated upstream
                 <div class="card-body w-100">
 
 
@@ -42,6 +43,25 @@
                         <button type="submit" class="btn btn-theme mt-2">
                             Update Password
                         </button>
+=======
+                <div class="card-body w-50">
+
+                    <form method="POST">
+
+                        <input type="password" name="current_password" class="form-control mb-3"
+                            placeholder="Current Password" required>
+
+                        <input type="password" name="new_password" class="form-control mb-3" placeholder="New Password"
+                            required>
+
+                        <input type="password" name="confirm_password" class="form-control mb-3"
+                            placeholder="Confirm Password" required>
+
+                        <button class="btn btn-theme mt-2" name="update_password">
+                            Update Password
+                        </button>
+
+>>>>>>> Stashed changes
                     </form>
 
                 </div>
@@ -51,6 +71,7 @@
 
     </div>
 
+<<<<<<< Updated upstream
 
 <script src="user.js"></script>
 <script>
@@ -84,6 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+=======
+>>>>>>> Stashed changes
 </body>
 
 </html>

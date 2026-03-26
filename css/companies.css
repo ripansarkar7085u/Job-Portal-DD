@@ -6,12 +6,19 @@
 /* ===================================
    Page Header
    =================================== */
+<<<<<<< Updated upstream
 .page-header-content {
     border-radius: 10px;
     background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
     padding: 60px 0;
     text-align: center;
     margin-bottom: 35px;
+=======
+.page-header {
+    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+    padding: 60px 0;
+    text-align: center;
+>>>>>>> Stashed changes
 }
 
 .page-header-content h1 {
@@ -26,16 +33,21 @@
     margin: 0;
 }
 
+<<<<<<< Updated upstream
 ol {
     justify-content: center;
 }
 
 .page-header .breadcrumb-item a {
 
+=======
+.page-header .breadcrumb-item a {
+>>>>>>> Stashed changes
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
 }
 
+<<<<<<< Updated upstream
 .breadcrumb-item.active {
     color: #fff;
 }
@@ -46,6 +58,13 @@ ol {
 }
 
 .page-header .breadcrumb-item+.breadcrumb-item::before {
+=======
+.page-header .breadcrumb-item.active {
+    color: #fff;
+}
+
+.page-header .breadcrumb-item + .breadcrumb-item::before {
+>>>>>>> Stashed changes
     color: rgba(255, 255, 255, 0.6);
 }
 
@@ -65,7 +84,10 @@ ol {
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+<<<<<<< Updated upstream
     margin-bottom: 35px;
+=======
+>>>>>>> Stashed changes
 }
 
 .company-search-box .search-field {
@@ -134,7 +156,10 @@ ol {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 20px;
+<<<<<<< Updated upstream
     margin-bottom: 35px;
+=======
+>>>>>>> Stashed changes
 }
 
 .filter-widget {
@@ -474,7 +499,10 @@ ol {
     margin-top: 40px;
     display: flex;
     justify-content: center;
+<<<<<<< Updated upstream
     margin-bottom: 20px;
+=======
+>>>>>>> Stashed changes
 }
 
 .pagination {
@@ -688,6 +716,7 @@ ol {
         margin-bottom: 30px;
         position: static;
     }
+<<<<<<< Updated upstream
 
     .page-header {
         padding: 40px 0;
@@ -697,11 +726,26 @@ ol {
         font-size: 28px;
     }
 
+=======
+    
+    .page-header {
+        padding: 40px 0;
+    }
+    
+    .page-header-content h1 {
+        font-size: 28px;
+    }
+    
+>>>>>>> Stashed changes
     .newsletter-box {
         text-align: center;
         padding: 40px 30px;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .newsletter-form {
         flex-direction: column;
         margin-top: 20px;
@@ -712,11 +756,16 @@ ol {
     .companies-grid {
         grid-template-columns: 1fr;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     .results-header {
         flex-direction: column;
         align-items: flex-start;
     }
+<<<<<<< Updated upstream
 
     .company-search-box .row {
         gap: 15px;
@@ -726,15 +775,34 @@ ol {
         flex-direction: column;
     }
 
+=======
+    
+    .company-search-box .row {
+        gap: 15px;
+    }
+    
+    .companies-grid.list-view .company-card-v2 {
+        flex-direction: column;
+    }
+    
+>>>>>>> Stashed changes
     .companies-grid.list-view .company-card-body {
         flex-direction: column;
         text-align: center;
     }
+<<<<<<< Updated upstream
 
     .companies-grid.list-view .company-meta {
         flex-direction: column;
     }
 
+=======
+    
+    .companies-grid.list-view .company-meta {
+        flex-direction: column;
+    }
+    
+>>>>>>> Stashed changes
     .companies-grid.list-view .company-card-footer {
         width: 100%;
         border-left: none;
@@ -747,6 +815,7 @@ ol {
     .company-search-section {
         padding: 20px 0;
     }
+<<<<<<< Updated upstream
 
     .companies-section {
         padding: 40px 0;
@@ -756,3 +825,14 @@ ol {
         display: none;
     }
 }
+=======
+    
+    .companies-section {
+        padding: 40px 0;
+    }
+    
+    .view-toggle {
+        display: none;
+    }
+}
+>>>>>>> Stashed changes
