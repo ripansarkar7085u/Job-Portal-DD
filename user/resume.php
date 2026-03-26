@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< Updated upstream
 require_once __DIR__ . '/_user_common.php';
 
 $upload_success = false;
@@ -36,25 +35,6 @@ if (isset($_POST['upload'])) {
         }
     }
 }
-=======
-if (isset($_POST['upload'])) {
-
-    $file = $_FILES['resume']['name'];
-    $tmp = $_FILES['resume']['tmp_name'];
-    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-
-    if ($ext == "pdf") {
-
-        move_uploaded_file($tmp, "uploads/" . $file);
-        echo "<div class='alert alert-success'>Resume Uploaded Successfully</div>";
-
-    } else {
-        echo "<div class='alert alert-danger'>Only PDF files are allowed!</div>";
-    }
-
-}
-
->>>>>>> Stashed changes
 ?>
 
 <!DOCTYPE html>

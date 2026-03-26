@@ -4,7 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-<<<<<<< Updated upstream
 require_once __DIR__ . '/../api/_auth_common.php';
 require_once __DIR__ . '/../user/_user_common.php';
 
@@ -113,10 +112,6 @@ function application_status_label(string $status): string
     }
     return 'New';
 }
-=======
-// Get job filter if provided
-$jobFilter = isset($_GET['job']) ? $_GET['job'] : null;
->>>>>>> Stashed changes
 ?>
 <!DOCTYPE html>
 <html lang="en">
