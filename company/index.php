@@ -19,6 +19,30 @@ if (!isset($_SESSION['account_type']) || $_SESSION['account_type'] !== 'company'
 // Get company info from session
 $companyName = $_SESSION['company_name'] ?? 'Company';
 $companyEmail = $_SESSION['company_email'] ?? '';
+
+// Fetch recent applicants 
+$recentApplications = [];
+$companyId = $_SESSION['company_id'] ?? 0;
+if ($companyId) {
+    $sql = "SELECT a.id, a.user_id, a.job_id, a.status, a.applied_at, j.title AS job_title, u.full_name, u.email, p.profile_image
+            FROM user_job_applications a
+            INNER JOIN jobs j ON j.id = a.job_id
+            INNER JOIN users u ON u.id = a.user_id
+            LEFT JOIN profiles p ON p.user_id = u.id
+            WHERE j.company_id = ?
+            ORDER BY a.applied_at DESC
+            LIMIT 5";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        $stmt->bind_param('i', $companyId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($result && ($row = $result->fetch_assoc())) {
+            $recentApplications[] = $row;
+        }
+        $stmt->close();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -204,23 +228,29 @@ $companyEmail = $_SESSION['company_email'] ?? '';
                                         </tr>
                                     </thead>
                                     <tbody id="recentApplicationsTable">
-                                        <tr>
-                                            <td>
-                                                <div class="applicant-info">
-                                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=0d47a1&color=fff" alt="John Doe">
-                                                    <div>
-                                                        <span class="name">John Doe</span>
-                                                        <span class="email">john.doe@email.com</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Senior Frontend Developer</td>
-                                            <td>Mar 11, 2026</td>
-                                            <td><span class="status-badge pending">Pending</span></td>
-                                            <td>
-                                                <button class="action-btn view" title="View"><i class="bi bi-eye"></i></button>
-                                            </td>
-                                        </tr>
+                                        <?php if (empty($recentApplications)): ?>
+                                            <tr><td colspan="5" class="text-center text-muted">No recent applicants found.</td></tr>
+                                        <?php else: ?>
+                                            <?php foreach ($recentApplications as $app): ?>
+                                                <tr>
+                                                    <td>
+                                                        <div class="applicant-info">
+                                                            <img src="<?php echo !empty($app['profile_image']) ? (strpos($app['profile_image'], 'http') === 0 ? $app['profile_image'] : '../user/uploads/' . $app['profile_image']) : 'https://ui-avatars.com/api/?name=' . urlencode($app['full_name']) . '&background=0d47a1&color=fff'; ?>" alt="<?php echo htmlspecialchars($app['full_name']); ?>">
+                                                            <div>
+                                                                <span class="name"><?php echo htmlspecialchars($app['full_name']); ?></span>
+                                                                <span class="email"><?php echo htmlspecialchars($app['email']); ?></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><?php echo htmlspecialchars($app['job_title']); ?></td>
+                                                    <td><?php echo date('M d, Y', strtotime($app['applied_at'])); ?></td>
+                                                    <td><span class="status-badge <?php echo strtolower($app['status']); ?>"><?php echo htmlspecialchars($app['status']); ?></span></td>
+                                                    <td>
+                                                        <a href="applications.php?app_id=<?php echo $app['id']; ?>" class="action-btn view" title="View"><i class="bi bi-eye"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>

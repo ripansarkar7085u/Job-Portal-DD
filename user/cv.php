@@ -1,5 +1,8 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "job-portal");
+require_once __DIR__ . '/_user_common.php';
+
+
+user_ensure_resumes_table($conn);
 
 // --- BACKEND LOGIC ---
 if (isset($_GET['id']) && isset($_GET['update_status'])) {
