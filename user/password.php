@@ -28,7 +28,7 @@
             <h2>Change Password</h2>
 
             <div class="card mt-3 shadow-sm">
-                <div class="card-body w-50">
+                <div class="card-body w-100">
 
 
                     <form id="passwordForm" autocomplete="off">

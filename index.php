@@ -106,10 +106,10 @@ if (session_status() == PHP_SESSION_NONE) {
                         <p><b>10k+ Candidates</b></p>
 
                         <div class="avatars">
-                            <img src="photos/user1.jpg">
-                            <img src="photos/user2.jpg">
-                            <img src="photos/user3.jpg">
-                            <img src="photos/user4.jpg">
+                            <img src="photos\rahul.webp">
+                            <img src="photos\male.2.jpg">
+                            <img src="photos\rahul.webp">
+                            <img src="photos\male.2.jpg">
                             <span class="plus">+</span>
                         </div>
 
