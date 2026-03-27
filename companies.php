@@ -37,7 +37,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <!-- COMPANIES LISTING -->
     <section class="companies-section">
         <div class="container">
-            <div class="page-header-content">
+            <div class="page-header-content mt-4">
                 <h1>Browse Companies</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
