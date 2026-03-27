@@ -32,8 +32,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <button onclick="history.back()" class="back-btn">
     <i class="bi bi-arrow-left"></i>
-</button>
-<!-- NEWS SECTION -->
+</button><!-- NEWS SECTION -->
 <section class="py-5">
     <div class="container">
         <div class="page-header-content">
