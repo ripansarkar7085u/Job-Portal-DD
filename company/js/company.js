@@ -192,61 +192,51 @@ const dropdownLogout = document.getElementById('dropdownLogout');
 const profileBtn = document.getElementById('profileBtn');
 const profileDropdown = document.getElementById('profileDropdown');
 
-// Sample Company Data (will be replaced with API data)
-let companyData = {
-    id: 1,
-    name: 'TechCorp Inc.',
-    email: 'hr@techcorp.com',
-    logo: 'https://ui-avatars.com/api/?name=TechCorp&background=0d47a1&color=fff',
-    industry: 'Technology',
-    size: '100-500 employees',
-    location: 'San Francisco, CA'
-};
 
-// Dashboard Stats (sample data)
-let dashboardStats = {
-    totalJobs: 24,
-    activeJobs: 18,
-    totalApplications: 156,
-    profileViews: 1248,
-    newApplicationsToday: 5
-};
+let companyData = {};
+let dashboardStats = {};
 
 
 
 
 
- // Check company session on page load
- 
-async function checkSession() {
+
+// Fetch company profile from backend and update UI
+async function fetchCompanyProfile() {
     try {
-        const response = await fetch('../api/company_check_session.php', {
-            method: 'GET',
-            credentials: 'include'
-        });
-        
-        const data = await response.json();
-        
-        if (data.success && data.loggedIn) {
-            
-            updateCompanyInfo(data.company);
-        } else {
-           
-            // For demo purposes, we'll just log this
-            console.log('Session not found, using demo data');
+        const res = await fetch('../api/company_public_profile.php?id=me', { credentials: 'include' });
+        const data = await res.json();
+        if (data.success && data.company) {
+            companyData = data.company;
             updateCompanyInfo(companyData);
+        } else {
+            showToast('Failed to load company profile', 'error');
         }
     } catch (error) {
-        console.error('Session check failed:', error);
-        // Use demo data for development
-        updateCompanyInfo(companyData);
+        showToast('Error loading company profile', 'error');
     }
 }
+
+// On page load, fetch company profile
+document.addEventListener('DOMContentLoaded', function() {
+    fetchCompanyProfile();
+    // Always initialize sidebar/menu/profile dropdown logic, even if profile fetch fails
+    if (typeof handleNavigation === 'function') handleNavigation();
+    if (typeof menuToggle !== 'undefined' && typeof sidebar !== 'undefined' && typeof sidebarOverlay !== 'undefined') {
+        menuToggle.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+    if (typeof profileBtn !== 'undefined' && typeof profileDropdown !== 'undefined') {
+        profileBtn.addEventListener('click', toggleProfileDropdown);
+        document.addEventListener('click', closeProfileDropdown);
+    }
+});
 
 
  // Update company information in UI
  
 function updateCompanyInfo(company) {
+
     companyData = { ...companyData, ...company };
 
     // Sidebar
