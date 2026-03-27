@@ -1464,9 +1464,45 @@ section .section-title h2 {
     body {
         padding-top: 60px;
     }
+
+    section {
+        padding: 50px 0 !important; /* Reduce the huge 100px padding */
+    }
+    
+    .banner-section {
+        min-height: auto !important;
+        padding-top: 100px !important;
+        padding-bottom: 50px !important;
+    }
     
     .banner-title {
-        font-size: 28px;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .banner-text, .popular {
+        text-align: center;
+    }
+    
+    .job-search-box {
+        margin: 20px 15px !important;
+        padding: 15px !important;
+    }
+
+    .search-btn {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .hero-right {
+        margin-top: 30px;
+    }
+
+    .hero-man {
+        width: 80% !important;
+        max-width: 300px !important;
+        margin: 0 auto 30px auto !important;
+        display: block;
     }
     
     .section-title h2 {
@@ -1475,9 +1511,38 @@ section .section-title h2 {
     
     .about-content h2 {
         font-size: 28px;
+        text-align: center;
     }
     
+    .about-text {
+        text-align: center;
+    }
+
+    .about-features {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    
+    .about-btn {
+        display: block;
+        text-align: center;
+        width: fit-content;
+        margin: 0 auto;
+    }
+
     .footer-widget {
         margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .footer-widget .social-links {
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .footer-widget ul {
+        padding-left: 0;
     }
 }
