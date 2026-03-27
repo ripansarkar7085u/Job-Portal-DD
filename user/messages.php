@@ -63,7 +63,7 @@ if ($activeCompanyName === '' && !empty($conversations)) {
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Messages</title>
     <link rel="stylesheet" href="user.css">
@@ -76,106 +76,113 @@ if ($activeCompanyName === '' && !empty($conversations)) {
 
 <body>
 
-    <div class="dashboard">
+    <div class="user-container" id="userDashboard">
+        <?php include 'sidebar.php'; ?>
 
-         <?php include 'sidebar.php'; ?>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Messages</h1>
+                </div>
+            </header>
 
-        <div class="content">
+            <section class="content-section">
 
-            <h2 class="mb-4">Messages</h2>
-
-            <div class="chat-container <?php echo $activeCompanyId > 0 ? 'has-active-chat' : ''; ?>">
+            <div class="chat-wrapper <?php echo $activeCompanyId > 0 ? 'has-active-chat' : ''; ?>">
 
                 <!-- USER LIST -->
 
                 <div class="chat-sidebar">
 
-                    <div class="search-box">
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Search conversation">
+                    <div class="chat-sidebar-header">
+                        <h3>Messages</h3>
+                        <div class="chat-search">
+                            <i class="bi bi-search"></i>
+                            <input type="text" placeholder="Search conversations...">
+                        </div>
                     </div>
+                    
+                    <div class="chat-list">
                     <?php if (empty($conversations)): ?>
                         <div class="p-3 text-muted">No conversations found.</div>
                     <?php else: ?>
                         <?php foreach ($conversations as $conversation): ?>
                             <?php $companyId = (int) $conversation['company_id']; ?>
-                            <a href="messages.php?company_id=<?php echo $companyId; ?>" class="chat-user <?php echo $companyId === $activeCompanyId ? 'active' : ''; ?>" style="text-decoration:none;color:inherit;display:flex;">
-                                <img src="https://ui-avatars.com/api/?name=<?php echo urlencode((string) $conversation['company_name']); ?>&background=0d47a1&color=fff">
-
-                                <div class="user-info">
-                                    <h6><?php echo user_esc((string) $conversation['company_name']); ?></h6>
-                                    <small><?php echo user_esc((string) $conversation['last_message']); ?></small>
+                            <a href="messages.php?company_id=<?php echo $companyId; ?>" class="chat-user-item <?php echo $companyId === $activeCompanyId ? 'active' : ''; ?>">
+                                <div class="chat-user-avatar">
+                                    <img src="https://ui-avatars.com/api/?name=<?php echo urlencode((string) $conversation['company_name']); ?>&background=0d47a1&color=fff" alt="Avatar">
                                 </div>
-
-                                <div class="meta">
-                                    <span class="time"><?php echo user_esc(date('M j', strtotime((string) $conversation['last_message_at']))); ?></span>
+                                <div class="chat-user-details">
+                                    <div class="chat-user-name">
+                                        <h6><?php echo user_esc((string) $conversation['company_name']); ?></h6>
+                                        <span class="chat-time"><?php echo user_esc(date('M j', strtotime((string) $conversation['last_message_at']))); ?></span>
+                                    </div>
+                                    <p class="chat-snippet"><?php echo user_esc((string) $conversation['last_message']); ?></p>
                                 </div>
                             </a>
                         <?php endforeach; ?>
                     <?php endif; ?>
 
+                    </div>
                 </div>
 
-
                 <!-- CHAT AREA -->
-
                 <div class="chat-main">
 
                     <?php if ($activeCompanyId === 0): ?>
-                        <div class="empty-chat-state d-none d-md-flex flex-column align-items-center justify-content-center w-100 h-100" style="background-color: #f0f2f5;">
-                            <i class="bi bi-whatsapp mb-3 text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
-                            <h4 class="text-muted" style="font-weight: 300;">CareerHunt Messages</h4>
-                            <p class="text-muted">Select a conversation to start messaging.</p>
+                        <div class="empty-state h-100 d-none d-lg-flex flex-column align-items-center justify-content-center">
+                            <i class="bi bi-chat-dots" style="font-size: 5rem; color: #e2e8f0; margin-bottom: 20px;"></i>
+                            <h4 style="color: #64748b; font-weight: 600;">Your Messages</h4>
+                            <p style="color: #94a3b8;">Select a conversation from the sidebar to start chatting</p>
                         </div>
                     <?php else: ?>
 
                     <!-- HEADER -->
-
-                    <div class="chat-header">
-
-                        <a href="messages.php" class="back-btn d-md-none me-3 mb-1 text-dark text-decoration-none"><i class="bi bi-arrow-left fs-5"></i></a>
-                        <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($activeCompanyName !== '' ? $activeCompanyName : 'Company'); ?>&background=0d47a1&color=fff">
-
-                        <div>
-                            <h6 class="mb-0"><?php echo user_esc($activeCompanyName !== '' ? $activeCompanyName : 'No conversation selected'); ?></h6>
-                            <small class="text-success">Messages</small>
+                    <div class="chat-main-header">
+                        <div class="chat-active-user">
+                            <a href="messages.php" class="d-lg-none me-3 text-dark"><i class="bi bi-arrow-left fs-4"></i></a>
+                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($activeCompanyName !== '' ? $activeCompanyName : 'Company'); ?>&background=0d47a1&color=fff" alt="Avatar">
+                            <div class="chat-active-user-info">
+                                <h5><?php echo user_esc($activeCompanyName !== '' ? $activeCompanyName : 'No conversation selected'); ?></h5>
+                                <span>Online</span>
+                            </div>
                         </div>
 
-                        <div class="header-actions ms-auto">
-                            <i class="bi bi-telephone"></i>
-                            <i class="bi bi-camera-video"></i>
-                            <i class="bi bi-three-dots"></i>
+                        <div class="chat-actions">
+                            <button class="chat-btn" title="Voice Call"><i class="bi bi-telephone"></i></button>
+                            <button class="chat-btn" title="Video Call"><i class="bi bi-camera-video"></i></button>
+                            <button class="chat-btn" title="More Options"><i class="bi bi-info-circle"></i></button>
                         </div>
-
                     </div>
 
 
                     <!-- MESSAGES -->
-
-                    <div class="chat-messages">
+                    <div class="chat-messages-area">
                         <?php if (empty($messages)): ?>
-                            <div class="message received">
-                                <p>No messages found for this conversation.</p>
+                            <div class="msg-bubble msg-received">
+                                No messages found for this conversation.
                             </div>
                         <?php else: ?>
                             <?php foreach ($messages as $message): ?>
-                                <div class="message <?php echo $message['sender_type'] === 'user' ? 'sent' : 'received'; ?>">
-                                    <p><?php echo nl2br(user_esc((string) $message['message_text'])); ?></p>
+                                <div class="msg-bubble <?php echo $message['sender_type'] === 'user' ? 'msg-sent' : 'msg-received'; ?>">
+                                    <?php echo nl2br(user_esc((string) $message['message_text'])); ?>
                                     <span class="msg-time"><?php echo user_esc(date('H:i', strtotime((string) $message['created_at']))); ?></span>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
-
                     </div>
 
-
                     <!-- MESSAGE INPUT -->
-
-                    <div class="chat-input">
-                        <i class="bi bi-chat-dots"></i>
-                        <input type="text" placeholder="Read-only message history">
-                        <button disabled>
-                            <i class="bi bi-send"></i>
+                    <div class="chat-input-area">
+                        <button class="chat-attach-btn" title="Attach file"><i class="bi bi-paperclip"></i></button>
+                        <div class="chat-input-wrapper">
+                            <input type="text" placeholder="Type your message here...">
+                        </div>
+                        <button class="chat-send-btn" title="Send message">
+                            <i class="bi bi-send-fill"></i>
                         </button>
                     </div>
 
@@ -185,8 +192,8 @@ if ($activeCompanyName === '' && !empty($conversations)) {
 
             </div>
 
-        </div>
-
+            </section>
+        </main>
     </div>
 
 </body>

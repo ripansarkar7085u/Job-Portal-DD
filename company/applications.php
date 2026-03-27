@@ -444,7 +444,7 @@ function application_status_label(string $status): string
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
     <script>
         let currentPage = 1;
-        const perPage = 10;
+        const perPage = 5;
         let activeFilter = 'all';
         let searchQuery = '';
 
@@ -507,8 +507,9 @@ function application_status_label(string $status): string
             
             paginationContainer.innerHTML = '';
             
-            const totalPages = Math.ceil(totalMatches / perPage);
-            if (totalPages <= 1) return;
+            let totalPages = Math.ceil(totalMatches / perPage);
+            if (totalPages < 1) totalPages = 1;
+            // Always show pagination container even for 1 page
             
             const prevBtn = document.createElement('button');
             prevBtn.className = 'pagination-btn';

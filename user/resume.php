@@ -41,7 +41,7 @@ if (isset($_POST['upload'])) {
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     <title>Upload CV</title>
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,10 +51,21 @@ if (isset($_POST['upload'])) {
 </head>
 
 <body>
-    <?php include 'sidebar.php'; ?>
-   <div class="content p-4">
-    <div class="container-fluid">
-        <h2 class="mb-4">Upload CV</h2>
+    <div class="user-container" id="userDashboard">
+        <?php include 'sidebar.php'; ?>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Upload CV</h1>
+                </div>
+            </header>
+
+            <section class="content-section p-4">
+                <div class="container-fluid">
 
         <div class="row">
             <div class="col-12 col-md-8 col-lg-6">
@@ -77,7 +88,10 @@ if (isset($_POST['upload'])) {
             </div>
         </div>
     </div>
-</div>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <?php if ($upload_success): ?>
         <script>
