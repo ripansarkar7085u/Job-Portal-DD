@@ -1,35 +1,67 @@
+/* ----- Global & Layout ----- */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f7fb;
+    margin: 0;
+    overflow-x: hidden;
+}
+
 /* ----- Sidebar ----- */
 .sidebar {
-    width: 220px;
+    width: 240px;
+    background: #ffffff;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #ffffff;
     padding: 20px 0;
-    color: #fff;
+    border-right: 1px solid #eee;
+    transition: all 0.3s ease;
+    z-index: 1050;
     overflow-y: auto;
 }
 
+
+.p-4  {
+        padding: 7.5rem !important;
+}
+.sidebar .image {
+    padding: 10px 25px 25px;
+    transition: 0.3s;
+}
+
+.sidebar-menu a,
 .sidebar a {
     display: flex;
     align-items: center;
     padding: 12px 20px;
     text-decoration: none;
-    color: #000000;
-    font-size: 16px;
-    transition: background 0.3s, color 0.3s;
+    color: #555;
+    font-size: 15px;
+    transition: 0.3s;
+    border-radius: 0 25px 25px 0;
+    margin-right: 10px;
 }
 
+.sidebar-menu a i,
 .sidebar a i {
-    margin-right: 10px;
     font-size: 18px;
+    margin-right: 12px;
+    min-width: 25px;
+    text-align: center;
 }
 
 .sidebar-menu a:hover,
+.sidebar a:hover {
+    background: #e9ecf5;
+    color: #3a66db;
+}
+
+.sidebar-menu .active,
 .sidebar a.active {
-    background-color: #3a3a50;
-    color: #fff;
+    background: #e0e6f5;
+    color: #3a66db;
+    font-weight: 600;
 }
 
 .sidebar a.text-danger {
@@ -38,654 +70,1106 @@
 
 .sidebar a.text-danger:hover {
     background-color: #ff1a1a;
-    color: #fff;
+    color: #fff !important;
 }
 
-/* ----- Main Content ----- */
-.main-content {
-    margin-left: 220px;
-    padding: 20px;
+/* ----- Main Content Area ----- */
+.main-content,
+.content {
+    margin-left: 240px;
+    padding: 30px;
     min-height: 100vh;
-    background-color: #f5f6fa;
-    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.3s ease;
+    background: #f5f6fa;
 }
 
-/* Top Navbar */
+/* ----- Dashboard Elements ----- */
 .top-navbar {
-    border-radius: 10px;
+    background: #0d47a1;
+    color: rgb(0, 0, 0);
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 40px;
-    background-color: #0d47a1;
-    border-bottom: 1px solid #ddd;
-    color: #fff;
+    border-radius: 10px;
+    margin-bottom: 25px;
 }
 
-.top-navbar .nav-left h5 {
+
+.cards,
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card-box,
+.stat-card,
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* ----- Responsive Toggle Classes ----- */
+
+/* Mobile Burger Button */
+.mobile-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1100;
+    background: #0d47a1;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Desktop Collapse State */
+.sidebar.collapsed {
+    width: 75px;
+}
+
+.sidebar.collapsed .image img {
+    width: 40px;
+    height: auto;
+}
+
+.sidebar.collapsed a span {
+    display: none;
+}
+
+.sidebar.collapsed~.main-content,
+.sidebar.collapsed~.content {
+    margin-left: 75px;
+}
+
+/* Force Sidebar Position */
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    z-index: 9999;
+}
+
+/* Force Content to move right */
+.main-content,
+.content {
+    display: block !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Global & Variables --- */
+:root {
+    --primary-color: #0d47a1;
+    --bg-light: #f4f7f6;
+    --sidebar-width: 260px;
+    --text-dark: #333;
+    --white: #ffffff;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
 }
 
-.top-navbar .nav-right {
+/* --- Layout Wrappers --- */
+/* Your Dashboard uses .main-content, Messages uses .content */
+.main-content,
+.content {
+    margin-left: var(--sidebar-width);
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* --- Top Navbar (Dashboard) --- */
+.top-navbar {
+    background: #0d35a4;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    margin: -20px -20px 20px -20px;
+    /* Offset parent padding */
+}
+
+.nav-right {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
 }
 
-.nav-profile {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+.profile-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-
-.image {
-    padding: 24px 30px;
-}
-
-/* Stats Cards */
+/* --- Stats Cards (Dashboard) --- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
+    margin-bottom: 30px;
 }
 
 .stat-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    gap: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .stat-icon {
-    font-size: 24px;
-    padding: 15px;
-    border-radius: 50%;
-    color: #fff;
-    margin-right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
 }
 
-.stat-icon.blue {
-    background-color: #3498db;
+.blue {
+    background: #e3f2fd;
+    color: #0d47a1;
 }
 
-.stat-icon.orange {
-    background-color: #e67e22;
+.orange {
+    background: #fff3e0;
+    color: #ef6c00;
 }
 
-.stat-icon.green {
-    background-color: #2ecc71;
+.green {
+    background: #e8f5e9;
+    color: #2e7d32;
 }
 
-.stat-icon.purple {
-    background-color: #9b59b6;
+.purple {
+    background: #f3e5f5;
+    color: #7b1fa2;
 }
 
-/* Stats info */
-.stat-info h4 {
+/* --- Tables (Dashboard) --- */
+.content-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.status-active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-rejected {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-pending {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+/* --- Chat Container (Messages) --- */
+.chat-container {
+    display: flex;
+    background: var(--white);
+    height: 75vh;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar in Messages */
+.chat-sidebar {
+    width: 320px;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+/* user.css */
+:root {
+    --primary-color: #0d47a1;
+    --bg-light: #f8f9fa;
+    --sidebar-width: 260px;
+    --text-dark: #333;
+    --text-muted: #6c757d;
+    --white: #ffffff;
+
+    /* Status Colors */
+    --status-active-bg: #e8f5e9;
+    --status-active-text: #2e7d32;
+    --status-rejected-bg: #ffebee;
+    --status-rejected-text: #c62828;
+    --status-pending-bg: #fff3e0;
+    --status-pending-text: #ef6c00;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
     margin: 0;
 }
 
-.stat-info p {
-    margin: 2px 0 0;
-    color: #777;
+/* Layout */
+.main-content {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    transition: all 0.3s;
 }
 
-/* Content Card / Table */
+/* Top Navbar */
+.top-navbar {
+    background: var(--white);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-right i {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.profile-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.nav-profile {
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* Icon Variations */
+.blue {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.orange {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.green {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.purple {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.stat-info h4 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.stat-info p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Content Card & Table */
 .content-card {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    background: var(--white);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .card-header-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .btn-view-all {
-    background-color: #3498db;
-    color: #fff;
-    padding: 5px 12px;
-    border-radius: 5px;
     text-decoration: none;
-    font-size: 14px;
-}
-
-.table.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table.custom-table th,
-.table.custom-table td {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    text-align: left;
-}
-
-.badge {
-    padding: 4px 8px;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 12px;
-}
-
-.status-pending {
-    background-color: #f39c12;
-}
-
-.status-active {
-    background-color: #2ecc71;
-}
-
-/* Buttons */
-.btn-action {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn-action i {
-    font-size: 16px;
-}
-
-
-/* ----- Profile Page Styling ----- */
-
-/* Page content spacing */
-.content {
-    margin-left: 0px;
-    /* same as sidebar width */
-    padding: 30px;
-    background: #eef7ff;
-    min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* Page title */
-.page-title {
+    color: var(--primary-color);
     font-weight: 600;
+    font-size: 0.9rem;
 }
 
-/* Card Box */
-.card-box {
-    background: white;
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
-}
-
-/* Form fields */
-.form-control,
-.form-select {
-    height: 48px;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
-}
-
-textarea.form-control {
-    height: auto;
-}
-
-/* Labels */
-.form-label {
-    font-weight: 500;
-}
-
-/* Buttons */
-.btn-theme {
-    background: #2f6fdd;
-    color: white;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-}
-
-.btn-theme:hover {
-    background: #1d56b5;
-}
-
-/* Profile photo */
-#profilePhoto {
-    border: 4px solid #f1f1f1;
-}
-
-/* Upload box */
-.upload-box {
-    border: 2px dashed #d9d9d9;
-    padding: 20px;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-/* Section title */
-.section-title {
+.custom-table thead th {
+    background-color: #f8f9fa;
+    border-top: none;
+    color: var(--text-muted);
     font-weight: 600;
-    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 15px;
 }
 
-
-/* Content spacing for pages */
-.content {
-    margin-left: 220px;
-    padding: 30px;
-    min-height: 100vh;
-    background: #eef7ff;
-}
-
-/* Theme buttons */
-.btn-theme {
-    background: #2f6fdd;
-    color: #fff;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-}
-
-.btn-theme:hover {
-    background: #1d56b5;
-}
-
-/* Card styling */
-.card {
-    border-radius: 12px;
-}
-
-
-/* ----- Main Content ----- */
-.main-content {
-    margin-left: 220px;
-    /* same as sidebar width */
-    padding: 30px;
-    min-height: 100vh;
-    background: #f5f6fa;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* Headings */
-.main-content h2 {
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.main-content p.text-muted {
-    margin-bottom: 20px;
-}
-
-/* Cards */
-.card {
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
-}
-
-/* Table Styling */
-.table th,
-.table td {
+.custom-table tbody td {
+    padding: 15px;
     vertical-align: middle;
-}
-
-.job-logo {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: 600;
-}
-
-.job-logo.bg-dark {
-    background-color: #343a40;
-}
-
-/* Buttons */
-.btn-light {
-    border-radius: 6px;
-    padding: 4px 8px;
-}
-
-
-
-/* Headings */
-.main-content h2 {
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.main-content p {
-    margin-bottom: 20px;
-    color: #6c757d;
-}
-
-/* Table */
-.table th,
-.table td {
-    vertical-align: middle;
-}
-
-/* Job logo circles */
-.job-logo {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    border-radius: 8px;
-}
-
-/* Buttons */
-.btn-light {
-    border-radius: 6px;
-    padding: 4px 8px;
-}
-
-
-/* Main Content */
-.main-content,
-.content {
-    margin-left: 220px;
-    /* sidebar width */
-    padding: 30px;
-    min-height: 100vh;
-    background: #f5f6fa;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* Headings */
-.main-content h2,
-.content h2 {
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.main-content p,
-.content p {
-    margin-bottom: 20px;
-    color: #000;
-}
-
-/* Cards */
-.card {
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
-}
-
-/* Tables */
-.table th,
-.table td {
-    vertical-align: middle;
-}
-
-/* Job logo circles */
-.job-logo {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 600;
-    border-radius: 8px;
-}
-
-/* Buttons */
-.btn-sm {
-    border-radius: 6px;
-    padding: 4px 8px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 /* Badges */
 .badge {
-    font-size: 0.85em;
-    padding: 5px 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
 }
 
+.status-active {
+    background-color: var(--status-active-bg) !important;
+    color: var(--status-active-text) !important;
+}
 
-/* CV Manager */
+.status-rejected {
+    background-color: var(--status-rejected-bg) !important;
+    color: var(--status-rejected-text) !important;
+}
 
-.cv-logo {
-    width: 40px;
-    height: 40px;
-    display: flex;
+.status-pending {
+    background-color: var(--status-pending-bg) !important;
+    color: var(--status-pending-text) !important;
+}
+
+/* Action Button */
+.btn-action {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 35px;
+    height: 35px;
+    background: #f0f4f8;
+    color: var(--primary-color);
     border-radius: 8px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-action:hover {
+    background: var(--primary-color);
     color: white;
-    font-size: 18px;
 }
 
-.action-btn {
-    border: none;
-    background: #f1f3f5;
-    padding: 6px 10px;
-    border-radius: 6px;
-    margin-right: 5px;
-    cursor: pointer;
-}
 
-.action-btn:hover {
-    background: #e2e6ea;
-}
-
-.section-title {
-    font-weight: 600;
-}
-
-.content {
-    margin-left: 220px;
-    padding: 30px;
-    background: #f5f6fa;
-    min-height: 100vh;
-}
-
-/* Chat Layout */
-
-.chat-container {
-    display: flex;
-    height: 80vh;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-}
-
-/* Left Chat List */
-
-.chat-sidebar {
-    width: 300px;
-    border-right: 1px solid #eee;
-    padding: 15px;
-    overflow-y: auto;
-}
-
-/* Search */
 
 .search-box {
+    padding: 15px;
     display: flex;
     align-items: center;
+    background: #f8f9fa;
     gap: 10px;
-    background: #f5f6fa;
-    padding: 8px 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
 }
 
 .search-box input {
-    border: none;
-    outline: none;
-    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 5px 15px;
     width: 100%;
 }
 
-/* User List */
-
 .chat-user {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
-}
-
-.chat-user:hover {
-    background: #f5f6fa;
+    transition: 0.2s;
+    align-items: center;
 }
 
 .chat-user.active {
-    background: #eef3ff;
+    background: #e3f2fd;
 }
 
 .chat-user img {
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-}
-
-.user-info h6 {
-    margin: 0;
-    font-size: 14px;
-}
-
-.user-info small {
-    color: #888;
+    margin-right: 12px;
 }
 
 /* Chat Main Area */
-
 .chat-main {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-/* Chat Header */
-
 .chat-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+    gap: 12px;
 }
 
 .chat-header img {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 
-.header-actions i {
-    margin-left: 15px;
-    cursor: pointer;
-}
-
-/* Messages */
-
 .chat-messages {
     flex: 1;
-    padding: 15px;
+    padding: 20px;
     overflow-y: auto;
-    background: #fafafa;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
+/* Message Bubbles */
 .message {
-    max-width: 60%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    position: relative;
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
 }
 
 .message.received {
-    background: white;
+    align-self: flex-start;
+    background: #fff;
+    border: 1px solid #eee;
 }
 
 .message.sent {
-    background: #2f6fdd;
-    color: black;
-    margin-left: auto;
+    align-self: flex-end;
+    background: var(--primary-color);
+    color: #fff;
 }
 
 .msg-time {
     display: block;
-    font-size: 11px;
+    font-size: 0.7rem;
     margin-top: 5px;
     opacity: 0.7;
 }
 
-/* Input */
-
+/* Input Area */
 .chat-input {
+    padding: 1px;
+    border-top: 1px solid #eee;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px;
-    border-top: 1px solid #eee;
+    gap: 1px;
 }
 
 .chat-input input {
     flex: 1;
-    border: none;
-    outline: none;
-    padding: 8px;
+    border: 1px solid #eee;
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 25px;
 }
 
 .chat-input button {
     border: none;
-    background: #2f6fdd;
+    background: var(--primary-color);
     color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .sidebar {
-        width: 60px;
+
+/* General Layout */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #333;
+}
+
+.main-content {
+    margin-left: 260px;
+    /* Adjust based on your sidebar width */
+    padding: 40px;
+    min-height: 100vh;
+}
+
+/* Sidebar Placeholder (If not already styled) */
+.sidebar {
+    width: 260px;
+    position: fixed;
+    height: 100%;
+    background: #fff;
+    border-right: 1px solid #e0e0e0;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+
+/* Table Enhancements */
+.table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #6c757d;
+    border-top: none;
+    padding: 15px;
+}
+
+.table tbody td {
+    padding: 18px 15px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #fdfdfd;
+}
+
+/* Job Logo Icon (The Circle) */
+.job-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    /* Slightly rounded corners for a modern look */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #ff6b6b, #ee5253) !important;
+}
+
+.bg-secondary {
+    background: #e9ecef !important;
+    color: #adb5bd !important;
+}
+
+/* Typography & Icons */
+h2 {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.bi-geo-alt,
+.bi-briefcase {
+    margin-left: 8px;
+    margin-right: 2px;
+}
+
+/* Status Badges */
+.text-success {
+    color: #10b981 !important;
+    /* A more modern emerald green */
+}
+
+/* Buttons */
+.btn-light {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+.btn-light:hover {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+/* --- Job List Specific Styling --- */
+.job-logo {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* --- CV Manager Refinements --- */
+
+/* Fix table row spacing and vertical alignment */
+.table.align-middle tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table.align-middle tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* Document Icon Box */
+.bi-file-earmark-pdf {
+    background: #fff0f0;
+    padding: 12px;
+    border-radius: 10px;
+    color: #e63946 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Action Button Styling */
+.btn-group .btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Status Badge refinement */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+}
+
+/* Upload Button spacing */
+.mt-3 .btn-primary {
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(13, 71, 161, 0.2);
+}
+
+/* --- Mobile Fix for CV Manager --- */
+@media (max-width: 991px) {
+
+     .sidebar.active {
+        left: 0;
+        /* Slide in */
+    }
+    .content {
+        /* margin-left: 0 !important; */
+        padding: 20px !important;
+        width: 100% !important;
     }
 
+    /* Convert row to card on small screens */
+    .table thead { display: none; }
+    
+    .table tbody tr {
+        display: block;
+        border: 1px solid #eee;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #fff;
+    }
+
+    .table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: none !important;
+        padding: 10px 0 !important;
+    }
+
+    /* Title cell takes full width */
+    .table td:first-child {
+        border-bottom: 1px solid #f8f9fa !important;
+        margin-bottom: 10px;
+        justify-content: flex-start;
+    }
+
+    .btn-group {
+        width: 100%;
+        gap: 8px;
+    }
+    
+    .btn-group .btn {
+        flex: 1;
+        justify-content: center;
+        border-radius: 6px !important; /* Break the group styling on mobile */
+    }
+}
+
+/* --- Mobile Responsive Table for Applied Jobs --- */
+@media (max-width: 768px) {
+
+    /* Ensure the container doesn't get hidden */
     .main-content {
-        margin-left: 60px;
+        margin-left: 0 !important;
+        padding: 15px !important;
+    }
+
+    /* Convert Table to Stacked Cards */
+    .table thead {
+        display: none;
+        /* Hide headers on mobile */
+    }
+
+    .table,
+    .table tbody,
+    .table tr,
+    .table td {
+        display: block;
+        width: 100%;
+    }
+
+    .table tr {
+        margin-bottom: 15px;
+        border: 1px solid #eee !important;
+        border-radius: 12px;
+        padding: 10px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .table td {
+        border: none !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 10px !important;
+    }
+
+    /* Add context labels using CSS before the data */
+    .table td:nth-of-type(2):before {
+        content: "Applied on:";
+        font-weight: 600;
+        color: #888;
+    }
+
+    .table td:nth-of-type(3):before {
+        content: "Status:";
+        font-weight: 600;
+        color: #888;
+    }
+
+    .table td:nth-of-type(4):before {
+        content: "Action:";
+        font-weight: 600;
+        color: #888;
+    }
+
+    /* Fix for the first cell (Title and Logo) */
+    .table td:first-child {
+        display: block;
+        /* Stack logo and text vertically or stay horizontal */
+        border-bottom: 1px solid #f0f0f0 !important;
+        margin-bottom: 10px;
+        padding-bottom: 15px !important;
+    }
+
+    .job-logo {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+
+    /* Make status text stand out */
+    .fw-semibold {
+        font-size: 0.9rem;
+        padding: 4px 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+    }
+     .sidebar.active {
+        left: 0;
+        /* Slide in */
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .main-content {
+        margin-left: 0;
         padding: 20px;
     }
+}
 
-    .sidebar a span {
-        display: none;
-    }
-
-    .sidebar a i {
-        margin-right: 0;
+/* Responsive  index*/
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
     }
 
     .stats-grid {
         grid-template-columns: 1fr;
     }
+     .sidebar.active {
+        left: 0;
+        /* Slide in */
+    }
+}
 
+/* Responsive message */
+/* --- Improved Responsive Alignments --- */
+
+@media (max-width: 768px) {
+
+    /* 1. Reduce Sidebar Margin so content moves to the left edge */
+    .main-content,
     .content {
-        margin-left: 60px;
-        /* if sidebar collapses */
-        padding: 20px;
+        margin-left: 0 !important;
+        padding: 10px;
     }
 
-    .main-content {
-        margin-left: 60px;
-        /* if sidebar collapses */
-        padding: 20px;
+    /* 2. Chat Container adjustments */
+    .chat-container {
+        height: calc(100vh - 120px);
+        flex-direction: row;
+        /* Keep them side by side but thinner */
+    }
+
+    /* 3. Shrink the user list sidebar to icon-only */
+    .chat-sidebar {
+        width: 70px !important;
+        min-width: 70px;
+    }
+
+    /* Hide text elements in the sidebar to prevent overflow */
+    .chat-sidebar .search-box input,
+    .chat-sidebar .user-info,
+    .chat-sidebar .meta,
+    .chat-sidebar .search-box i {
+        display: none !important;
+    }
+
+    .chat-user {
+        justify-content: center;
+        padding: 15px 5px;
+    }
+
+    .chat-user img {
+        margin-right: 0;
+        width: 40px;
+        height: 40px;
+    }
+
+    /* 4. Ensure the Chat Main area takes the rest of the space */
+    .chat-main {
+        flex: 1;
+        min-width: 0;
+        /* Prevents flex items from bulging */
+    }
+
+    /* 5. Adjust Message Bubbles for smaller screens */
+    .message {
+        max-width: 85%;
+        /* Give more room for text on mobile */
+        font-size: 0.85rem;
+    }
+
+    .chat-header h6 {
+        font-size: 0.9rem;
+    }
+
+    /* 6. Fix Stats Grid on Mobile */
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns instead of 4 */
+        gap: 10px;
+    }
+
+     .sidebar.active {
+        left: 0;
+        /* Slide in */
+    }
+}
+
+/* Extra Small Devices (Phones) */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        /* Stack stats in 1 column */
+    }
+
+    .chat-header .header-actions {
+        display: none;
+        /* Hide call/video icons to save space */
+    }
+
+     .sidebar.active {
+        left: 0;
+        /* Slide in */
+    }
+}
+
+/* Mobile Viewports */
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        left: -240px;
+        /* Hide sidebar */
+    }
+
+    .sidebar.active {
+        left: 0;
+        /* Slide in */
     }
 
     .main-content,
     .content {
-        margin-left: 60px;
-        padding: 20px;
+        margin-left: 0 !important;
+        padding: 15px;
+    }
+
+    .sidebar.collapsed {
+        width: 240px;
+        /* Reset collapse on mobile */
+    }
+}
+
+/* Responsive Padding Fix */
+.content.p-4 {
+    padding: 2rem !important; /* Standard padding */
+}
+
+@media (max-width: 768px) {
+    .content.p-4 {
+        padding: 1rem !important; /* Mobile par kam padding */
+        margin-top: 60px; /* Space for mobile toggle */
+    }
+    
+    .w-50 {
+        width: 100% !important; /* Mobile par card full width ho jaye */
+    }
+}
+
+/* Custom Input Styling */
+.custom-input {
+    border: 2px dashed #dee2e6;
+    padding: 20px;
+    text-align: center;
+}
+
+.custom-input:focus {
+    border-color: #0d47a1;
+    box-shadow: none;
+}
+
+/* 3-Dot Menu Styling */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+/* ========================================= */
+/* RESPONSIVE DESIGN FOR MOBILE SCREENS      */
+/* ========================================= */
+@media (max-width: 768px) {
+    /* Show mobile hamburger toggle */
+    .mobile-toggle {
+        display: block !important;
+    }
+    
+    /* Hide sidebar by default */
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        width: 250px !important;
+        z-index: 1050 !important;
+    }
+    
+    /* Show sidebar when active */
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    /* Remove main content margin on mobile */
+    .main-content, .content {
+        margin-left: 0 !important;
+        padding: 15px !important;
+    }
+    
+    /* Stats grid column layout - force single column */
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Ensure tables can scroll horizontally */
+    .table-responsive,
+    .content-card {
+        overflow-x: auto;
+    }
+    
+    /* Top Navbar adjustments */
+    .top-navbar {
+        margin: -15px -15px 15px -15px !important;
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .nav-right {
+        width: 100%;
+        justify-content: space-between;
     }
 }

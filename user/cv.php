@@ -37,6 +37,7 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>CV Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -140,6 +141,34 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
             }
         });
     }
+
+    
+    function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth <= 768) {
+        // Mobile: Slide in/out
+        sidebar.classList.toggle('active');
+    } else {
+        // Desktop: Shrink/Expand
+        sidebar.classList.toggle('collapsed');
+    }
+}
+
+// Optional: Close sidebar when clicking outside on mobile
+document.addEventListener('click', function(event) {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.querySelector('.mobile-toggle');
+    
+    if (window.innerWidth <= 768) {
+        if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target) && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+        }
+    }
+});
+
     </script>
+    <script src="user.js"></script>
 </body>
 </html>

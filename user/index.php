@@ -88,16 +88,19 @@ function dashboard_status_class(string $status): string
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>CareerHunt Dashboard</title>
     <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="user\css\index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="user.css">
 </head>
+
 <body>
     <?php include 'sidebar.php'; ?>
 
@@ -110,91 +113,99 @@ function dashboard_status_class(string $status): string
                 <i class="bi bi-search"></i>
                 <i class="bi bi-bell"></i>
                 <div class="profile-box">
-                    <img src="<?php echo htmlspecialchars($profile_image_src); ?>" class="nav-profile" style="object-fit:cover;width:40px;height:40px;">
+                    <img src="<?php echo htmlspecialchars($profile_image_src); ?>" class="nav-profile"
+                        style="object-fit:cover;width:40px;height:40px;">
                     <span><?php echo htmlspecialchars($profile_full_name); ?></span>
                 </div>
             </div>
         </nav>
 
-          <div class="container-fluid p-4">
-        <!-- Welcome Section -->
-        <div class="mb-4">
-            <h3 class="fw-bold">Welcome back, Candidate! 👋</h3>
-            <p class="text-muted">Here is what's happening with your job applications today.</p>
-        </div>
+        <div class="container-fluid p-4">
+            <!-- Welcome Section -->
+            <div class="mb-4">
+                <h3 class="fw-bold">Welcome back, Candidate! 👋</h3>
+                <p class="text-muted">Here is what's happening with your job applications today.</p>
+            </div>
 
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon blue"><i class="bi bi-briefcase"></i></div>
-                <div class="stat-info">
-                    <h4><?php echo (int) $stats['applied_jobs']; ?></h4>
-                    <p>Applied Jobs</p>
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="bi bi-briefcase"></i></div>
+                    <div class="stat-info">
+                        <h4><?php echo (int) $stats['applied_jobs']; ?></h4>
+                        <p>Applied Jobs</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="bi bi-star"></i></div>
+                    <div class="stat-info">
+                        <h4><?php echo (int) $stats['shortlisted']; ?></h4>
+                        <p>Shortlisted</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="bi bi-bell"></i></div>
+                    <div class="stat-info">
+                        <h4><?php echo (int) $stats['alerts']; ?></h4>
+                        <p>Job Alerts</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="bi bi-chat-dots"></i></div>
+                    <div class="stat-info">
+                        <h4><?php echo (int) $stats['messages']; ?></h4>
+                        <p>Messages</p>
+                    </div>
                 </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon orange"><i class="bi bi-star"></i></div>
-                <div class="stat-info">
-                    <h4><?php echo (int) $stats['shortlisted']; ?></h4>
-                    <p>Shortlisted</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon green"><i class="bi bi-bell"></i></div>
-                <div class="stat-info">
-                    <h4><?php echo (int) $stats['alerts']; ?></h4>
-                    <p>Job Alerts</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon purple"><i class="bi bi-chat-dots"></i></div>
-                <div class="stat-info">
-                    <h4><?php echo (int) $stats['messages']; ?></h4>
-                    <p>Messages</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- Recent Jobs Table -->
-        <div class="content-card mt-4">
-            <div class="card-header-flex">
-                <h5>Recent Applied Jobs</h5>
-                <a href="applied.php" class="btn-view-all">View All</a>
-            </div>
-            <div class="table-responsive">
-                <table class="table custom-table">
-                    <thead>
-                        <tr>
-                            <th>Job Title</th>
-                            <th>Company</th>
-                            <th>Date Applied</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($recentApplied)): ?>
+            <!-- Recent Jobs Table -->
+            <div class="content-card mt-4">
+                <div class="card-header-flex">
+                    <h5>Recent Applied Jobs</h5>
+                    <a href="applied.php" class="btn-view-all">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table custom-table">
+                        <thead>
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">No applications found for your account.</td>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Date Applied</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
-                        <?php else: ?>
-                            <?php foreach ($recentApplied as $application): ?>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($recentApplied)): ?>
                                 <tr>
-                                    <td><strong><?php echo user_esc((string) $application['title']); ?></strong></td>
-                                    <td><?php echo user_esc((string) $application['company_name']); ?></td>
-                                    <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
-                                    <td><span class="badge <?php echo dashboard_status_class((string) $application['status']); ?>"><?php echo user_esc(ucfirst((string) $application['status'])); ?></span></td>
-                                    <td><a class="btn-action" href="../job-details.php?id=<?php echo (int) $application['job_id']; ?>"><i class="bi bi-eye"></i></a></td>
+                                    <td colspan="5" class="text-center text-muted py-4">No applications found for your
+                                        account.</td>
                                 </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            <?php else: ?>
+                                <?php foreach ($recentApplied as $application): ?>
+                                    <tr>
+                                        <td><strong><?php echo user_esc((string) $application['title']); ?></strong></td>
+                                        <td><?php echo user_esc((string) $application['company_name']); ?></td>
+                                        <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?>
+                                        </td>
+                                        <td><span
+                                                class="badge <?php echo dashboard_status_class((string) $application['status']); ?>"><?php echo user_esc(ucfirst((string) $application['status'])); ?></span>
+                                        </td>
+                                        <td><a class="btn-action"
+                                                href="../job-details.php?id=<?php echo (int) $application['job_id']; ?>"><i
+                                                    class="bi bi-eye"></i></a></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     <script src="user.js"></script>
 </body>
+
 </html>

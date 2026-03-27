@@ -257,6 +257,25 @@ function initializeLoginListeners() {
     }
 }
 
+// Login Event Listeners
+function initializeLoginListeners() {
+    const loginForm = document.getElementById('adminLoginForm');
+    const togglePassword = document.getElementById('togglePassword');
+    const logoutBtn = document.getElementById('adminLogoutBtn');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleAdminLogin);
+    }
+    
+    if (togglePassword) {
+        togglePassword.addEventListener('click', togglePasswordVisibility);
+    }
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleAdminLogout);
+    }
+}
+
 // Event Listeners
 
 function initializeEventListeners() {

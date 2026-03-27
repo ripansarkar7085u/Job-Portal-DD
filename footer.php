@@ -4,7 +4,6 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-widget">
-                        <!-- <img src="photos\job_logo.png" alt="CareerHunt" class="footer-logo"> -->
                          <a href="index.php">CareerHunt</a>
                         <p>CareerHunt is a leading job portal connecting talented professionals with top companies worldwide.</p>
                         <div class="social-links">
@@ -17,27 +16,13 @@
                 </div>
                 <div class="col-lg-2 col-md-6">
                     <div class="footer-widget">
-                        <h5>For Candidates</h5>
                         <ul>
                             <li><a href="#">Browse Jobs</a></li>
                             <li><a href="companies.php">Browse Companies</a></li>
-                            <li><a href="#">Candidate Dashboard</a></li>
-                            <li><a href="#">Job Alerts</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-widget">
-                        <h5>For Employers</h5>
-                        <ul>
-                            <li><a href="#">Post a Job</a></li>
-                            <li><a href="#">Browse Candidates</a></li>
-                            <li><a href="#">Employer Dashboard</a></li>
-                            <li><a href="#">Pricing</a></li>
-                            <li><small>Company accounts are created by super admin. Contact admin for credentials.</small></li>
-                        </ul>
-                    </div>
-                </div>
+        
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-widget">
                         <h5>Contact Us</h5>
