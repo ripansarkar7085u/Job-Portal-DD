@@ -338,7 +338,7 @@ async function handleUserRegister(event) {
         closeAuthModalIfPresent();
 
         setTimeout(() => {
-            window.location.href = data.redirect || appUrl('/user/dashboard.php');
+            window.location.href = data.redirect || appUrl('/user/index.php');
         }, 600);
     } catch (error) {
         showAlert(error.message, 'danger');
