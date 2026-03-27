@@ -420,49 +420,42 @@ if (session_status() == PHP_SESSION_NONE) {
                 <p>Trusted by thousands of companies around the world</p>
             </div>
 
-            <div class="row">
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="company-card">
-                        <img src="photos\google.webp" alt="Company Logo">
-                        <h5>Google</h5>
-                        <p>15 Open Jobs</p>
-                        <a href="#">View Jobs</a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="company-card">
-                        <img src="photos\Microsoft.png" alt="Company Logo">
-                        <h5>Microsoft</h5>
-                        <p>12 Open Jobs</p>
-                        <a href="#">View Jobs</a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="company-card">
-                        <img src="photos\amazon.png" alt="Company Logo">
-                        <h5>Amazon</h5>
-                        <p>10 Open Jobs</p>
-                        <a href="#">View Jobs</a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-                    <div class="company-card">
-                        <img src="photos\facebook.webp">
-                        <h5>Facebook</h5>
-                        <p>8 Open Jobs</p>
-                        <a href="#">View Jobs</a>
-                    </div>
-                </div>
-
+            <div class="row" id="homepageCompaniesRow">
+                <div class="text-center w-100 py-4" id="companiesLoading">Loading companies...</div>
             </div>
 
         </div>
 
     </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('api/homepage_companies.php')
+            .then(res => res.json())
+            .then(data => {
+                const row = document.getElementById('homepageCompaniesRow');
+                const loading = document.getElementById('companiesLoading');
+                if (!data.success || !Array.isArray(data.companies) || data.companies.length === 0) {
+                    loading.textContent = 'No companies found.';
+                    return;
+                }
+                loading.remove();
+                data.companies.forEach(company => {
+                    const col = document.createElement('div');
+                    col.className = 'col-lg-3 col-md-6';
+                    col.innerHTML = `
+                        <div class="company-card">
+                            <img src="${company.logo}" alt="Company Logo">
+                            <h5>${company.name}</h5>
+                            <p>${company.jobs_count} Open Jobs</p>
+                            <a href="company-detail.php?id=${company.id}">View Jobs</a>
+                        </div>
+                    `;
+                    row.appendChild(col);
+                });
+            });
+    });
+    </script>
 
     <section id="news" class="job-news py-5">
         <div class="container">
