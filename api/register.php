@@ -73,7 +73,7 @@ if (auth_table_exists($conn, 'companies')) {
     }
 }
 
-$passwordHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+$passwordHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 6]);
 
 $insert = $conn->prepare('INSERT INTO users (full_name, email, password, user_type, phone) VALUES (?, ?, ?, ?, ?)');
 $insert->bind_param('sssss', $fullName, $email, $passwordHash, $userType, $phone);

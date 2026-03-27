@@ -20,10 +20,12 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === '') {
     auth_json_response(422, ['success' => false, 'message' => 'Valid email and password are required.']);
 }
 
-$rateKey = auth_get_client_ip() . '|' . $email;
-if (!auth_rate_limit_check($conn, 'user_login', $rateKey)) {
-    auth_json_response(429, ['success' => false, 'message' => 'Too many attempts. Try again later.']);
-}
+
+// Rate limiting temporarily disabled for development
+// $rateKey = auth_get_client_ip() . '|' . $email;
+// if (!auth_rate_limit_check($conn, 'user_login', $rateKey)) {
+//     auth_json_response(429, ['success' => false, 'message' => 'Too many attempts. Try again later.']);
+// }
 
 $stmt = $conn->prepare('SELECT id, full_name, email, password, user_type, is_active FROM users WHERE email = ? LIMIT 1');
 $stmt->bind_param('s', $email);
@@ -31,8 +33,9 @@ $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
+
 if (!$user || !(bool) $user['is_active'] || !password_verify($password, $user['password'])) {
-    auth_rate_limit_record_failure($conn, 'user_login', $rateKey);
+    // auth_rate_limit_record_failure($conn, 'user_login', $rateKey);
     auth_json_response(401, ['success' => false, 'message' => 'Invalid email or password.']);
 }
 
@@ -46,7 +49,8 @@ if (password_needs_rehash($user['password'], PASSWORD_BCRYPT, ['cost' => 6])) {
     }
 }
 
-auth_rate_limit_clear($conn, 'user_login', $rateKey);
+
+// auth_rate_limit_clear($conn, 'user_login', $rateKey);
 
 auth_start_user_session($user);
 
