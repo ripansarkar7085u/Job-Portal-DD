@@ -82,26 +82,19 @@
     </div>
 
     <div class="sidebar-menu">
-
-        <a href="javascript:void(0)" class="d-none d-md-flex" onclick="toggleSidebar()">
-            <i class="bi bi-arrow-left-right"></i> <span>Collapse Menu</span>
+        <a href="index.php" class="active"><i class="bi bi-house"></i> Dashboard</a>
+        <a href="profile.php"><i class="bi bi-person"></i> My Profile</a>
+        <a href="resume.php"><i class="bi bi-file-earmark-text"></i> My CV</a>
+        <a href="applied.php"><i class="bi bi-briefcase"></i> Applied Jobs</a>
+        <a href="alerts.php"><i class="bi bi-bell"></i> Job Alerts</a>
+        <a href="shortlisted.php"><i class="bi bi-bookmark"></i> Shortlisted Jobs</a>
+        <a href="cv.php"><i class="bi bi-file-earmark"></i> CV Manager</a>
+        <a href="messages.php"><i class="bi bi-chat"></i> Messages</a>
+        <a href="password.php"><i class="bi bi-lock"></i> Change Password</a>
+        <a href="logout.php">
+            <i class="bi bi-box-arrow-right"></i> Logout
         </a>
-        <hr>
-
-        <a href="index.php" class="nav-item active"><i class="bi bi-house"></i> <span>Dashboard</span></a>
-        <a href="profile.php" class="nav-item"><i class="bi bi-person"></i> <span>My Profile</span></a>
-        <a href="resume.php" class="nav-item"><i class="bi bi-file-earmark-text"></i> <span>My CV</span></a>
-        <a href="applied.php" class="nav-item"><i class="bi bi-briefcase"></i> <span>Applied Jobs</span></a>
-        <a href="alerts.php" class="nav-item"><i class="bi bi-bell"></i> <span>Job Alerts</span></a>
-        <a href="shortlisted.php" class="nav-item"><i class="bi bi-bookmark"></i> <span>Shortlisted Jobs</span></a>
-        <a href="cv.php" class="nav-item"><i class="bi bi-file-earmark"></i> <span>CV Manager</span></a>
-        <a href="messages.php" class="nav-item"><i class="bi bi-chat"></i> <span>Messages</span></a>
-        <a href="password.php" class="nav-item"><i class="bi bi-lock"></i> <span>Change Password</span></a>
-        
-        <hr class="mx-3 my-2 text-secondary">
-        
-        <a href="logout.php" class="nav-item"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></a>
-        <a href="delete.php" class="nav-item text-danger"><i class="bi bi-trash"></i> <span>Delete Profile</span></a>
+        <a href="delete.php" class="text-danger"><i class="bi bi-trash"></i> Delete Profile</a>
     </div>
 </div>
 
