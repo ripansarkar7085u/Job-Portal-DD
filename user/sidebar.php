@@ -87,7 +87,6 @@
         <a href="resume.php"><i class="bi bi-file-earmark-text"></i> My CV</a>
         <a href="applied.php"><i class="bi bi-briefcase"></i> Applied Jobs</a>
         <a href="alerts.php"><i class="bi bi-bell"></i> Job Alerts</a>
-        <a href="shortlisted.php"><i class="bi bi-bookmark"></i> Shortlisted Jobs</a>
         <a href="cv.php"><i class="bi bi-file-earmark"></i> CV Manager</a>
         <a href="messages.php"><i class="bi bi-chat"></i> Messages</a>
         <a href="password.php"><i class="bi bi-lock"></i> Change Password</a>
