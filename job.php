@@ -38,7 +38,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="container">
 
             <!-- Title -->
-            <div class="page-header-content">
+            <div class="page-header-content mt-4">
                 <h2 class="job">Browse Jobs</h2>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>

@@ -24,9 +24,10 @@ if ($stmtConversations) {
 }
 
 $activeCompanyId = isset($_GET['company_id']) ? (int) $_GET['company_id'] : 0;
-if ($activeCompanyId <= 0 && !empty($conversations)) {
-    $activeCompanyId = (int) $conversations[0]['company_id'];
-}
+// We no longer auto-select so mobile can show the chat list first
+// if ($activeCompanyId <= 0 && !empty($conversations)) {
+//     $activeCompanyId = (int) $conversations[0]['company_id'];
+// }
 
 $messages = [];
 $activeCompanyName = '';
@@ -66,7 +67,6 @@ if ($activeCompanyName === '' && !empty($conversations)) {
 
     <title>Messages</title>
     <link rel="stylesheet" href="user.css">
-    <link rel="stylesheet" href="user\css\message.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -84,7 +84,7 @@ if ($activeCompanyName === '' && !empty($conversations)) {
 
             <h2 class="mb-4">Messages</h2>
 
-            <div class="chat-container">
+            <div class="chat-container <?php echo $activeCompanyId > 0 ? 'has-active-chat' : ''; ?>">
 
                 <!-- USER LIST -->
 
@@ -121,10 +121,19 @@ if ($activeCompanyName === '' && !empty($conversations)) {
 
                 <div class="chat-main">
 
+                    <?php if ($activeCompanyId === 0): ?>
+                        <div class="empty-chat-state d-none d-md-flex flex-column align-items-center justify-content-center w-100 h-100" style="background-color: #f0f2f5;">
+                            <i class="bi bi-whatsapp mb-3 text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
+                            <h4 class="text-muted" style="font-weight: 300;">CareerHunt Messages</h4>
+                            <p class="text-muted">Select a conversation to start messaging.</p>
+                        </div>
+                    <?php else: ?>
+
                     <!-- HEADER -->
 
                     <div class="chat-header">
 
+                        <a href="messages.php" class="back-btn d-md-none me-3 mb-1 text-dark text-decoration-none"><i class="bi bi-arrow-left fs-5"></i></a>
                         <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($activeCompanyName !== '' ? $activeCompanyName : 'Company'); ?>&background=0d47a1&color=fff">
 
                         <div>
@@ -169,6 +178,8 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                             <i class="bi bi-send"></i>
                         </button>
                     </div>
+
+                    <?php endif; ?>
 
                 </div>
 

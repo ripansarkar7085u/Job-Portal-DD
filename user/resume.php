@@ -83,7 +83,7 @@ if (isset($_POST['upload'])) {
         <script>
             Swal.fire({
                 title: 'Uploaded!',
-                text: 'Your resume has been saved.',
+                text: 'Your CV has been saved.',
                 icon: 'success'
             });
         </script>

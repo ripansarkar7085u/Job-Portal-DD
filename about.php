@@ -90,7 +90,7 @@ if (session_status() == PHP_SESSION_NONE) {
             <!-- HERO + INTRO -->
             <div class="row align-items-center mb-5">
 
-                <div class="col-lg-6">
+                <div class="col-lg-4 mt-4">
                     <h1>About CareerHunt</h1>
 
                     <p class="mt-3">

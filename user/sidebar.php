@@ -5,12 +5,12 @@
 <div class="sidebar" id="sidebar">
     <div class="image">
         <a href="../index.php">
-            <img src="../photos/job_logo.png" alt="CareerHunt" width="120">
+            <img src="..\photos\job_logo-remove.png" alt="CareerHunt" width="120">
         </a>
     </div>
 
     <div class="sidebar-menu">
-        <a href="index.php" class="active"><i class="bi bi-house"></i> Dashboard</a>
+        <a href="index.php"><i class="bi bi-house"></i> Dashboard</a>
         <a href="profile.php"><i class="bi bi-person"></i> My Profile</a>
         <a href="resume.php"><i class="bi bi-file-earmark-text"></i> My CV</a>
         <a href="applied.php"><i class="bi bi-briefcase"></i> Applied Jobs</a>
@@ -41,11 +41,13 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentLocation = window.location.pathname;
     
     // Default to index.php if at the root user directory
-    if (currentLocation.endsWith('/user/') || currentLocation.endsWith('/user')) {
+    if (currentLocation.endsWith('/user/')) {
         currentLocation += 'index.php';
+    } else if (currentLocation.endsWith('/user')) {
+        currentLocation += '/index.php';
     }
     
-    const menuItems = document.querySelectorAll(".sidebar-menu a.nav-item");
+    const menuItems = document.querySelectorAll(".sidebar-menu a");
     
     menuItems.forEach(item => {
         item.classList.remove("active");
