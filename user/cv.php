@@ -63,8 +63,9 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
         
         <div class="card shadow-sm mt-3">
             <div class="card-body">
-                <table class="table align-middle">
-                    <thead class="table-light">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
                         <tr>
                             <th>CV Name</th>
                             <th>Date Uploaded</th>
@@ -104,12 +105,15 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
                         </tr>
                         <?php endwhile; ?>
                     </tbody>
-                </table>
+                    </table>
+                </div>
                 <div class="mt-3">
                     <a href="resume.php" class="btn btn-primary"><i class="bi bi-upload"></i> Upload New CV</a>
                 </div>
             </div>
         </div>
+        </section>
+    </main>
     </div>
 
     <script>

@@ -227,6 +227,7 @@ a {
     flex: 1;
     margin-left: var(--sidebar-width);
     transition: var(--transition);
+    padding-top: var(--header-height);
 }
 
 /* ===================================
@@ -240,8 +241,11 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    transition: var(--transition);
     z-index: 50;
 }
 
@@ -1407,6 +1411,10 @@ select.form-control {
     
     .main-content {
         margin-left: 0;
+    }
+    
+    .main-header {
+        left: 0;
     }
     
     .menu-toggle {
