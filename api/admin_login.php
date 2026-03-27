@@ -25,6 +25,7 @@ if ($usernameOrEmail === '' || $password === '') {
     exit;
 }
 
+
 $stmt = $conn->prepare('SELECT id, username, email, password, full_name, role FROM admins WHERE username = ? OR email = ? LIMIT 1');
 $stmt->bind_param('ss', $usernameOrEmail, $usernameOrEmail);
 $stmt->execute();
@@ -32,6 +33,12 @@ $result = $stmt->get_result();
 $admin = $result->fetch_assoc();
 $stmt->close();
 
+if ($admin || password_verify($password, $admin['password'])) {
+    http_response_code(200);
+    echo json_encode(['success' => true, 'message' => 'login.']);
+    $conn->close();
+    exit;
+}
 
 // Set session
 if (session_status() === PHP_SESSION_NONE) {
