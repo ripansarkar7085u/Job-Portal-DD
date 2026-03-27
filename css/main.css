@@ -660,6 +660,7 @@ section .section-title h2 {
 
 /* IMAGE SAME SIZE */
 .company-card img {
+    border-radius: 50%;
     height: 80px;
     width: 80px;
     object-fit: contain;

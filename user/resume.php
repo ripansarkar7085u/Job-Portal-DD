@@ -62,7 +62,7 @@ if (isset($_POST['upload'])) {
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <span class="fw-bold text-primary">Select your CV</span>
                     </div>
-                    <div class="card-body p-4">
+                    <div class="card-body p-2">
                         <form method="post" enctype="multipart/form-data" id="uploadForm">
                             <div class="mb-3">
                                 <label class="form-label text-muted small">Only PDF files (Max 2MB)</label>

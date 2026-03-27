@@ -711,6 +711,7 @@ body {
 
 /* Typography & Icons */
 h2 {
+    margin-left: 10px;
     font-weight: 700;
     color: #1a1a1a;
 }
@@ -1092,7 +1093,7 @@ h2 {
 
 @media (max-width: 768px) {
     .content.p-4 {
-        padding: 1rem !important; /* Mobile par kam padding */
+        padding: 0rem !important; /* Mobile par kam padding */
         margin-top: 60px; /* Space for mobile toggle */
     }
     

@@ -33,13 +33,29 @@
 
                     <form id="passwordForm" autocomplete="off">
                         <div id="passwordMsg"></div>
-                        <input type="password" name="current_password" class="form-control mb-3"
-                            placeholder="Current Password" required>
-                        <input type="password" name="new_password" class="form-control mb-3" placeholder="New Password"
-                            required>
-                        <input type="password" name="confirm_password" class="form-control mb-3"
-                            placeholder="Confirm Password" required>
-                        <button type="submit" class="btn btn-theme mt-2">
+                        
+                        <div class="input-group mb-3">
+                            <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Current Password" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="current_password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <input type="password" name="new_password" id="new_password" class="form-control" placeholder="New Password" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="new_password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="confirm_password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-theme mt-2">
                             Update Password
                         </button>
                     </form>
@@ -82,6 +98,25 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
 });
 </script>
 </body>
