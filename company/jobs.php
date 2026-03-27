@@ -175,7 +175,7 @@ if (session_status() == PHP_SESSION_NONE) {
         let activeFilter = 'all';
         let searchQuery = '';
         let currentPage = 1;
-        const perPage = 10;
+        const perPage = 5;
 
         function showToast(message, type = 'info') {
             if (window.companyDashboard && typeof window.companyDashboard.showToast === 'function') {
@@ -360,8 +360,9 @@ if (session_status() == PHP_SESSION_NONE) {
             
             paginationContainer.innerHTML = '';
             
-            const totalPages = Math.ceil(totalMatches / perPage);
-            if (totalPages <= 1) return;
+            let totalPages = Math.ceil(totalMatches / perPage);
+            if (totalPages < 1) totalPages = 1;
+            // Always show pagination container even for 1 page
             
             const prevBtn = document.createElement('button');
             prevBtn.className = 'pagination-btn';

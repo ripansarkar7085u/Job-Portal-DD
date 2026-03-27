@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let allCompanies = [];
     let filteredCompanies = [];
     let currentPage = 1;
-    const perPage = 12;
+    const perPage = 6;
 
     function buildSelectOptions(select, values, defaultLabel) {
         const unique = Array.from(new Set(values.filter(Boolean)));
@@ -154,11 +154,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!paginationList) return;
         
         paginationList.innerHTML = '';
-        const totalPages = Math.ceil(filteredCompanies.length / perPage);
-
-        if (totalPages <= 1) {
-            return;
-        }
+        let totalPages = Math.ceil(filteredCompanies.length / perPage);
+        if (totalPages < 1) totalPages = 1;
 
         const prevLi = document.createElement('li');
         prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;

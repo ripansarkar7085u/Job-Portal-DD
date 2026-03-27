@@ -51,7 +51,7 @@ if (!empty($user_data['profile_image'])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -61,10 +61,20 @@ if (!empty($user_data['profile_image'])) {
 
 <body>
 
-    <?php include 'sidebar.php'; ?>
+    <div class="user-container" id="userDashboard">
+        <?php include 'sidebar.php'; ?>
 
-    <div class="content">
-        <h2 class="page-title">My Profile</h2>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">My Profile</h1>
+                </div>
+            </header>
+
+            <section class="content-section">
 
         <form action="save_profile.php" method="POST" enctype="multipart/form-data">
             <div class="card-box">
@@ -182,8 +192,11 @@ if (!empty($user_data['profile_image'])) {
                 </div>
             </div>
         </form>
+    </section>
+    </main>
+    </div>
 
-    <script src="user.js"></script>
+    <!-- Removed old user.js -->
     <script>
     // 2. Function to preview image
     function previewImage(input) {

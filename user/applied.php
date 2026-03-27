@@ -39,7 +39,7 @@ function applied_status_class(string $status): string
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Applied Jobs</title>
     <link rel="stylesheet" href="user.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -48,16 +48,28 @@ function applied_status_class(string $status): string
 </head>
 
 <body>
+    <div class="user-container" id="userDashboard">
+        <?php include 'sidebar.php'; ?>
 
-    <?php include 'sidebar.php'; ?>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Applied Jobs</h1>
+                </div>
+            </header>
 
-    <div class="main-content">
-        <h2>Applied Jobs</h2>
-        <p class="text-muted">Ready to jump back in?</p>
+            <section class="content-section">
+                <div class="page-header mb-4">
+                    <p class="text-muted">Ready to jump back in?</p>
+                </div>
 
-        <div class="card p-3 shadow-sm border-0">
-            <table class="table align-middle table-hover mb-0">
-                <thead class="table-light">
+                <div class="dashboard-card shadow-sm border-0">
+                    <div class="table-responsive card-body p-0">
+                        <table class="data-table">
+                            <thead>
                     <tr>
                         <th>Job Title</th>
                         <th>Date Applied</th>
@@ -65,9 +77,9 @@ function applied_status_class(string $status): string
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="appliedTableBody">
                     <?php if (empty($appliedRows)): ?>
-                        <tr>
+                        <tr class="no-data-row">
                             <td colspan="4" class="text-center text-muted py-4">No applied jobs found for your account.</td>
                         </tr>
                     <?php else: ?>
@@ -79,7 +91,7 @@ function applied_status_class(string $status): string
                                         <div>
                                             <strong><?php echo user_esc($row['title']); ?></strong><br>
                                             <small class="text-muted">
-                                                <i class="bi bi-briefcase"></i> <?php echo user_esc($row['company_name']); ?>
+                                                <i class="bi bi-briefcase"></i> <?php echo user_esc($row['company_name']); ?> | 
                                                 <i class="bi bi-geo-alt"></i> <?php echo user_esc($row['location'] ?: 'Not specified'); ?>
                                             </small>
                                         </div>
@@ -88,17 +100,86 @@ function applied_status_class(string $status): string
                                 <td><?php echo user_esc(date('M j, Y', strtotime((string) $row['applied_at']))); ?></td>
                                 <td class="fw-semibold <?php echo applied_status_class((string) $row['status']); ?>"><?php echo user_esc(ucfirst((string) $row['status'])); ?></td>
                                 <td>
-                                    <a class="btn btn-light btn-sm" href="../job-details.php?id=<?php echo (int) $row['job_id']; ?>"><i class="bi bi-eye"></i></a>
+                                    <a class="action-btn view" href="../job-details.php?id=<?php echo (int) $row['job_id']; ?>"><i class="bi bi-eye"></i></a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
+            </div>
+            <!-- Pagination -->
+            <div class="pagination mt-4 d-flex justify-content-center gap-2" id="paginationContainer"></div>
         </div>
+        </section>
+    </main>
     </div>
 
-    <script src="user.js"></script>
+    <!-- No user.js here to avoid conflicts -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tbody = document.getElementById('appliedTableBody');
+        if (!tbody) return;
+        
+        const rows = Array.from(tbody.querySelectorAll('tr:not(.no-data-row)'));
+        if (rows.length === 0 || (rows.length === 1 && rows[0].querySelector('td[colspan]'))) return;
+
+        const perPage = 5;
+        let currentPage = 1;
+        const totalMatches = rows.length;
+        let totalPages = Math.ceil(totalMatches / perPage);
+        const paginationContainer = document.getElementById('paginationContainer');
+
+        function renderPagination() {
+            if (!paginationContainer) return;
+            paginationContainer.innerHTML = '';
+            
+            if (totalPages < 1) totalPages = 1;
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn';
+            prevBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => { if (currentPage > 1) { currentPage--; renderTable(); } };
+            paginationContainer.appendChild(prevBtn);
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) startPage = Math.max(1, endPage - 4);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => { currentPage = i; renderTable(); };
+                paginationContainer.appendChild(pageBtn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn';
+            nextBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => { if (currentPage < totalPages) { currentPage++; renderTable(); } };
+            paginationContainer.appendChild(nextBtn);
+        }
+
+        function renderTable() {
+            const startIndex = (currentPage - 1) * perPage;
+            const endIndex = startIndex + perPage;
+            
+            rows.forEach((row, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            renderPagination();
+        }
+
+        renderTable();
+    });
+    </script>
 </body>
 
 </html>

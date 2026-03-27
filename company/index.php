@@ -104,9 +104,9 @@ if ($companyId) {
                         <span class="company-role">Business Account</span>
                     </div>
                 </div>
-                <a href="../api/logout.php" class="logout-btn" id="logoutBtn" title="Logout">
+                <button class="logout-btn" id="logoutBtn" title="Logout">
                     <i class="bi bi-box-arrow-right"></i>
-                </a>
+                </button>
             </div>
         </aside>
 
@@ -143,9 +143,9 @@ if ($companyId) {
                                 <i class="bi bi-gear"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="../api/logout.php" class="dropdown-item text-danger">
+                            <button class="dropdown-item text-danger" id="dropdownLogout">
                                 <i class="bi bi-box-arrow-right"></i> Logout
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
