@@ -38,82 +38,51 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     </button>
 
     <div class="container my-5">
-
-        <!-- Banner -->
-        <div class="job-banner"></div>
-
-        <!-- Card -->
-        <div class="job-card">
-
-            <!-- Header -->
-            <div class="d-flex justify-content-between align-items-start">
-
-                <div class="d-flex gap-3">
-                    <img src="photos\font.jpg" class="company-logo">
-
-                    <div>
-                        <h3>Senior Frontend Developer</h3>
-                        <p class="text-muted mb-1">TechCorp Inc.</p>
-
-                        <div class="meta">
-                            <span><i class="bi bi-geo-alt"></i> Remote</span>
-                            <span><i class="bi bi-laptop"></i> Hybrid</span>
-                            <span><i class="bi bi-briefcase"></i> Mid Level</span>
+        <div id="jobDetailsLoading" class="text-center py-5">Loading job details...</div>
+        <div id="jobDetailsCard" style="display:none">
+            <div class="job-banner"></div>
+            <div class="job-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="d-flex gap-3">
+                        <img id="companyLogo" src="" class="company-logo">
+                        <div>
+                            <h3 id="jobTitle"></h3>
+                            <p class="text-muted mb-1" id="companyName"></p>
+                            <div class="meta">
+                                <span><i class="bi bi-geo-alt"></i> <span id="jobLocation"></span></span>
+                                <span><i class="bi bi-laptop"></i> <span id="jobType"></span></span>
+                                <span><i class="bi bi-briefcase"></i> <span id="jobLevel"></span></span>
+                            </div>
                         </div>
                     </div>
+                    <span class="badge bg-primary fs-6" id="jobCategory"></span>
                 </div>
-
-                <span class="badge bg-primary fs-6">Full-Time</span>
+                <div class="section">
+                    <h5><i class="bi bi-cash"></i> Salary</h5>
+                    <p class="fw-bold text-success" id="jobSalary"></p>
+                </div>
+                <div class="section">
+                    <h5>Job Description</h5>
+                    <p id="jobDescription"></p>
+                </div>
+                <div class="section">
+                    <h5>Requirements</h5>
+                    <ul id="jobRequirements"></ul>
+                </div>
+                <div class="section">
+                    <h5>Nice to Have</h5>
+                    <ul id="jobNiceToHave"></ul>
+                </div>
+                <div class="section">
+                    <h5>Skills</h5>
+                    <span id="jobSkills"></span>
+                </div>
+                <div class="section">
+                    <h5>Benefits</h5>
+                    <span id="jobBenefits"></span>
+                </div>
             </div>
-
-            <!-- Salary -->
-            <div class="section">
-                <h5><i class="bi bi-cash"></i> Salary</h5>
-                <p class="fw-bold text-success">$80,000 - $120,000 / Year</p>
-            </div>
-
-            <!-- Description -->
-            <div class="section">
-                <h5>Job Description</h5>
-                <p>
-                    We are looking for a passionate frontend developer to build modern,
-                    responsive web applications. You will work closely with designers,
-                    backend developers, and product managers.
-                </p>
-            </div>
-
-            <!-- Requirements -->
-            <div class="section">
-                <h5>Requirements</h5>
-                <ul>
-                    <li>2+ years experience in frontend development</li>
-                    <li>Strong knowledge of JavaScript & React</li>
-                    <li>Experience with REST APIs</li>
-                </ul>
-            </div>
-
-            <!-- Nice to Have -->
-            <div class="section">
-                <h5>Nice to Have</h5>
-                <ul>
-                    <li>TypeScript</li>
-                    <li>GraphQL</li>
-                </ul>
-            </div>
-
-            <!-- Skills -->
-            <div class="section">
-                <h5>Skills</h5>
-                <span class="tag">JavaScript</span>
-                <span class="tag">React</span>
-                <span class="tag">CSS</span>
-                <span class="tag">HTML</span>
-            </div>
-
-            <!-- Benefits -->
-            <div class="section">
-                <h5>Benefits</h5>
-                <span class="tag">Health Insurance</span>
+        </div>
                 <span class="tag">Remote Work</span>
                 <span class="tag">Paid Time Off</span>
             </div>
@@ -192,22 +161,75 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
     <?php include("footer.php") ?>
     <script>
-        document.getElementById('applyForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const jobId = Number(document.getElementById('applyJobId').value || 0);
-            if (!jobId) {
-                alert('This job is not available for application.');
-                return;
-            }
-
-            const coverLetter = document.getElementById('applyCoverLetter').value.trim();
-
-            try {
-                const response = await fetch('api/user_apply_job.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const jobId = urlParams.get('id') || 0;
+        fetch('api/job_details.php?id=' + jobId)
+            .then(res => res.json())
+            .then(data => {
+                const loading = document.getElementById('jobDetailsLoading');
+                const card = document.getElementById('jobDetailsCard');
+                if (!data.success || !data.job) {
+                    loading.textContent = data.message || 'Job not found.';
+                    return;
+                }
+                loading.style.display = 'none';
+                card.style.display = '';
+                const j = data.job;
+                document.getElementById('companyLogo').src = j.company_logo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(j.company_name || 'Company');
+                document.getElementById('jobTitle').textContent = j.title || '';
+                document.getElementById('companyName').textContent = j.company_name || '';
+                document.getElementById('jobLocation').textContent = j.location || '';
+                document.getElementById('jobType').textContent = j.type || '';
+                document.getElementById('jobLevel').textContent = j.level || '';
+                document.getElementById('jobCategory').textContent = j.category || '';
+                document.getElementById('jobSalary').textContent = j.salary || '';
+                document.getElementById('jobDescription').textContent = j.description || '';
+                // Requirements
+                const reqUl = document.getElementById('jobRequirements');
+                reqUl.innerHTML = '';
+                (j.requirements || []).forEach(r => {
+                    if (r.trim()) {
+                        const li = document.createElement('li');
+                        li.textContent = r;
+                        reqUl.appendChild(li);
+                    }
+                });
+                // Nice to have
+                const niceUl = document.getElementById('jobNiceToHave');
+                niceUl.innerHTML = '';
+                (j.nice_to_have || []).forEach(r => {
+                    if (r.trim()) {
+                        const li = document.createElement('li');
+                        li.textContent = r;
+                        niceUl.appendChild(li);
+                    }
+                });
+                // Skills
+                const skillsSpan = document.getElementById('jobSkills');
+                skillsSpan.innerHTML = '';
+                (j.tags || []).forEach(tag => {
+                    if (tag.trim()) {
+                        const span = document.createElement('span');
+                        span.className = 'tag';
+                        span.textContent = tag;
+                        skillsSpan.appendChild(span);
+                    }
+                });
+                // Benefits
+                const benefitsSpan = document.getElementById('jobBenefits');
+                benefitsSpan.innerHTML = '';
+                (j.benefits || []).forEach(b => {
+                    if (b.trim()) {
+                        const span = document.createElement('span');
+                        span.className = 'tag';
+                        span.textContent = b;
+                        benefitsSpan.appendChild(span);
+                    }
+                });
+            });
+    });
+    </script>
                     },
                     credentials: 'include',
                     body: JSON.stringify({

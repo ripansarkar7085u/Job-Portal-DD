@@ -1,0 +1,24 @@
+<?php
+require_once __DIR__ . '/../config/database.php';
+header('Content-Type: application/json');
+
+// Fetch all companies with jobs count
+$sql = "SELECT c.id, c.company_name, c.industry, c.location, c.company_size, c.founded, c.logo, COUNT(j.id) as jobs_count FROM companies c LEFT JOIN jobs j ON c.id = j.company_id GROUP BY c.id ORDER BY c.created_at DESC";
+$result = $conn->query($sql);
+$companies = [];
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $companies[] = [
+            'id' => (int)$row['id'],
+            'name' => $row['company_name'],
+            'industry' => $row['industry'] ?? '',
+            'location' => $row['location'] ?? '',
+            'company_size' => $row['company_size'] ?? '',
+            'founded' => $row['founded'] ?? '',
+            'logo' => $row['logo'] ?: ('https://ui-avatars.com/api/?name=' . urlencode($row['company_name']) . '&background=0d47a1&color=fff&rounded=true'),
+            'jobs_count' => (int)$row['jobs_count']
+        ];
+    }
+}
+echo json_encode(['success' => true, 'companies' => $companies]);
+$conn->close();

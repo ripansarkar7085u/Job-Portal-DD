@@ -1,76 +1,120 @@
-// Filter
+document.addEventListener('DOMContentLoaded', function () {
+    const companiesGrid = document.getElementById('companiesGrid');
+    const searchInput = document.getElementById('searchInput');
+    const locationFilter = document.getElementById('locationFilter');
+    const industryFilter = document.getElementById('industryFilter');
+    const sortBy = document.getElementById('sortBy');
+    const sizeCheckboxes = Array.from(document.querySelectorAll('.filter-widget .filter-title'))
+        .find(w => w.innerText === 'Company Size')?.parentElement.querySelectorAll('input[type="checkbox"]') || [];
+    const industryCheckboxes = Array.from(document.querySelectorAll('.filter-widget .filter-title'))
+        .find(w => w.innerText === 'Industry')?.parentElement.querySelectorAll('input[type="checkbox"]') || [];
+    const foundedCheckboxes = Array.from(document.querySelectorAll('.filter-widget .filter-title'))
+        .find(w => w.innerText === 'Founded')?.parentElement.querySelectorAll('input[type="checkbox"]') || [];
 
-document.getElementById("searchBtn").addEventListener("click", filterCompanies);
-document.getElementById("searchInput").addEventListener("keyup", filterCompanies);
+    let allCompanies = [];
+    let filteredCompanies = [];
 
-function filterCompanies() {
-    let search = document.getElementById("searchInput").value.toLowerCase();
-    let location = document.getElementById("locationFilter").value;
-    let industry = document.getElementById("industryFilter").value;
-
-    let sizeFilters = getCheckedValues("Company Size");
-    let industryCheckboxFilters = getCheckedValues("Industry");
-    let foundedFilters = getCheckedValues("Founded");
-
-    let cards = document.querySelectorAll(".company-card-v2");
-
-    cards.forEach(card => {
-        let name = card.dataset.name;
-        let cardLocation = card.dataset.location;
-        let cardIndustry = card.dataset.industry;
-        let cardSize = card.dataset.size;
-        let cardFounded = card.dataset.founded;
-
-        let match = true;
-
-        // Search filter
-        if (search && !name.includes(search)) {
-            match = false;
+    async function loadCompanies() {
+        companiesGrid.innerHTML = '<div class="text-center w-100 py-4" id="companiesLoading">Loading companies...</div>';
+        try {
+            const res = await fetch('api/companies_list.php');
+            const data = await res.json();
+            if (!data.success || !Array.isArray(data.companies)) {
+                companiesGrid.innerHTML = '<div class="alert alert-danger">Failed to load companies.</div>';
+                allCompanies = [];
+                filteredCompanies = [];
+                return;
+            }
+            allCompanies = data.companies;
+            renderCompanies(allCompanies);
+            filterCompanies();
+        } catch (err) {
+            companiesGrid.innerHTML = '<div class="alert alert-danger">Failed to load companies.</div>';
+            allCompanies = [];
+            filteredCompanies = [];
         }
+    }
 
-        // Location filter
-        if (location && cardLocation !== location) {
-            match = false;
+    function renderCompanies(companies) {
+        companiesGrid.innerHTML = '';
+        if (!companies.length) {
+            companiesGrid.innerHTML = '<div class="alert alert-info">No companies found.</div>';
+            return;
         }
+        companies.forEach(company => {
+            const card = document.createElement('div');
+            card.className = 'company-card-v2';
+            card.setAttribute('data-name', (company.name || '').toLowerCase());
+            card.setAttribute('data-location', company.location || '');
+            card.setAttribute('data-industry', company.industry || '');
+            card.setAttribute('data-size', company.company_size || '');
+            card.setAttribute('data-founded', company.founded || '');
+            card.innerHTML = `
+                <div class="company-card-header">
+                    <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
+                </div>
+                <div class="company-card-body">
+                    <div class="company-logo-wrapper">
+                        <img src="${company.logo}" alt="${company.name}">
+                    </div>
+                    <h4 class="company-name">${company.name}</h4>
+                    <span class="company-industry"><i class="bi bi-buildings"></i> ${company.industry || ''}</span>
+                    <div class="company-meta">
+                        <span><i class="bi bi-geo-alt"></i> ${company.location || ''}</span>
+                        <span><i class="bi bi-people"></i> ${company.company_size || ''} employees</span>
+                    </div>
+                </div>
+                <div class="company-card-footer">
+                    <span class="open-jobs">${company.jobs_count} Open Positions</span>
+                    <a href="company-detail.php?id=${company.id}" class="view-btn-link">View Company <i class="bi bi-arrow-right"></i></a>
+                </div>
+            `;
+            companiesGrid.appendChild(card);
+        });
+    }
 
-        // Dropdown industry filter
-        if (industry && cardIndustry !== industry) {
-            match = false;
-        }
+    function getCheckedValues(checkboxes) {
+        return Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+    }
 
-        // Sidebar industry filter
-        if (industryCheckboxFilters.length > 0 && !industryCheckboxFilters.includes(cardIndustry)) {
-            match = false;
-        }
+    function filterCompanies() {
+        let search = (searchInput.value || '').toLowerCase();
+        let location = locationFilter.value;
+        let industry = industryFilter.value;
+        let sizeFilters = getCheckedValues(sizeCheckboxes);
+        let industryCheckboxFilters = getCheckedValues(industryCheckboxes);
+        let foundedFilters = getCheckedValues(foundedCheckboxes);
 
-        // Size filter
-        if (sizeFilters.length > 0 && !sizeFilters.includes(cardSize)) {
-            match = false;
-        }
+        filteredCompanies = allCompanies.filter(company => {
+            let match = true;
+            if (search && !(company.name || '').toLowerCase().includes(search)) match = false;
+            if (location && company.location !== location) match = false;
+            if (industry && company.industry !== industry) match = false;
+            if (industryCheckboxFilters.length && !industryCheckboxFilters.includes(company.industry)) match = false;
+            if (sizeFilters.length && !sizeFilters.includes(company.company_size)) match = false;
+            if (foundedFilters.length && !foundedFilters.includes(company.founded)) match = false;
+            return match;
+        });
 
-        // Founded filter
-        if (foundedFilters.length > 0 && !foundedFilters.includes(cardFounded)) {
-            match = false;
-        }
+        // Sort
+        let sorted = [...filteredCompanies];
+        if (sortBy.value === 'name-asc') sorted.sort((a, b) => a.name.localeCompare(b.name));
+        else if (sortBy.value === 'name-desc') sorted.sort((a, b) => b.name.localeCompare(a.name));
+        else if (sortBy.value === 'jobs') sorted.sort((a, b) => b.jobs_count - a.jobs_count);
+        else sorted.sort((a, b) => b.id - a.id); // Newest first
 
-        card.style.display = match ? "block" : "none";
-    });
-}
+        renderCompanies(sorted);
+    }
 
-// Get checked checkbox values by section title
-function getCheckedValues(sectionTitle) {
-    let values = [];
-    document.querySelectorAll(".filter-widget").forEach(widget => {
-        if (widget.querySelector(".filter-title").innerText === sectionTitle) {
-            widget.querySelectorAll("input:checked").forEach(input => {
-                values.push(input.value);
-            });
-        }
-    });
-    return values;
-}
+    searchInput.addEventListener('keyup', filterCompanies);
+    locationFilter.addEventListener('change', filterCompanies);
+    industryFilter.addEventListener('change', filterCompanies);
+    sortBy.addEventListener('change', filterCompanies);
+    sizeCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
+    industryCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
+    foundedCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
 
-// Auto filter when checkbox changes
-document.querySelectorAll(".filter-sidebar input").forEach(input => {
-    input.addEventListener("change", filterCompanies);
-});Filter
+    document.getElementById('searchBtn').addEventListener('click', filterCompanies);
+
+    loadCompanies();
+});
