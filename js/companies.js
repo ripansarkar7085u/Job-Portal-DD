@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function loadCompanies() {
         companiesGrid.innerHTML = '<div class="text-center w-100 py-4" id="companiesLoading">Loading companies...</div>';
         try {
-            const res = await fetch('api/companies_list.php');
+            const res = await fetch('api/homepage_companies.php');
             const data = await res.json();
             if (!data.success || !Array.isArray(data.companies)) {
                 companiesGrid.innerHTML = '<div class="alert alert-danger">Failed to load companies.</div>';
