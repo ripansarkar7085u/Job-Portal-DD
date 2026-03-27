@@ -163,12 +163,22 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const jobId = urlParams.get('id') || 0;
+        const jobId = parseInt(urlParams.get('id'), 10);
+        const loading = document.getElementById('jobDetailsLoading');
+        const card = document.getElementById('jobDetailsCard');
+        // Validate jobId
+        if (!jobId || isNaN(jobId) || jobId <= 0) {
+            loading.textContent = 'No job ID provided.';
+            card.style.display = 'none';
+            return;
+        }
+        // Set hidden input for apply form
+        const applyJobIdInput = document.getElementById('applyJobId');
+        if (applyJobIdInput) applyJobIdInput.value = jobId;
+
         fetch('api/job_details.php?id=' + jobId)
             .then(res => res.json())
             .then(data => {
-                const loading = document.getElementById('jobDetailsLoading');
-                const card = document.getElementById('jobDetailsCard');
                 if (!data.success || !data.job) {
                     loading.textContent = data.message || 'Job not found.';
                     return;
@@ -228,30 +238,49 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
                     }
                 });
             });
-    });
-    </script>
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        job_id: jobId,
-                        cover_letter: coverLetter
-                    })
-                });
 
-                const data = await response.json();
-                if (!response.ok || !data.success) {
-                    if (response.status === 401) {
-                        window.location.href = 'login.php';
-                        return;
-                    }
-                    alert(data.message || 'Unable to submit application.');
+        // Apply form submission
+        const applyForm = document.getElementById('applyForm');
+        if (applyForm) {
+            applyForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                // Always use jobId from URL
+                if (!jobId || isNaN(jobId) || jobId <= 0) {
+                    alert('No job ID provided.');
                     return;
                 }
-
-                alert('Application submitted successfully!');
-                window.location.href = 'user/applied.php';
-            } catch (error) {
-                alert('Unable to connect to server. Please try again.');
-            }
-        });
+                const fullName = document.getElementById('applyFullName').value.trim();
+                const email = document.getElementById('applyEmail').value.trim();
+                const coverLetter = document.getElementById('applyCoverLetter').value.trim();
+                // TODO: handle CV upload if needed
+                try {
+                    const response = await fetch('api/user_apply_job.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            job_id: jobId,
+                            full_name: fullName,
+                            email: email,
+                            cover_letter: coverLetter
+                        })
+                    });
+                    const data = await response.json();
+                    if (!response.ok || !data.success) {
+                        if (response.status === 401) {
+                            window.location.href = 'login.php';
+                            return;
+                        }
+                        alert(data.message || 'Unable to submit application.');
+                        return;
+                    }
+                    alert('Application submitted successfully!');
+                    window.location.href = 'user/applied.php';
+                } catch (error) {
+                    alert('Unable to connect to server. Please try again.');
+                }
+            });
+        }
+    });
     </script>
+            

@@ -271,7 +271,7 @@ async function handleUserLogin(event) {
         closeAuthModalIfPresent();
 
         setTimeout(() => {
-            window.location.href = data.redirect || appUrl('/user/dashboard.php');
+            window.location.href = data.redirect || appUrl('/user/index.php');
         }, 600);
     } catch (error) {
         showAlert(error.message, 'danger');
@@ -515,7 +515,7 @@ async function checkLoginStatus() {
             loginBtn.textContent = data.user.name || 'Dashboard';
             loginBtn.removeAttribute('data-bs-toggle');
             loginBtn.removeAttribute('data-bs-target');
-            loginBtn.href = appUrl('/user/dashboard.php');
+            loginBtn.href = appUrl('/user/index.php');
         }
     } catch (error) {
         console.error('Session check error:', error);

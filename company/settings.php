@@ -324,30 +324,91 @@ if (session_status() == PHP_SESSION_NONE) {
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
     <script>
         // Account form submission
-        document.getElementById('accountForm').addEventListener('submit', function(e) {
+        // --- Dynamic Company Settings Logic ---
+        // Load company info into settings form
+        async function loadCompanySettings() {
+            try {
+                const res = await fetch('../api/company_public_profile.php?id=me', { credentials: 'include' });
+                const data = await res.json();
+                if (data.success && data.company) {
+                    const c = data.company;
+                    document.getElementById('accountEmail').value = c.email || '';
+                    document.getElementById('accountName').value = c.company_name || '';
+                    document.getElementById('accountPhone').value = c.phone || '';
+                    // Sidebar/header update
+                    if (document.getElementById('companyNameDisplay')) document.getElementById('companyNameDisplay').textContent = c.company_name || '';
+                    if (document.getElementById('companyAvatar')) document.getElementById('companyAvatar').src = c.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(c.company_name || 'Company')}&background=0d47a1&color=fff`;
+                    if (document.getElementById('headerCompanyName')) document.getElementById('headerCompanyName').textContent = c.company_name || '';
+                    if (document.getElementById('headerAvatar')) document.getElementById('headerAvatar').src = c.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(c.company_name || 'Company')}&background=0d47a1&color=fff`;
+                }
+            } catch (e) {
+                // fallback: do nothing
+            }
+        }
+        loadCompanySettings();
+
+        // Account form submission (update company info)
+        document.getElementById('accountForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            window.companyDashboard.showToast('Account settings updated!', 'success');
+            const company_name = document.getElementById('accountName').value.trim();
+            const email = document.getElementById('accountEmail').value.trim();
+            const phone = document.getElementById('accountPhone').value.trim();
+            try {
+                const res = await fetch('../api/company_update_profile.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ company_name, email, phone })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    if (window.companyDashboard && window.companyDashboard.showToast) {
+                        window.companyDashboard.showToast('Account settings updated!', 'success');
+                    } else {
+                        alert('Account settings updated!');
+                    }
+                    loadCompanySettings();
+                } else {
+                    window.companyDashboard?.showToast?.(data.message || 'Failed to update account', 'error');
+                }
+            } catch (err) {
+                window.companyDashboard?.showToast?.('Error updating account', 'error');
+            }
         });
 
-        // Password form submission
-        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+        // Password form submission (update password)
+        document.getElementById('passwordForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const newPass = document.getElementById('newPassword').value;
             const confirmPass = document.getElementById('confirmPassword').value;
-            
             if (newPass !== confirmPass) {
-                window.companyDashboard.showToast('Passwords do not match!', 'error');
+                window.companyDashboard?.showToast?.('Passwords do not match!', 'error');
                 return;
             }
-            
-            window.companyDashboard.showToast('Password updated successfully!', 'success');
-            this.reset();
+            try {
+                const res = await fetch('../api/user_update_password.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ password: newPass })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.companyDashboard?.showToast?.('Password updated successfully!', 'success');
+                    this.reset();
+                } else {
+                    window.companyDashboard?.showToast?.(data.message || 'Failed to update password', 'error');
+                }
+            } catch (err) {
+                window.companyDashboard?.showToast?.('Error updating password', 'error');
+            }
         });
 
         // Deactivate account
         document.getElementById('deactivateBtn').addEventListener('click', function() {
             if (confirm('Are you sure you want to deactivate your account? Your job listings will be hidden.')) {
-                window.companyDashboard.showToast('Account deactivated', 'warning');
+                window.companyDashboard?.showToast?.('Account deactivated', 'warning');
+                // TODO: call backend to deactivate
             }
         });
 
@@ -355,10 +416,22 @@ if (session_status() == PHP_SESSION_NONE) {
         document.getElementById('deleteAccountBtn').addEventListener('click', function() {
             if (confirm('Are you sure you want to permanently delete your account? This action cannot be undone.')) {
                 if (confirm('This will delete all your jobs, applications, and company data. Type DELETE to confirm.')) {
-                    window.companyDashboard.showToast('Account deletion initiated', 'error');
+                    window.companyDashboard?.showToast?.('Account deletion initiated', 'error');
+                    // TODO: call backend to delete
                 }
             }
         });
+
+        // Sidebar/menu/profile dropdown logic (ensure always initialized)
+        if (typeof handleNavigation === 'function') handleNavigation();
+        if (menuToggle && sidebar && sidebarOverlay) {
+            menuToggle.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+        }
+        if (profileBtn && profileDropdown) {
+            profileBtn.addEventListener('click', toggleProfileDropdown);
+            document.addEventListener('click', closeProfileDropdown);
+        }
     </script>
 
     <style>
