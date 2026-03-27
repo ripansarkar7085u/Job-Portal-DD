@@ -535,19 +535,23 @@ body {
 .chat-user {
     display: flex;
     padding: 15px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f2f5;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background-color 0.2s;
     align-items: center;
 }
 
+.chat-user:hover {
+    background: #f5f6f6;
+}
+
 .chat-user.active {
-    background: #e3f2fd;
+    background: #f0f2f5;
 }
 
 .chat-user img {
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     margin-right: 12px;
 }
@@ -557,11 +561,13 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background-color: #efeae2; /* WhatsApp chat background */
 }
 
 .chat-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
+    padding: 10px 16px;
+    background-color: #f0f2f5;
+    border-left: 1px solid #e9edef;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -577,30 +583,54 @@ body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background: #f9f9f9;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 /* Message Bubbles */
 .message {
-    max-width: 70%;
-    padding: 10px 15px;
-    border-radius: 15px;
+    max-width: 65%;
+    padding: 6px 7px 8px 9px;
+    border-radius: 7.5px;
     font-size: 0.9rem;
+    position: relative;
+    box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
 }
 
 .message.received {
     align-self: flex-start;
-    background: #fff;
-    border: 1px solid #eee;
+    background: #ffffff;
+    border-top-left-radius: 0;
+}
+
+.message.received::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #ffffff;
+    border-left: 8px solid transparent;
 }
 
 .message.sent {
     align-self: flex-end;
-    background: var(--primary-color);
-    color: #fff;
+    background: #d9fdd3;
+    color: #111b21;
+    border-top-right-radius: 0;
+}
+
+.message.sent::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #d9fdd3;
+    border-right: 8px solid transparent;
 }
 
 .msg-time {
@@ -612,28 +642,40 @@ body {
 
 /* Input Area */
 .chat-input {
-    padding: 1px;
-    border-top: 1px solid #eee;
+    padding: 10px 16px;
+    background-color: #f0f2f5;
     display: flex;
     align-items: center;
-    gap: 1px;
+    gap: 10px;
 }
 
 .chat-input input {
     flex: 1;
-    border: 1px solid #eee;
-    background: #f8f9fa;
-    padding: 10px 15px;
-    border-radius: 25px;
+    border: none;
+    background: #ffffff;
+    padding: 9px 12px 11px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.chat-input input:focus {
+    outline: none;
 }
 
 .chat-input button {
     border: none;
-    background: var(--primary-color);
-    color: white;
+    background: transparent;
+    color: #54656f;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-input button:hover {
+    color: #00a884;
 }
 
 
@@ -977,54 +1019,55 @@ h2 {
         padding: 10px;
     }
 
-    /* 2. Chat Container adjustments */
+    /* 2. Chat Container adjustments for mobile WhatsApp flow */
     .chat-container {
         height: calc(100vh - 120px);
         flex-direction: row;
-        /* Keep them side by side but thinner */
     }
 
-    /* 3. Shrink the user list sidebar to icon-only */
     .chat-sidebar {
-        width: 70px !important;
-        min-width: 70px;
+        width: 100% !important;
+        min-width: 100%;
+        border-right: none;
+        display: flex;
     }
-
-    /* Hide text elements in the sidebar to prevent overflow */
-    .chat-sidebar .search-box input,
-    .chat-sidebar .user-info,
-    .chat-sidebar .meta,
-    .chat-sidebar .search-box i {
+    
+    .chat-main {
+        width: 100% !important;
+        min-width: 100%;
+        display: none;
+    }
+    
+    /* Toggle view based on active chat */
+    .chat-container.has-active-chat .chat-sidebar {
         display: none !important;
+    }
+    
+    .chat-container.has-active-chat .chat-main {
+        display: flex !important;
     }
 
     .chat-user {
-        justify-content: center;
-        padding: 15px 5px;
+        padding: 15px;
     }
-
+    
     .chat-user img {
-        margin-right: 0;
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
     }
 
-    /* 4. Ensure the Chat Main area takes the rest of the space */
-    .chat-main {
-        flex: 1;
-        min-width: 0;
-        /* Prevents flex items from bulging */
-    }
-
-    /* 5. Adjust Message Bubbles for smaller screens */
+    /* Adjust Message Bubbles for smaller screens */
     .message {
-        max-width: 85%;
-        /* Give more room for text on mobile */
-        font-size: 0.85rem;
+        max-width: 90%;
+        font-size: 0.9rem;
     }
 
     .chat-header h6 {
-        font-size: 0.9rem;
+        font-size: 1rem;
+    }
+    
+    .chat-header {
+        padding: 10px;
     }
 
     /* 6. Fix Stats Grid on Mobile */
