@@ -156,13 +156,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 </div>
 
                 <!-- Pagination -->
-                <div class="pagination">
-                    <button class="pagination-btn" disabled><i class="bi bi-chevron-left"></i></button>
-                    <button class="pagination-btn active">1</button>
-                    <button class="pagination-btn">2</button>
-                    <button class="pagination-btn">3</button>
-                    <button class="pagination-btn"><i class="bi bi-chevron-right"></i></button>
-                </div>
+                <div class="pagination"></div>
             </section>
         </main>
     </div>
@@ -180,6 +174,8 @@ if (session_status() == PHP_SESSION_NONE) {
         let allJobs = [];
         let activeFilter = 'all';
         let searchQuery = '';
+        let currentPage = 1;
+        const perPage = 10;
 
         function showToast(message, type = 'info') {
             if (window.companyDashboard && typeof window.companyDashboard.showToast === 'function') {
@@ -328,13 +324,85 @@ if (session_status() == PHP_SESSION_NONE) {
 
         function applyFilters() {
             const rows = Array.from(jobsTable.querySelectorAll('tr[data-job-id]'));
+            let visibleRows = [];
+            
             rows.forEach(row => {
                 const rowStatus = row.dataset.status || '';
                 const rowSearch = row.dataset.search || '';
                 const matchesFilter = activeFilter === 'all' || rowStatus === activeFilter;
                 const matchesSearch = searchQuery === '' || rowSearch.includes(searchQuery);
-                row.style.display = matchesFilter && matchesSearch ? '' : 'none';
+                
+                if (matchesFilter && matchesSearch) {
+                    visibleRows.push(row);
+                } else {
+                    row.style.display = 'none';
+                }
             });
+            
+            const totalMatches = visibleRows.length;
+            const startIndex = (currentPage - 1) * perPage;
+            const endIndex = startIndex + perPage;
+            
+            visibleRows.forEach((row, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            renderPagination(totalMatches);
+        }
+
+        function renderPagination(totalMatches) {
+            const paginationContainer = document.querySelector('.pagination');
+            if (!paginationContainer) return;
+            
+            paginationContainer.innerHTML = '';
+            
+            const totalPages = Math.ceil(totalMatches / perPage);
+            if (totalPages <= 1) return;
+            
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn';
+            prevBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    applyFilters();
+                }
+            };
+            paginationContainer.appendChild(prevBtn);
+            
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => {
+                    currentPage = i;
+                    applyFilters();
+                };
+                paginationContainer.appendChild(pageBtn);
+            }
+            
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn';
+            nextBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    applyFilters();
+                }
+            };
+            paginationContainer.appendChild(nextBtn);
         }
 
         async function loadJobs() {
@@ -366,12 +434,14 @@ if (session_status() == PHP_SESSION_NONE) {
                 tabs.forEach(item => item.classList.remove('active'));
                 this.classList.add('active');
                 activeFilter = this.dataset.filter || 'all';
+                currentPage = 1;
                 applyFilters();
             });
         });
 
         jobSearchInput.addEventListener('input', function() {
             searchQuery = this.value.trim().toLowerCase();
+            currentPage = 1;
             applyFilters();
         });
 
@@ -412,6 +482,8 @@ if (session_status() == PHP_SESSION_NONE) {
         });
 
         loadJobs();
+
+        // Setup initial pagination if necessary
     </script>
 
     <style>
