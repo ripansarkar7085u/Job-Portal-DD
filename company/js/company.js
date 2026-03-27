@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 // =============================
 // Company Profile Update Logic
 // =============================
@@ -182,8 +181,6 @@ async function deletePhoto(id) {
         showToast(data.message || 'Failed to delete photo', 'error');
     }
 }
-=======
->>>>>>> Stashed changes
 
 
 // DOM Elements
@@ -231,17 +228,10 @@ async function checkSession() {
         const data = await response.json();
         
         if (data.success && data.loggedIn) {
-<<<<<<< Updated upstream
             
             updateCompanyInfo(data.company);
         } else {
            
-=======
-            // Session valid, update company info
-            updateCompanyInfo(data.company);
-        } else {
-            // Session invalid, redirect to login
->>>>>>> Stashed changes
             // For demo purposes, we'll just log this
             console.log('Session not found, using demo data');
             updateCompanyInfo(companyData);
@@ -253,7 +243,6 @@ async function checkSession() {
     }
 }
 
-<<<<<<< Updated upstream
 
  // Update company information in UI
  
@@ -311,101 +300,24 @@ async function logout(event) {
 
 // Toggle sidebar on mobile
  
-=======
-/**
- * Update company information in UI
- */
-function updateCompanyInfo(company) {
-    companyData = { ...companyData, ...company };
-    
-    // Update sidebar
-    const companyNameDisplay = document.getElementById('companyNameDisplay');
-    const companyAvatar = document.getElementById('companyAvatar');
-    
-    if (companyNameDisplay) {
-        companyNameDisplay.textContent = companyData.name;
-    }
-    
-    if (companyAvatar) {
-        companyAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.name)}&background=0d47a1&color=fff`;
-    }
-    
-    // Update header
-    const headerCompanyName = document.getElementById('headerCompanyName');
-    const headerAvatar = document.getElementById('headerAvatar');
-    
-    if (headerCompanyName) {
-        headerCompanyName.textContent = companyData.name;
-    }
-    
-    if (headerAvatar) {
-        headerAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.name)}&background=0d47a1&color=fff`;
-    }
-}
-
-/**
- * Logout function
- */
-async function logout() {
-    try {
-        const response = await fetch('../api/company_logout.php', {
-            method: 'POST',
-            credentials: 'include'
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            window.location.href = '../index.html';
-        }
-    } catch (error) {
-        console.error('Logout failed:', error);
-        // Redirect anyway for demo purposes
-        window.location.href = '../index.html';
-    }
-}
-
-// ===================================
-// Sidebar & Navigation
-// ===================================
-
-/**
- * Toggle sidebar on mobile
- */
->>>>>>> Stashed changes
 function toggleSidebar() {
     sidebar.classList.toggle('show');
     sidebarOverlay.classList.toggle('show');
     document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
 }
 
-<<<<<<< Updated upstream
 
  // Close sidebar
  
-=======
-/**
- * Close sidebar
- */
->>>>>>> Stashed changes
 function closeSidebar() {
     sidebar.classList.remove('show');
     sidebarOverlay.classList.remove('show');
     document.body.style.overflow = '';
 }
 
-<<<<<<< Updated upstream
 function handleNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     const currentPage = window.location.pathname.split('/').pop() || 'index.php';
-=======
-/**
- * Handle navigation active state
- */
-function handleNavigation() {
-    const navItems = document.querySelectorAll('.nav-item');
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
->>>>>>> Stashed changes
     
     navItems.forEach(item => {
         const page = item.getAttribute('data-page');
@@ -426,45 +338,19 @@ function handleNavigation() {
     });
 }
 
-<<<<<<< Updated upstream
 
 
-=======
-// ===================================
-// Profile Dropdown
-// ===================================
-
-/**
- * Toggle profile dropdown
- */
->>>>>>> Stashed changes
 function toggleProfileDropdown() {
     profileDropdown.classList.toggle('show');
 }
 
-<<<<<<< Updated upstream
 
-=======
-/**
- * Close profile dropdown when clicking outside
- */
->>>>>>> Stashed changes
 function closeProfileDropdown(event) {
     if (profileDropdown && !profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
         profileDropdown.classList.remove('show');
     }
 }
 
-<<<<<<< Updated upstream
-=======
-// ===================================
-// Dashboard Functions
-// ===================================
-
-/**
- * Update dashboard statistics
- */
->>>>>>> Stashed changes
 function updateDashboardStats() {
     const totalJobsEl = document.getElementById('totalJobs');
     const activeJobsEl = document.getElementById('activeJobs');
@@ -479,13 +365,7 @@ function updateDashboardStats() {
     if (notificationCountEl) notificationCountEl.textContent = dashboardStats.newApplicationsToday;
 }
 
-<<<<<<< Updated upstream
 
-=======
-/**
- * Fetch dashboard data from API
- */
->>>>>>> Stashed changes
 async function fetchDashboardData() {
     try {
         const response = await fetch('../api/company_dashboard.php', {
@@ -501,37 +381,17 @@ async function fetchDashboardData() {
         }
     } catch (error) {
         console.error('Failed to fetch dashboard data:', error);
-<<<<<<< Updated upstream
         dashboardStats = { ...dashboardStats, ...sampleDashboardStats };
-=======
-        // Use sample data
->>>>>>> Stashed changes
         updateDashboardStats();
     }
 }
 
-<<<<<<< Updated upstream
-=======
-// ===================================
-// Utility Functions
-// ===================================
-
-/**
- * Format date to readable string
- */
->>>>>>> Stashed changes
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
 }
 
-<<<<<<< Updated upstream
 
-=======
-/**
- * Format number with commas
- */
->>>>>>> Stashed changes
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
@@ -755,11 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
     handleSearch();
     
     // Update dashboard stats if on dashboard page
-<<<<<<< Updated upstream
     if (window.location.pathname.includes('index.php') || window.location.pathname.endsWith('/company/')) {
-=======
-    if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/company/')) {
->>>>>>> Stashed changes
         fetchDashboardData();
     }
     

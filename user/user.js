@@ -16,7 +16,6 @@ if (file) {
 alert(`CV "${file.name}" selected for upload.`);
 }
 
-<<<<<<< Updated upstream
 });
 
 
@@ -44,21 +43,3 @@ document.addEventListener('click', function(event) {
         }
     }
 });
-=======
-<<<<<<< HEAD
-function setActiveMenu(link) {
-    document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-    if(link) link.classList.add('active');
-}
-
-// Load header
-fetch('slidebar.html')
-  .then(response => response.text())
-  .then(data => document.getElementById('slidbar').innerHTML = data)
-  .catch(err => console.error('Header load error:', err));
-
-
-=======
-});
->>>>>>> 253c9df25905ed996392888320114c169267eb35
->>>>>>> Stashed changes

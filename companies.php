@@ -8,7 +8,6 @@ if (session_status() == PHP_SESSION_NONE) {
 <html lang="en">
 
 <head>
-<<<<<<< Updated upstream
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,59 +36,6 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <!-- COMPANIES LISTING -->
     <section class="companies-section">
-=======
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Companies - CareerHunt</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/companies.css">
-</head>
-
-<body>
-
-    <!-- HEADER -->
-    <header class="header">
-        <nav class="navbar navbar-expand-lg container">
-            <a class="navbar-brand" href="index.php">
-                <img src="/photos/job logo.png" alt="CareerHunt">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="jobs.php">Jobs</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="companies.php">Companies</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.php">About</a>
-                    </li>
-                </ul>
-
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="user/dashboard.php" class="btn login-btn">Dashboard</a>
-                <?php else: ?>
-                    <a href="login.php" class="btn login-btn me-2">Login</a>
-                    <a href="register.php" class="btn login-btn">Register</a>
-                <?php endif; ?>
-            </div>
-        </nav>
-    </header>
-
-    <!-- PAGE HEADER -->
-    <section class="page-header">
->>>>>>> Stashed changes
         <div class="container">
             <div class="page-header-content">
                 <h1>Browse Companies</h1>
@@ -100,15 +46,6 @@ if (session_status() == PHP_SESSION_NONE) {
                     </ol>
                 </nav>
             </div>
-<<<<<<< Updated upstream
-=======
-        </div>
-    </section>
-
-    <!-- SEARCH SECTION -->
-    <section class="company-search-section">
-        <div class="container">
->>>>>>> Stashed changes
             <div class="company-search-box">
                 <div class="row g-3 align-items-center">
                     <div class="col-lg-4 col-md-6">
@@ -152,16 +89,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     </div>
                 </div>
             </div>
-<<<<<<< Updated upstream
 
-=======
-        </div>
-    </section>
-
-    <!-- COMPANIES LISTING -->
-    <section class="companies-section">
-        <div class="container">
->>>>>>> Stashed changes
             <div class="row">
                 <!-- SIDEBAR FILTERS -->
                 <div class="col-lg-3">
@@ -261,12 +189,8 @@ if (session_status() == PHP_SESSION_NONE) {
                                 <option value="jobs">Most Jobs</option>
                             </select>
                             <div class="view-toggle">
-<<<<<<< Updated upstream
                                 <button class="view-btn active" data-view="grid"><i
                                         class="bi bi-grid-3x3-gap"></i></button>
-=======
-                                <button class="view-btn active" data-view="grid"><i class="bi bi-grid-3x3-gap"></i></button>
->>>>>>> Stashed changes
                                 <button class="view-btn" data-view="list"><i class="bi bi-list-ul"></i></button>
                             </div>
                         </div>
@@ -275,23 +199,15 @@ if (session_status() == PHP_SESSION_NONE) {
                     <!-- Companies Grid -->
                     <div class="companies-grid" id="companiesGrid">
                         <!-- Company Card 1 -->
-<<<<<<< Updated upstream
                         <div class="company-card-v2" data-name="google" data-location="san-francisco"
                             data-industry="technology" data-size="10000+" data-founded="before-2010">
-=======
-                        <div class="company-card-v2">
->>>>>>> Stashed changes
                             <div class="company-card-header">
                                 <span class="featured-badge">Featured</span>
                                 <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
                             <div class="company-card-body">
                                 <div class="company-logo-wrapper">
-<<<<<<< Updated upstream
                                     <img src="photos\google.webp" alt="Google">
-=======
-                                    <img src="https://ui-avatars.com/api/?name=Google&background=4285f4&color=fff&size=80&rounded=true" alt="Google">
->>>>>>> Stashed changes
                                 </div>
                                 <h4 class="company-name">Google Inc.</h4>
                                 <span class="company-industry"><i class="bi bi-buildings"></i> Technology</span>
@@ -302,33 +218,21 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                             <div class="company-card-footer">
                                 <span class="open-jobs">25 Open Positions</span>
-<<<<<<< Updated upstream
                                 <a href="company-detail.php?id=1" class="view-btn-link">View Company <i
                                         class="bi bi-arrow-right"></i></a>
-=======
-                                <a href="company-detail.php?id=1" class="view-btn-link">View Company <i class="bi bi-arrow-right"></i></a>
->>>>>>> Stashed changes
                             </div>
                         </div>
 
                         <!-- Company Card 2 -->
-<<<<<<< Updated upstream
                         <div class="company-card-v2" data-name="microsoft" data-location="new-york"
                             data-industry="technology" data-size="1000+" data-founded="before-2010">
-=======
-                        <div class="company-card-v2">
->>>>>>> Stashed changes
                             <div class="company-card-header">
                                 <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
                             <div class="company-card-body">
                                 <div class="company-logo-wrapper">
-<<<<<<< Updated upstream
                                     <img src="https://ui-avatars.com/api/?name=Microsoft&background=00a4ef&color=fff&size=80&rounded=true"
                                         alt="Microsoft">
-=======
-                                    <img src="https://ui-avatars.com/api/?name=Microsoft&background=00a4ef&color=fff&size=80&rounded=true" alt="Microsoft">
->>>>>>> Stashed changes
                                 </div>
                                 <h4 class="company-name">Microsoft</h4>
                                 <span class="company-industry"><i class="bi bi-buildings"></i> Technology</span>
@@ -339,41 +243,26 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                             <div class="company-card-footer">
                                 <span class="open-jobs">18 Open Positions</span>
-<<<<<<< Updated upstream
                                 <a href="company-detail.php?id=2" class="view-btn-link">View Company <i
                                         class="bi bi-arrow-right"></i></a>
-=======
-                                <a href="company-detail.php?id=2" class="view-btn-link">View Company <i class="bi bi-arrow-right"></i></a>
->>>>>>> Stashed changes
                             </div>
                         </div>
 
                         <!-- Company Card 3 -->
-<<<<<<< Updated upstream
                         <div class="company-card-v2" data-name="amazon" data-location="san-francisco"
                             data-industry="e-commerce" data-size="10000+" data-founded="before-2010">
-=======
-                        <div class="company-card-v2">
->>>>>>> Stashed changes
                             <div class="company-card-header">
                                 <span class="featured-badge">Featured</span>
                                 <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
                             <div class="company-card-body">
                                 <div class="company-logo-wrapper">
-<<<<<<< Updated upstream
                                     <img src="https://ui-avatars.com/api/?name=Amazon&background=ff9900&color=fff&size=80&rounded=true"
                                         alt="Amazon">
                                 </div>
                                 <h4 class="company-name">Amazon</h4>
                                 <span class="company-industry"><i class="bi bi-buildings"></i> E-commerce /
                                     Technology</span>
-=======
-                                    <img src="https://ui-avatars.com/api/?name=Amazon&background=ff9900&color=fff&size=80&rounded=true" alt="Amazon">
-                                </div>
-                                <h4 class="company-name">Amazon</h4>
-                                <span class="company-industry"><i class="bi bi-buildings"></i> E-commerce / Technology</span>
->>>>>>> Stashed changes
                                 <div class="company-meta">
                                     <span><i class="bi bi-geo-alt"></i> Seattle, WA</span>
                                     <span><i class="bi bi-people"></i> 10,000+ employees</span>
@@ -381,33 +270,21 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                             <div class="company-card-footer">
                                 <span class="open-jobs">42 Open Positions</span>
-<<<<<<< Updated upstream
                                 <a href="company-detail.php?id=3" class="view-btn-link">View Company <i
                                         class="bi bi-arrow-right"></i></a>
-=======
-                                <a href="company-detail.php?id=3" class="view-btn-link">View Company <i class="bi bi-arrow-right"></i></a>
->>>>>>> Stashed changes
                             </div>
                         </div>
 
                         <!-- Company Card 4 -->
-<<<<<<< Updated upstream
                         <div class="company-card-v2" data-name="netflix" data-location="san-francisco"
                             data-industry="entertainment" data-size="5000+" data-founded="before-2010">
-=======
-                        <div class="company-card-v2">
->>>>>>> Stashed changes
                             <div class="company-card-header">
                                 <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
                             <div class="company-card-body">
                                 <div class="company-logo-wrapper">
-<<<<<<< Updated upstream
                                     <img src="https://ui-avatars.com/api/?name=Netflix&background=e50914&color=fff&size=80&rounded=true"
                                         alt="Netflix">
-=======
-                                    <img src="https://ui-avatars.com/api/?name=Netflix&background=e50914&color=fff&size=80&rounded=true" alt="Netflix">
->>>>>>> Stashed changes
                                 </div>
                                 <h4 class="company-name">Netflix</h4>
                                 <span class="company-industry"><i class="bi bi-buildings"></i> Entertainment</span>
@@ -418,33 +295,21 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                             <div class="company-card-footer">
                                 <span class="open-jobs">12 Open Positions</span>
-<<<<<<< Updated upstream
                                 <a href="company-detail.php?id=4" class="view-btn-link">View Company <i
                                         class="bi bi-arrow-right"></i></a>
-=======
-                                <a href="company-detail.php?id=4" class="view-btn-link">View Company <i class="bi bi-arrow-right"></i></a>
->>>>>>> Stashed changes
                             </div>
                         </div>
 
                         <!-- Company Card 5 -->
-<<<<<<< Updated upstream
                         <div class="company-card-v2" data-name="apple" data-location="san-francisco"
                             data-industry="technology" data-size="10000+" data-founded="present-2020">
-=======
-                        <div class="company-card-v2">
->>>>>>> Stashed changes
                             <div class="company-card-header">
                                 <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
                             <div class="company-card-body">
                                 <div class="company-logo-wrapper">
-<<<<<<< Updated upstream
                                     <img src="https://ui-avatars.com/api/?name=Apple&background=333333&color=fff&size=80&rounded=true"
                                         alt="Apple">
-=======
-                                    <img src="https://ui-avatars.com/api/?name=Apple&background=333333&color=fff&size=80&rounded=true" alt="Apple">
->>>>>>> Stashed changes
                                 </div>
                                 <h4 class="company-name">Apple Inc.</h4>
                                 <span class="company-industry"><i class="bi bi-buildings"></i> Technology</span>
@@ -455,34 +320,22 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                             <div class="company-card-footer">
                                 <span class="open-jobs">30 Open Positions</span>
-<<<<<<< Updated upstream
                                 <a href="company-detail.php?id=5" class="view-btn-link">View Company <i
                                         class="bi bi-arrow-right"></i></a>
-=======
-                                <a href="company-detail.php?id=5" class="view-btn-link">View Company <i class="bi bi-arrow-right"></i></a>
->>>>>>> Stashed changes
                             </div>
                         </div>
 
                         <!-- Company Card 6 -->
-<<<<<<< Updated upstream
                         <div class="company-card-v2" data-name="netflix" data-location="san-francisco"
                             data-industry="music/technology" data-size="5000+" data-founded="2010-2014">
-=======
-                        <div class="company-card-v2">
->>>>>>> Stashed changes
                             <div class="company-card-header">
                                 <span class="featured-badge">Featured</span>
                                 <button class="bookmark-btn"><i class="bi bi-bookmark"></i></button>
                             </div>
                             <div class="company-card-body">
                                 <div class="company-logo-wrapper">
-<<<<<<< Updated upstream
                                     <img src="https://ui-avatars.com/api/?name=Spotify&background=1db954&color=fff&size=80&rounded=true"
                                         alt="Spotify">
-=======
-                                    <img src="https://ui-avatars.com/api/?name=Spotify&background=1db954&color=fff&size=80&rounded=true" alt="Spotify">
->>>>>>> Stashed changes
                                 </div>
                                 <h4 class="company-name">Spotify</h4>
                                 <span class="company-industry"><i class="bi bi-buildings"></i> Music / Technology</span>
@@ -493,12 +346,8 @@ if (session_status() == PHP_SESSION_NONE) {
                             </div>
                             <div class="company-card-footer">
                                 <span class="open-jobs">15 Open Positions</span>
-<<<<<<< Updated upstream
                                 <a href="company-detail.php?id=6" class="view-btn-link">View Company <i
                                         class="bi bi-arrow-right"></i></a>
-=======
-                                <a href="company-detail.php?id=6" class="view-btn-link">View Company <i class="bi bi-arrow-right"></i></a>
->>>>>>> Stashed changes
                             </div>
                         </div>
 
@@ -521,15 +370,6 @@ if (session_status() == PHP_SESSION_NONE) {
                     </nav>
                 </div>
             </div>
-<<<<<<< Updated upstream
-=======
-        </div>
-    </section>
-
-    <!-- NEWSLETTER SECTION -->
-    <section class="newsletter-section">
-        <div class="container">
->>>>>>> Stashed changes
             <div class="newsletter-box">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
@@ -546,67 +386,9 @@ if (session_status() == PHP_SESSION_NONE) {
             </div>
         </div>
     </section>
-<<<<<<< Updated upstream
     
     <!-- FOOTER -->
      <?php include("footer.php")?>
-=======
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-widget">
-                        <img src="/photos/job logo.png" alt="CareerHunt" class="footer-logo">
-                        <p>CareerHunt is a leading job portal connecting talented professionals with top companies worldwide.</p>
-                        <div class="social-links">
-                            <a href="#"><i class="bi bi-facebook"></i></a>
-                            <a href="#"><i class="bi bi-twitter-x"></i></a>
-                            <a href="#"><i class="bi bi-linkedin"></i></a>
-                            <a href="#"><i class="bi bi-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-widget">
-                        <h5>For Candidates</h5>
-                        <ul>
-                            <li><a href="#">Browse Jobs</a></li>
-                            <li><a href="companies.php">Browse Companies</a></li>
-                            <li><a href="#">Candidate Dashboard</a></li>
-                            <li><a href="#">Job Alerts</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <div class="footer-widget">
-                        <h5>For Employers</h5>
-                        <ul>
-                            <li><a href="#">Post a Job</a></li>
-                            <li><a href="#">Browse Candidates</a></li>
-                            <li><a href="#">Employer Dashboard</a></li>
-                            <li><a href="#">Pricing</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-widget">
-                        <h5>Contact Us</h5>
-                        <ul class="contact-info">
-                            <li><i class="bi bi-geo-alt"></i> 123 Business Street, NY 10001</li>
-                            <li><i class="bi bi-envelope"></i> contact@careerhunt.com</li>
-                            <li><i class="bi bi-telephone"></i> +1 (555) 123-4567</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> CareerHunt. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
->>>>>>> Stashed changes
 
     <!-- Auth Modal -->
     <div class="modal fade" id="authModal" tabindex="-1">
@@ -615,19 +397,12 @@ if (session_status() == PHP_SESSION_NONE) {
                 <div class="modal-header">
                     <ul class="nav nav-tabs" id="authTabs">
                         <li class="nav-item">
-<<<<<<< Updated upstream
                             <button class="nav-link active" data-bs-toggle="tab"
                                 data-bs-target="#loginTab">Login</button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab"
                                 data-bs-target="#registerTab">Register</button>
-=======
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#loginTab">Login</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#registerTab">Register</button>
->>>>>>> Stashed changes
                         </li>
                     </ul>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -681,13 +456,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/auth.js"></script>
-<<<<<<< Updated upstream
     <script src="js\companies.js"></script>
 </body>
 
 </html>
-=======
-</body>
-
-</html>
->>>>>>> Stashed changes

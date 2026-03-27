@@ -18,7 +18,6 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="admin-login-container" id="adminLoginContainer">
         <div class="admin-login-card">
             <div class="login-header">
-<<<<<<< Updated upstream
                  <a href="/index.php" class="logo">
                     <img src="..\photos\job_logo.png" alt="CareerHunt">
                 </a>
@@ -63,53 +62,6 @@ if (session_status() == PHP_SESSION_NONE) {
                 <a href="/index.php" class="logo">
                     <img src="..\photos\job_logo.png" alt="CareerHunt">
                 </a>
-=======
-                <a href="../index.php" class="logo">
-                    <i class="bi bi-briefcase-fill"></i>
-                    <span>CareerHunt</span>
-                </a>
-                <h1>Admin Login</h1>
-                <p>Enter your credentials to access the admin panel</p>
-            </div>
-            <form id="adminLoginForm" class="login-form">
-                <div class="form-group">
-                    <label for="adminUsername">Username</label>
-                    <div class="input-wrapper">
-                        <i class="bi bi-person-fill"></i>
-                        <input type="text" id="adminUsername" name="username" placeholder="Enter your username" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <div class="input-wrapper">
-                        <i class="bi bi-lock-fill"></i>
-                        <input type="password" id="adminPassword" name="password" placeholder="Enter your password" required>
-                        <button type="button" class="toggle-password" id="togglePassword">
-                            <i class="bi bi-eye-fill"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="form-error" id="loginError"></div>
-                <button type="submit" class="btn-login" id="loginBtn">
-                    <span>Login</span>
-                    <i class="bi bi-arrow-right"></i>
-                </button>
-            </form>
-            <div class="login-footer">
-                <a href="../index.php"><i class="bi bi-arrow-left"></i> Back to Website</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Dashboard (hidden until login) -->
-    <div class="admin-container" id="adminDashboard" style="display: none;">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <a href="../index.php" class="logo">
-                    <img src="/photos/job logo.png" alt="CareerHunt">
-                </a>
->>>>>>> Stashed changes
                 <span class="admin-badge" id="roleBadge">Super Admin</span>
             </div>
             

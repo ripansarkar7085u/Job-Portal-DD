@@ -9,7 +9,7 @@ define('DB_HOST', 'localhost');
 define('DB_USER', 'your_username');
 define('DB_PASS', 'your_password');
 define('DB_NAME', 'job-portal');
-define('DB_PORT', 3306); // Default MySQL port, change if different
+define('DB_PORT', 3307); // Default MySQL port, change if different
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {

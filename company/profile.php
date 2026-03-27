@@ -20,11 +20,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="../index.php" class="logo">
-<<<<<<< Updated upstream
                     <img src="..\photos\job_logo.png" alt="CareerHunt">
-=======
-                    <img src="../photos/job logo.png" alt="CareerHunt">
->>>>>>> Stashed changes
                 </a>
                 <span class="company-badge">Company</span>
             </div>
@@ -132,11 +128,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                 <!-- Logo Upload -->
                                 <div class="logo-upload-section">
                                     <div class="current-logo">
-<<<<<<< Updated upstream
                                         <img src="" alt="Company Logo" id="logoPreview">
-=======
-                                        <img src="https://ui-avatars.com/api/?name=TechCorp&background=0d47a1&color=fff&size=120" alt="Company Logo" id="logoPreview">
->>>>>>> Stashed changes
                                     </div>
                                     <div class="logo-upload-info">
                                         <h4>Company Logo</h4>
@@ -151,21 +143,13 @@ if (session_status() == PHP_SESSION_NONE) {
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="companyName">Company Name <span class="required">*</span></label>
-<<<<<<< Updated upstream
                                         <input type="text" id="companyName" class="form-control" value="" required>
-=======
-                                        <input type="text" id="companyName" class="form-control" value="TechCorp Inc." required>
->>>>>>> Stashed changes
                                     </div>
                                     <div class="form-group">
                                         <label for="industry">Industry <span class="required">*</span></label>
                                         <select id="industry" class="form-control" required>
                                             <option value="">Select Industry</option>
-<<<<<<< Updated upstream
                                             <option value="technology">Technology</option>
-=======
-                                            <option value="technology" selected>Technology</option>
->>>>>>> Stashed changes
                                             <option value="finance">Finance & Banking</option>
                                             <option value="healthcare">Healthcare</option>
                                             <option value="education">Education</option>
@@ -186,44 +170,26 @@ if (session_status() == PHP_SESSION_NONE) {
                                             <option value="1-10">1-10 employees</option>
                                             <option value="11-50">11-50 employees</option>
                                             <option value="51-100">51-100 employees</option>
-<<<<<<< Updated upstream
                                             <option value="100-500">100-500 employees</option>
-=======
-                                            <option value="100-500" selected>100-500 employees</option>
->>>>>>> Stashed changes
                                             <option value="500-1000">500-1000 employees</option>
                                             <option value="1000+">1000+ employees</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="founded">Founded Year</label>
-<<<<<<< Updated upstream
                                         <input type="number" id="founded" class="form-control" value="" min="1800" max="2026">
-=======
-                                        <input type="number" id="founded" class="form-control" value="2010" min="1800" max="2026">
->>>>>>> Stashed changes
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tagline">Tagline</label>
-<<<<<<< Updated upstream
                                     <input type="text" id="tagline" class="form-control" placeholder="A short description of your company" value="">
-=======
-                                    <input type="text" id="tagline" class="form-control" placeholder="A short description of your company" value="Innovating Tomorrow's Technology Today">
->>>>>>> Stashed changes
                                     <p class="form-hint">A catchy phrase that describes your company (max 100 characters)</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="description">Company Description <span class="required">*</span></label>
-<<<<<<< Updated upstream
                                     <textarea id="description" class="form-control" rows="5" required></textarea>
-=======
-                                    <textarea id="description" class="form-control" rows="5" required>TechCorp Inc. is a leading technology company specializing in innovative software solutions. We build cutting-edge products that help businesses transform their digital operations and achieve sustainable growth.
-
-Our team of passionate engineers, designers, and strategists work together to create solutions that matter. We believe in pushing boundaries and challenging the status quo.</textarea>
->>>>>>> Stashed changes
                                     <p class="form-hint">Describe your company, culture, and what makes you unique</p>
                                 </div>
 
@@ -232,22 +198,14 @@ Our team of passionate engineers, designers, and strategists work together to cr
                                         <label for="website">Website</label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-globe"></i>
-<<<<<<< Updated upstream
                                             <input type="url" id="website" class="form-control" value="">
-=======
-                                            <input type="url" id="website" class="form-control" value="https://techcorp.com">
->>>>>>> Stashed changes
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Contact Email <span class="required">*</span></label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-envelope"></i>
-<<<<<<< Updated upstream
                                             <input type="email" id="email" class="form-control" value="" required>
-=======
-                                            <input type="email" id="email" class="form-control" value="careers@techcorp.com" required>
->>>>>>> Stashed changes
                                         </div>
                                     </div>
                                 </div>
@@ -257,22 +215,14 @@ Our team of passionate engineers, designers, and strategists work together to cr
                                         <label for="phone">Phone Number</label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-telephone"></i>
-<<<<<<< Updated upstream
                                             <input type="tel" id="phone" class="form-control" value="">
-=======
-                                            <input type="tel" id="phone" class="form-control" value="+1 (555) 123-4567">
->>>>>>> Stashed changes
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="location">Headquarters Location <span class="required">*</span></label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-geo-alt"></i>
-<<<<<<< Updated upstream
                                             <input type="text" id="location" class="form-control" value="" required>
-=======
-                                            <input type="text" id="location" class="form-control" value="San Francisco, CA" required>
->>>>>>> Stashed changes
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +232,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                                     <div class="social-links-grid">
                                         <div class="input-with-icon">
                                             <i class="bi bi-linkedin"></i>
-<<<<<<< Updated upstream
                                             <input type="url" class="form-control" placeholder="LinkedIn URL" value="">
                                         </div>
                                         <div class="input-with-icon">
@@ -296,21 +245,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                                         <div class="input-with-icon">
                                             <i class="bi bi-instagram"></i>
                                             <input type="url" class="form-control" placeholder="Instagram URL" value="">
-=======
-                                            <input type="url" class="form-control" placeholder="LinkedIn URL" value="https://linkedin.com/company/techcorp">
-                                        </div>
-                                        <div class="input-with-icon">
-                                            <i class="bi bi-twitter-x"></i>
-                                            <input type="url" class="form-control" placeholder="Twitter/X URL" value="https://twitter.com/techcorp">
-                                        </div>
-                                        <div class="input-with-icon">
-                                            <i class="bi bi-facebook"></i>
-                                            <input type="url" class="form-control" placeholder="Facebook URL">
-                                        </div>
-                                        <div class="input-with-icon">
-                                            <i class="bi bi-instagram"></i>
-                                            <input type="url" class="form-control" placeholder="Instagram URL">
->>>>>>> Stashed changes
                                         </div>
                                     </div>
                                 </div>
@@ -332,7 +266,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                         </div>
                         <div class="card-body">
                             <div class="preview-header">
-<<<<<<< Updated upstream
                                 <img src="" alt="Company Logo" class="preview-logo" id="previewLogo">
                                 <div class="preview-info">
                                     <h3 id="previewCompanyName"></h3>
@@ -341,16 +274,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                                         <span><i class="bi bi-geo-alt"></i> <span id="previewLocation"></span></span>
                                         <span><i class="bi bi-building"></i> <span id="previewIndustry"></span></span>
                                         <span><i class="bi bi-people"></i> <span id="previewSize"></span></span>
-=======
-                                <img src="https://ui-avatars.com/api/?name=TechCorp&background=0d47a1&color=fff&size=100" alt="Company Logo" class="preview-logo">
-                                <div class="preview-info">
-                                    <h3>TechCorp Inc.</h3>
-                                    <p class="preview-tagline">Innovating Tomorrow's Technology Today</p>
-                                    <div class="preview-meta">
-                                        <span><i class="bi bi-geo-alt"></i> San Francisco, CA</span>
-                                        <span><i class="bi bi-building"></i> Technology</span>
-                                        <span><i class="bi bi-people"></i> 100-500 employees</span>
->>>>>>> Stashed changes
                                     </div>
                                 </div>
                             </div>
@@ -383,7 +306,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                     <div class="dashboard-card benefits-card">
                         <div class="card-header">
                             <h2><i class="bi bi-gift"></i> Benefits & Perks</h2>
-<<<<<<< Updated upstream
                             <form id="addBenefitForm" style="display:inline-flex;gap:8px;align-items:center;">
                                 <input type="text" id="newBenefitInput" class="form-control form-control-sm" placeholder="Add benefit..." style="width:180px;">
                                 <button type="submit" class="btn btn-sm btn-outline"><i class="bi bi-plus"></i> Add</button>
@@ -391,47 +313,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                         </div>
                         <div class="card-body">
                             <div class="benefits-grid" id="benefitsGrid"></div>
-=======
-                            <button class="btn btn-sm btn-outline" id="addBenefitBtn">
-                                <i class="bi bi-plus"></i> Add
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div class="benefits-grid">
-                                <div class="benefit-item">
-                                    <i class="bi bi-heart-pulse"></i>
-                                    <span>Health Insurance</span>
-                                </div>
-                                <div class="benefit-item">
-                                    <i class="bi bi-house"></i>
-                                    <span>Remote Work</span>
-                                </div>
-                                <div class="benefit-item">
-                                    <i class="bi bi-calendar-check"></i>
-                                    <span>Paid Time Off</span>
-                                </div>
-                                <div class="benefit-item">
-                                    <i class="bi bi-mortarboard"></i>
-                                    <span>Learning Budget</span>
-                                </div>
-                                <div class="benefit-item">
-                                    <i class="bi bi-currency-dollar"></i>
-                                    <span>401(k) Match</span>
-                                </div>
-                                <div class="benefit-item">
-                                    <i class="bi bi-cup-hot"></i>
-                                    <span>Free Snacks</span>
-                                </div>
-                                <div class="benefit-item">
-                                    <i class="bi bi-bicycle"></i>
-                                    <span>Gym Membership</span>
-                                </div>
-                                <div class="benefit-item">
-                                    <i class="bi bi-laptop"></i>
-                                    <span>Equipment Allowance</span>
-                                </div>
-                            </div>
->>>>>>> Stashed changes
                         </div>
                     </div>
 
@@ -439,7 +320,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                     <div class="dashboard-card photos-card">
                         <div class="card-header">
                             <h2><i class="bi bi-images"></i> Company Photos</h2>
-<<<<<<< Updated upstream
                             <form id="addPhotoForm" style="display:inline-flex;gap:8px;align-items:center;">
                                 <input type="url" id="newPhotoUrl" class="form-control form-control-sm" placeholder="Paste image URL..." style="width:220px;">
                                 <button type="submit" class="btn btn-sm btn-outline"><i class="bi bi-plus"></i> Add</button>
@@ -447,44 +327,6 @@ Our team of passionate engineers, designers, and strategists work together to cr
                         </div>
                         <div class="card-body">
                             <div class="photos-grid" id="photosGrid"></div>
-=======
-                            <label class="btn btn-sm btn-outline">
-                                <i class="bi bi-plus"></i> Upload
-                                <input type="file" accept="image/*" multiple hidden>
-                            </label>
-                        </div>
-                        <div class="card-body">
-                            <div class="photos-grid">
-                                <div class="photo-item">
-                                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=300&h=200&fit=crop" alt="Office">
-                                    <button class="photo-delete"><i class="bi bi-x"></i></button>
-                                </div>
-                                <div class="photo-item">
-                                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=300&h=200&fit=crop" alt="Team">
-                                    <button class="photo-delete"><i class="bi bi-x"></i></button>
-                                </div>
-                                <div class="photo-item">
-                                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop" alt="Workspace">
-                                    <button class="photo-delete"><i class="bi bi-x"></i></button>
-                                </div>
-                                <div class="photo-item add-photo">
-                    
-                                    <span>Add Photo</span>
-                                
-                                 <label class="btn btn-sm btn-outline">
-                                <i class="bi bi-plus"></i> Upload
-                                <input type="file" accept="image/*" multiple hidden>
-                            
-                        
-                            </label>
-                                     <div class="logo-upload-info">
-                                        
-                                            <input type="file" id="logoUpload" accept="image/*" hidden>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
->>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -496,29 +338,7 @@ Our team of passionate engineers, designers, and strategists work together to cr
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<<<<<<< Updated upstream
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
-=======
-    <script src="js/company.js"></script>
-    <script>
-        // Profile page specific scripts
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            window.companyDashboard.showToast('Profile updated successfully!', 'success');
-        });
-
-        document.getElementById('logoUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('logoPreview').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
->>>>>>> Stashed changes
     
     <style>
         /* Profile Page Specific Styles */

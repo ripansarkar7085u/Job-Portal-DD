@@ -20,11 +20,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="../index.php" class="logo">
-<<<<<<< Updated upstream
                    <img src="..\photos\job_logo.png" alt="CareerHunt">
-=======
-                    <img src="../photos/job logo.png" alt="CareerHunt">
->>>>>>> Stashed changes
                 </a>
                 <span class="company-badge">Company</span>
             </div>
@@ -439,7 +435,6 @@ if (session_status() == PHP_SESSION_NONE) {
     <!-- Mobile Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<<<<<<< Updated upstream
     <div class="modal fade" id="jobPreviewModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
@@ -457,10 +452,6 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
-=======
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/company.js"></script>
->>>>>>> Stashed changes
     <script>
         // Skills input functionality
         const skillsInput = document.getElementById('skillsInput');
@@ -521,7 +512,6 @@ if (session_status() == PHP_SESSION_NONE) {
             }
         });
 
-<<<<<<< Updated upstream
         let editingJobId = null;
 
         function getFormPayload(status) {
@@ -670,27 +660,6 @@ if (session_status() == PHP_SESSION_NONE) {
                 return;
             }
 
-=======
-        // Form submission
-        document.getElementById('jobForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Collect form data
-            const formData = {
-                title: document.getElementById('jobTitle').value,
-                type: document.getElementById('jobType').value,
-                level: document.getElementById('experienceLevel').value,
-                category: document.getElementById('category').value,
-                workStyle: document.getElementById('workStyle').value,
-                location: document.getElementById('location').value,
-                salaryMin: document.getElementById('salaryMin').value,
-                salaryMax: document.getElementById('salaryMax').value,
-                description: document.getElementById('description').value,
-                requirements: document.getElementById('requirements').value
-            };
-
-            console.log('Publishing job:', formData);
->>>>>>> Stashed changes
             window.companyDashboard.showToast('Job published successfully!', 'success');
             
             setTimeout(() => {
@@ -699,43 +668,28 @@ if (session_status() == PHP_SESSION_NONE) {
         });
 
         // Save draft
-<<<<<<< Updated upstream
         document.getElementById('saveDraftBtn').addEventListener('click', async function() {
             const saved = await saveJobPosting('draft');
             if (!saved) {
                 return;
             }
             window.companyDashboard.showToast(editingJobId ? 'Draft saved successfully!' : 'Draft created successfully!', 'success');
-=======
-        document.getElementById('saveDraftBtn').addEventListener('click', function() {
-            window.companyDashboard.showToast('Draft saved successfully!', 'success');
->>>>>>> Stashed changes
         });
 
         // Preview button
         document.getElementById('previewBtn').addEventListener('click', function() {
-<<<<<<< Updated upstream
             renderPreview();
-=======
-            window.companyDashboard.showToast('Opening preview...', 'info');
->>>>>>> Stashed changes
         });
 
         // Check for edit mode
         const urlParams = new URLSearchParams(window.location.search);
         const editId = urlParams.get('edit');
         if (editId) {
-<<<<<<< Updated upstream
             editingJobId = Number(editId);
             document.getElementById('pageTitle').textContent = 'Edit Job';
             document.getElementById('formTitle').textContent = 'Edit Job Posting';
             document.querySelector('button[type="submit"]').innerHTML = '<i class="bi bi-check2-circle"></i> Update Job';
             loadJobForEdit(editId);
-=======
-            document.getElementById('pageTitle').textContent = 'Edit Job';
-            document.getElementById('formTitle').textContent = 'Edit Job Posting';
-            // Load existing job data here
->>>>>>> Stashed changes
         }
     </script>
 

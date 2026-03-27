@@ -1421,3 +1421,63 @@ section .section-title h2 {
     height: 1rem;
     border-width: 0.15em;
 }
+
+/* ========================================= */
+/* RESPONSIVE DESIGN FOR MAIN PORTAL         */
+/* ========================================= */
+@media (max-width: 991px) {
+    .banner-title {
+        font-size: 36px;
+    }
+    
+    .job-search-box {
+        flex-direction: column;
+    }
+    
+    .search-field {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding: 15px 10px;
+    }
+    
+    .hero-man {
+        width: 100%;
+        max-width: 350px;
+        margin-top: 40px;
+    }
+    
+    /* Adjust floating cards on tablet/mobile */
+    .info-card {
+        position: relative !important;
+        top: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        margin: 10px auto;
+        width: 90%;
+        justify-content: center;
+        z-index: 3;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+    }
+    
+    .banner-title {
+        font-size: 28px;
+    }
+    
+    .section-title h2 {
+        font-size: 28px;
+    }
+    
+    .about-content h2 {
+        font-size: 28px;
+    }
+    
+    .footer-widget {
+        margin-bottom: 30px;
+    }
+}
