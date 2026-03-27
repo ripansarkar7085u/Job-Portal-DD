@@ -177,13 +177,15 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         if (applyJobIdInput) applyJobIdInput.value = jobId;
 
         fetch('api/job_details.php?id=' + jobId)
-            .then(res => res.json())
+            .then(res => res.json().catch(() => null))
             .then(data => {
-                if (!data.success || !data.job) {
-                    loading.textContent = data.message || 'Job not found.';
+                loading.style.display = 'none';
+                if (!data || !data.success || !data.job) {
+                    card.style.display = 'none';
+                    loading.style.display = '';
+                    loading.textContent = (data && data.message) || 'Job not found or failed to load.';
                     return;
                 }
-                loading.style.display = 'none';
                 card.style.display = '';
                 const j = data.job;
                 document.getElementById('companyLogo').src = j.company_logo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(j.company_name || 'Company');
@@ -237,6 +239,11 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
                         benefitsSpan.appendChild(span);
                     }
                 });
+            })
+            .catch(() => {
+                loading.style.display = 'none';
+                card.style.display = 'none';
+                loading.textContent = 'Failed to load job details. Please try again later.';
             });
 
         // Apply form submission

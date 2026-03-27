@@ -622,9 +622,10 @@ if (session_status() == PHP_SESSION_NONE) {
 
             const payload = getFormPayload(status);
 
+            let response = null;
             try {
                 setFormDisabled(true);
-                const response = await fetch('../api/company_jobs.php', {
+                response = await fetch('../api/company_jobs.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -632,24 +633,33 @@ if (session_status() == PHP_SESSION_NONE) {
                     credentials: 'include',
                     body: JSON.stringify(payload)
                 });
-
-                const data = await response.json();
-                if (!response.ok || !data.success) {
-                    window.companyDashboard.showToast(data.message || 'Failed to save job', 'error');
-                    return false;
-                }
-
-                if (data.job_id) {
-                    editingJobId = data.job_id;
-                }
-
-                return true;
             } catch (error) {
                 window.companyDashboard.showToast('Unable to connect to server', 'error');
-                return false;
-            } finally {
                 setFormDisabled(false);
+                return false;
             }
+
+            let data = null;
+            try {
+                data = await response.json();
+            } catch (e) {
+                window.companyDashboard.showToast('Invalid server response', 'error');
+                setFormDisabled(false);
+                return false;
+            }
+
+            if (!response.ok || !data || !data.success) {
+                window.companyDashboard.showToast((data && data.message) || 'Failed to save job', 'error');
+                setFormDisabled(false);
+                return false;
+            }
+
+            if (data.job_id) {
+                editingJobId = data.job_id;
+            }
+
+            setFormDisabled(false);
+            return true;
         }
 
         // Form submission
