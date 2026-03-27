@@ -527,6 +527,8 @@ function editJob(jobId) {
     window.location.href = `job-create.html?edit=${jobId}`;
 }
 
+// Pagination logic is handled independently by the pages.
+
 /**
  * Delete job
  */

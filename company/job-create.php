@@ -450,6 +450,7 @@ if (session_status() == PHP_SESSION_NONE) {
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
     <script>
@@ -660,11 +661,18 @@ if (session_status() == PHP_SESSION_NONE) {
                 return;
             }
 
-            window.companyDashboard.showToast('Job published successfully!', 'success');
-            
-            setTimeout(() => {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Job published successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            }).then(() => {
                 window.location.href = 'jobs.php';
-            }, 1500);
+            });
         });
 
         // Save draft

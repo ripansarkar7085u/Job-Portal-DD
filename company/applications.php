@@ -355,14 +355,7 @@ function application_status_label(string $status): string
                 </div>
 
                 <!-- Pagination -->
-                <div class="pagination">
-                    <button class="pagination-btn" disabled><i class="bi bi-chevron-left"></i></button>
-                    <button class="pagination-btn active">1</button>
-                    <button class="pagination-btn">2</button>
-                    <button class="pagination-btn">3</button>
-                    <button class="pagination-btn">4</button>
-                    <button class="pagination-btn"><i class="bi bi-chevron-right"></i></button>
-                </div>
+                <div class="pagination"></div>
             </section>
         </main>
     </div>
@@ -450,42 +443,117 @@ function application_status_label(string $status): string
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
     <script>
+        let currentPage = 1;
+        const perPage = 10;
+        let activeFilter = 'all';
+        let searchQuery = '';
+
         // Filter tabs functionality
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
-                const filter = this.dataset.filter;
-                filterApplications(filter);
+                activeFilter = this.dataset.filter;
+                currentPage = 1;
+                applyFilters();
             });
         });
 
-        function filterApplications(status) {
-            const rows = document.querySelectorAll('#applicationsTable tr');
-            rows.forEach(row => {
-                const rowStatus = row.dataset.status;
-                if (status === 'all' || rowStatus === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
         // Search functionality
         document.getElementById('applicantSearch').addEventListener('input', function() {
-            const query = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#applicationsTable tr');
+            searchQuery = this.value.toLowerCase();
+            currentPage = 1;
+            applyFilters();
+        });
+
+        function applyFilters() {
+            const rows = Array.from(document.querySelectorAll('#applicationsTable tr[data-application-id]'));
+            let visibleRows = [];
+            
             rows.forEach(row => {
-                const name = row.querySelector('.name')?.textContent.toLowerCase();
-                const email = row.querySelector('.email')?.textContent.toLowerCase();
-                const position = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase();
-                if (name?.includes(query) || email?.includes(query) || position?.includes(query)) {
+                const rowStatus = row.dataset.status || '';
+                const name = row.querySelector('.name')?.textContent.toLowerCase() || '';
+                const email = row.querySelector('.email')?.textContent.toLowerCase() || '';
+                const position = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
+                
+                const matchesFilter = activeFilter === 'all' || rowStatus === activeFilter;
+                const matchesSearch = searchQuery === '' || name.includes(searchQuery) || email.includes(searchQuery) || position.includes(searchQuery);
+                
+                if (matchesFilter && matchesSearch) {
+                    visibleRows.push(row);
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            const totalMatches = visibleRows.length;
+            const startIndex = (currentPage - 1) * perPage;
+            const endIndex = startIndex + perPage;
+            
+            visibleRows.forEach((row, index) => {
+                if (index >= startIndex && index < endIndex) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
                 }
             });
+            
+            renderPagination(totalMatches);
+        }
+
+        function renderPagination(totalMatches) {
+            const paginationContainer = document.querySelector('.pagination');
+            if (!paginationContainer) return;
+            
+            paginationContainer.innerHTML = '';
+            
+            const totalPages = Math.ceil(totalMatches / perPage);
+            if (totalPages <= 1) return;
+            
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn';
+            prevBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    applyFilters();
+                }
+            };
+            paginationContainer.appendChild(prevBtn);
+            
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => {
+                    currentPage = i;
+                    applyFilters();
+                };
+                paginationContainer.appendChild(pageBtn);
+            }
+            
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn';
+            nextBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    applyFilters();
+                }
+            };
+            paginationContainer.appendChild(nextBtn);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyFilters();
         });
 
         // Job filter change
