@@ -29,7 +29,7 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 
 <body>
-    <?php include("header.php") ?>
+   <?php include("header.php") ?>
     <button onclick="history.back()" class="back-btn">
         <i class="bi bi-arrow-left"></i>
     </button>
@@ -59,12 +59,6 @@ if (session_status() == PHP_SESSION_NONE) {
                             <i class="bi bi-geo-alt"></i>
                             <select id="locationFilter">
                                 <option value="">All Locations</option>
-                                <option value="new-york">New York, USA</option>
-                                <option value="london">London, UK</option>
-                                <option value="san-francisco">San Francisco, USA</option>
-                                <option value="singapore">Singapore</option>
-                                <option value="bangalore">Bangalore, India</option>
-                                <option value="remote">Remote</option>
                             </select>
                         </div>
                     </div>
@@ -73,12 +67,6 @@ if (session_status() == PHP_SESSION_NONE) {
                             <i class="bi bi-briefcase"></i>
                             <select id="industryFilter">
                                 <option value="">All Industries</option>
-                                <option value="technology">Technology</option>
-                                <option value="finance">Finance & Banking</option>
-                                <option value="healthcare">Healthcare</option>
-                                <option value="education">Education</option>
-                                <option value="retail">Retail & E-commerce</option>
-                                <option value="manufacturing">Manufacturing</option>
                             </select>
                         </div>
                     </div>
@@ -97,78 +85,19 @@ if (session_status() == PHP_SESSION_NONE) {
                         <!-- Company Size Filter -->
                         <div class="filter-widget">
                             <h5 class="filter-title">Company Size</h5>
-                            <div class="filter-options">
-                                <label class="filter-option">
-                                    <input type="checkbox" value="1-50"> 1-50 employees
-                                    <span class="count">(24)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="51-200"> 51-200 employees
-                                    <span class="count">(18)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="201-500"> 201-500 employees
-                                    <span class="count">(12)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="501-1000"> 501-1000 employees
-                                    <span class="count">(8)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="1000+"> 1000+ employees
-                                    <span class="count">(15)</span>
-                                </label>
-                            </div>
+                            <div class="filter-options" id="sizeFilterOptions"></div>
                         </div>
 
                         <!-- Industry Filter -->
                         <div class="filter-widget">
                             <h5 class="filter-title">Industry</h5>
-                            <div class="filter-options">
-                                <label class="filter-option">
-                                    <input type="checkbox" value="technology"> Technology
-                                    <span class="count">(69)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="finance"> Finance
-                                    <span class="count">(15)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="healthcare"> Healthcare
-                                    <span class="count">(10)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="education"> Education
-                                    <span class="count">(8)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="retail"> Retail
-                                    <span class="count">(12)</span>
-                                </label>
-                            </div>
+                            <div class="filter-options" id="industryFilterOptions"></div>
                         </div>
 
                         <!-- Founded Year Filter -->
                         <div class="filter-widget">
                             <h5 class="filter-title">Founded</h5>
-                            <div class="filter-options">
-                                <label class="filter-option">
-                                    <input type="checkbox" value="2020+"> 2020 - Present
-                                    <span class="count">(20)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="2015-2019"> 2015 - 2019
-                                    <span class="count">(25)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="2010-2014"> 2010 - 2014
-                                    <span class="count">(15)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" value="before-2010"> Before 2010
-                                    <span class="count">(17)</span>
-                                </label>
-                            </div>
+                            <div class="filter-options" id="foundedFilterOptions"></div>
                         </div>
                     </div>
                 </div>
@@ -304,7 +233,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js\companies.js"></script>
+    <script src="js/companies.js"></script>
 </body>
 
 </html>

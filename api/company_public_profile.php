@@ -1,7 +1,23 @@
+
 <?php
+ob_start();
 require_once __DIR__ . '/../config/database.php';
 header('Content-Type: application/json');
-$company_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+session_start();
+
+$company_id = 0;
+if (isset($_GET['id'])) {
+    if ($_GET['id'] === 'me') {
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true && ($_SESSION['account_type'] ?? '') === 'company' && isset($_SESSION['company_id'])) {
+            $company_id = intval($_SESSION['company_id']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Not authorized.']);
+            exit;
+        }
+    } else {
+        $company_id = intval($_GET['id']);
+    }
+}
 if (!$company_id) {
     echo json_encode(['success' => false, 'message' => 'No company ID provided.']);
     exit;
@@ -35,5 +51,6 @@ while ($row = $res->fetch_assoc()) {
 $company['benefits'] = $benefits;
 $company['photos'] = $photos;
 $company['jobs'] = $jobs;
+ob_clean();
 echo json_encode(['success' => true, 'company' => $company]);
 $conn->close();

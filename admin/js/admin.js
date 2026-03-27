@@ -80,6 +80,16 @@ function showLogin() {
 function showDashboard() {
     document.getElementById('adminLoginContainer').style.display = 'none';
     document.getElementById('adminDashboard').style.display = 'flex';
+    // Fetch all data and initialize sidebar/events
+    fetchUsers().then(renderUsersTable);
+    fetchCompanies().then(renderCompaniesTable);
+    fetchJobs().then(renderJobsTable);
+    updateDashboardStats();
+    renderRecentUsers();
+    renderRecentCompanies();
+    if (typeof initializeEventListeners === 'function') {
+        initializeEventListeners();
+    }
 }
 
 function updateAdminUI() {
@@ -110,42 +120,39 @@ function formatRole(role) {
 // Admin Login Handler
 async function handleAdminLogin(e) {
     e.preventDefault();
-    
+
     const loginBtn = document.getElementById('loginBtn');
     const errorDiv = document.getElementById('loginError');
     const username = document.getElementById('adminUsername').value.trim();
     const password = document.getElementById('adminPassword').value;
-    
+
     // Clear previous errors
     errorDiv.textContent = '';
-    
+
     // Validation
     if (!username || !password) {
         errorDiv.textContent = 'Please fill in all fields';
         return;
     }
-    
+
     // Set loading state
     loginBtn.classList.add('loading');
     loginBtn.disabled = true;
-    
+
     try {
-        const formData = new FormData();
-        formData.append('username', username);
-        formData.append('password', password);
-        
         const response = await fetch('../api/admin_login.php', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
-            currentAdmin = data.admin;
-            showDashboard();
-            updateAdminUI();
-            showToast('Login successful! Welcome back.', 'success');
+            // Redirect to admin folder index after successful login
+            window.location.href = "index.php";
         } else {
             errorDiv.textContent = data.message || 'Login failed';
         }

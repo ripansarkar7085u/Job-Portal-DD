@@ -2,6 +2,7 @@
 // Start session
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
+ 
 }
 ?>
 <!DOCTYPE html>
@@ -429,6 +430,17 @@ if (session_status() == PHP_SESSION_NONE) {
         <span class="toast-message">Action completed successfully</span>
     </div>
 
-    <script src="js/admin.js"></script>
+        <script src="js/admin.js"></script>
+        <script>
+            // Ensure login listeners and session check are initialized
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof initializeLoginListeners === 'function') {
+                    initializeLoginListeners();
+                }
+                if (typeof checkAdminSession === 'function') {
+                    checkAdminSession();
+                }
+            });
+        </script>
 </body>
 </html>

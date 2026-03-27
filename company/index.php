@@ -267,5 +267,19 @@ if ($companyId) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
+    <script>
+    // Sidebar/menu/profile dropdown logic (ensure always initialized)
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof handleNavigation === 'function') handleNavigation();
+        if (typeof menuToggle !== 'undefined' && typeof sidebar !== 'undefined' && typeof sidebarOverlay !== 'undefined') {
+            menuToggle.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+        }
+        if (typeof profileBtn !== 'undefined' && typeof profileDropdown !== 'undefined') {
+            profileBtn.addEventListener('click', toggleProfileDropdown);
+            document.addEventListener('click', closeProfileDropdown);
+        }
+    });
+    </script>
 </body>
 </html>
