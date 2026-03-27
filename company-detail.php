@@ -4,7 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Get company ID from URL
+
 $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 ?>
 <!DOCTYPE html>
@@ -101,110 +101,16 @@ $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 
                 <!-- RIGHT SIDEBAR -->
                 <div class="col-lg-4">
-                    <!-- Company Overview -->
-                    <div class="sidebar-card">
-                        <h4 class="sidebar-title">Company Overview</h4>
-                        <ul class="overview-list">
-                            <li>
-                                <span class="label"><i class="bi bi-calendar3"></i> Founded</span>
-                                <span class="value">September 4, 1998</span>
-                            </li>
-                            <li>
-                                <span class="label"><i class="bi bi-building"></i> Organization Type</span>
-                                <span class="value">Public Company</span>
-                            </li>
-                            <li>
-                                <span class="label"><i class="bi bi-people"></i> Team Size</span>
-                                <span class="value">150,000+ employees</span>
-                            </li>
-                            <li>
-                                <span class="label"><i class="bi bi-briefcase"></i> Industry</span>
-                                <span class="value">Technology</span>
-                            </li>
-                            <li>
-                                <span class="label"><i class="bi bi-cash-stack"></i> Revenue</span>
-                                <span class="value">$280+ Billion</span>
-                            </li>
-                            <li>
-                                <span class="label"><i class="bi bi-geo-alt"></i> Headquarters</span>
-                                <span class="value">Mountain View, CA</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Contact Information -->
-                    <div class="sidebar-card">
-                        <h4 class="sidebar-title">Contact Information</h4>
-                        <ul class="contact-list">
-                            <li>
-                                <a href="https://google.com" target="_blank">
-                                    <i class="bi bi-globe"></i> www.google.com
-                                </a>
-                            </li>
-                            <li>
-                                <a href="mailto:careers@google.com">
-                                    <i class="bi bi-envelope"></i> careers@google.com
-                                </a>
-                            </li>
-                            <li>
-                                <a href="tel:+16502530000">
-                                    <i class="bi bi-telephone"></i> +1 (650) 253-0000
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="social-links-compact">
-                            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-                            <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-                            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- Location Map -->
-                    <div class="sidebar-card">
-                        <h4 class="sidebar-title">Location</h4>
-                        <div class="map-placeholder">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.639290621062!2d-122.0840897!3d37.4219999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba02425dad8f%3A0x6c296c66619367e0!2sGoogleplex!5e0!3m2!1sen!2sus!4v1635959764512!5m2!1sen!2sus"
-                                width="100%" height="200" style="border:0; border-radius: 8px;" allowfullscreen=""
-                                loading="lazy">
-                            </iframe>
-                        </div>
-                        <p class="address-text">
-                            <i class="bi bi-geo-alt"></i>
-                            1600 Amphitheatre Parkway, Mountain View, CA 94043, United States
-                        </p>
-                    </div>
-
-                    <!-- Similar Companies -->
+                    <!-- Company Overview (Dynamic) -->
+                    <div class="sidebar-card" id="companyOverviewCard"></div>
+                    <!-- Contact Information (Dynamic) -->
+                    <div class="sidebar-card" id="companyContactCard"></div>
+                    <!-- Location Map (Dynamic) -->
+                    <div class="sidebar-card" id="companyLocationCard"></div>
+                    <!-- Similar Companies (Dynamic) -->
                     <div class="sidebar-card">
                         <h4 class="sidebar-title">Similar Companies</h4>
-                        <div class="similar-companies">
-                            <a href="company-detail.php?id=2" class="similar-company-item">
-                                <img src="https://ui-avatars.com/api/?name=Microsoft&background=00a4ef&color=fff&size=50&rounded=true"
-                                    alt="Microsoft">
-                                <div>
-                                    <h5>Microsoft</h5>
-                                    <span>18 Open Jobs</span>
-                                </div>
-                            </a>
-                            <a href="company-detail.php?id=5" class="similar-company-item">
-                                <img src="https://ui-avatars.com/api/?name=Apple&background=333333&color=fff&size=50&rounded=true"
-                                    alt="Apple">
-                                <div>
-                                    <h5>Apple Inc.</h5>
-                                    <span>30 Open Jobs</span>
-                                </div>
-                            </a>
-                            <a href="company-detail.php?id=7" class="similar-company-item">
-                                <img src="https://ui-avatars.com/api/?name=Meta&background=0668e1&color=fff&size=50&rounded=true"
-                                    alt="Meta">
-                                <div>
-                                    <h5>Meta</h5>
-                                    <span>28 Open Jobs</span>
-                                </div>
-                            </a>
-                        </div>
+                        <div class="similar-companies" id="similarCompanies"></div>
                     </div>
                 </div>
             </div>
@@ -364,6 +270,66 @@ $company_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
                 }
                 // View all jobs link
                 document.getElementById('viewAllJobsLink').href = `jobs.php?company=${encodeURIComponent(c.company_name || '')}`;
+
+                // Sidebar: Company Overview
+                const overview = document.getElementById('companyOverviewCard');
+                overview.innerHTML = `<h4 class='sidebar-title'>Company Overview</h4>
+                    <ul class='overview-list'>
+                        <li><span class='label'><i class='bi bi-calendar3'></i> Founded</span><span class='value'>${c.founded || '-'}</span></li>
+                        <li><span class='label'><i class='bi bi-building'></i> Organization Type</span><span class='value'>${c.organization_type || '-'}</span></li>
+                        <li><span class='label'><i class='bi bi-people'></i> Team Size</span><span class='value'>${c.company_size || '-'}</span></li>
+                        <li><span class='label'><i class='bi bi-briefcase'></i> Industry</span><span class='value'>${c.industry || '-'}</span></li>
+                        <li><span class='label'><i class='bi bi-cash-stack'></i> Revenue</span><span class='value'>${c.revenue || '-'}</span></li>
+                        <li><span class='label'><i class='bi bi-geo-alt'></i> Headquarters</span><span class='value'>${c.location || '-'}</span></li>
+                    </ul>`;
+
+                // Sidebar: Contact Information
+                const contact = document.getElementById('companyContactCard');
+                contact.innerHTML = `<h4 class='sidebar-title'>Contact Information</h4>
+                    <ul class='contact-list'>
+                        ${c.website ? `<li><a href='${c.website}' target='_blank'><i class='bi bi-globe'></i> ${c.website}</a></li>` : ''}
+                        ${c.email ? `<li><a href='mailto:${c.email}'><i class='bi bi-envelope'></i> ${c.email}</a></li>` : ''}
+                        ${c.phone ? `<li><a href='tel:${c.phone}'><i class='bi bi-telephone'></i> ${c.phone}</a></li>` : ''}
+                    </ul>
+                    <div class='social-links-compact'>
+                        ${c.linkedin ? `<a href='${c.linkedin}' class='linkedin' target='_blank'><i class='bi bi-linkedin'></i></a>` : ''}
+                        ${c.twitter ? `<a href='${c.twitter}' class='twitter' target='_blank'><i class='bi bi-twitter-x'></i></a>` : ''}
+                        ${c.facebook ? `<a href='${c.facebook}' class='facebook' target='_blank'><i class='bi bi-facebook'></i></a>` : ''}
+                        ${c.instagram ? `<a href='${c.instagram}' class='instagram' target='_blank'><i class='bi bi-instagram'></i></a>` : ''}
+                    </div>`;
+
+                // Sidebar: Location Map
+                const locationCard = document.getElementById('companyLocationCard');
+                locationCard.innerHTML = `<h4 class='sidebar-title'>Location</h4>
+                    <div class='map-placeholder'>
+                        ${c.location ? `<iframe src='https://www.google.com/maps?q=${encodeURIComponent(c.location)}&output=embed' width='100%' height='200' style='border:0; border-radius: 8px;' allowfullscreen='' loading='lazy'></iframe>` : '<span class="text-muted">No location provided.</span>'}
+                    </div>
+                    <p class='address-text'><i class='bi bi-geo-alt'></i> ${c.location || '-'}</p>`;
+
+                // Sidebar: Similar Companies
+                fetch('api/homepage_companies.php')
+                    .then(res => res.json())
+                    .then(simData => {
+                        const simDiv = document.getElementById('similarCompanies');
+                        simDiv.innerHTML = '';
+                        if (simData.success && Array.isArray(simData.companies)) {
+                            simData.companies.filter(sc => sc.id !== c.id).slice(0, 3).forEach(sc => {
+                                const a = document.createElement('a');
+                                a.className = 'similar-company-item';
+                                a.href = `company-detail.php?id=${sc.id}`;
+                                a.innerHTML = `
+                                    <img src='${sc.logo}' alt='${sc.name}'>
+                                    <div>
+                                        <h5>${sc.name}</h5>
+                                        <span>${sc.jobs_count} Open Jobs</span>
+                                    </div>
+                                `;
+                                simDiv.appendChild(a);
+                            });
+                        } else {
+                            simDiv.innerHTML = '<span class="text-muted">No similar companies found.</span>';
+                        }
+                    });
             });
 
         // Helper: time ago

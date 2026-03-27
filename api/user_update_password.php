@@ -1,6 +1,14 @@
+
 <?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require_once __DIR__ . '/_auth_common.php';
 require_once __DIR__ . '/../config/database.php';
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -8,8 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || ($_SESSION['account_type'] ?? '') !== 'user' || !isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Not authorized.']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Not authorized.',
+        'debug_session' => $_SESSION
+    ]);
     exit;
 }
 
@@ -43,7 +56,7 @@ if ($stmt->fetch()) {
 }
 $stmt->close();
 
-$new_hash = password_hash($new_password, PASSWORD_DEFAULT);
+$new_hash = password_hash($new_password, PASSWORD_BCRYPT, ['cost' => 6]);
 $stmt = $conn->prepare('UPDATE users SET password = ? WHERE id = ?');
 $stmt->bind_param('si', $new_hash, $userId);
 if ($stmt->execute()) {
