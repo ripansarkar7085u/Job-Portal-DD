@@ -1546,3 +1546,19 @@ section .section-title h2 {
         padding-left: 0;
     }
 }
+
+
+/* ========================================= */
+/* PREMIUM 3D HOVER TRANSITIONS              */
+/* ========================================= */
+.job-card, .category-card, .company-card, .stat-box, .info-card, .news-card, .testimonial-card {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease !important;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.job-card:hover, .category-card:hover, .company-card:hover, .stat-box:hover, .info-card:hover, .news-card:hover, .testimonial-card:hover {
+    transform: perspective(1200px) translateY(-12px) translateZ(40px) rotateX(4deg) rotateY(-2deg) !important;
+    box-shadow: -15px 25px 40px rgba(0, 0, 0, 0.12) !important;
+    z-index: 10;
+}
