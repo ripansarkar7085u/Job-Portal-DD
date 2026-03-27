@@ -4,15 +4,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const locationFilter = document.getElementById('locationFilter');
     const industryFilter = document.getElementById('industryFilter');
     const sortBy = document.getElementById('sortBy');
-    const sizeCheckboxes = Array.from(document.querySelectorAll('.filter-widget .filter-title'))
-        .find(w => w.innerText === 'Company Size')?.parentElement.querySelectorAll('input[type="checkbox"]') || [];
-    const industryCheckboxes = Array.from(document.querySelectorAll('.filter-widget .filter-title'))
-        .find(w => w.innerText === 'Industry')?.parentElement.querySelectorAll('input[type="checkbox"]') || [];
-    const foundedCheckboxes = Array.from(document.querySelectorAll('.filter-widget .filter-title'))
-        .find(w => w.innerText === 'Founded')?.parentElement.querySelectorAll('input[type="checkbox"]') || [];
+    const sizeFilterOptions = document.getElementById('sizeFilterOptions');
+    const industryFilterOptions = document.getElementById('industryFilterOptions');
+    const foundedFilterOptions = document.getElementById('foundedFilterOptions');
+    let sizeCheckboxes = [];
+    let industryCheckboxes = [];
+    let foundedCheckboxes = [];
 
     let allCompanies = [];
     let filteredCompanies = [];
+
+    function buildSelectOptions(select, values, defaultLabel) {
+        const unique = Array.from(new Set(values.filter(Boolean)));
+        select.innerHTML = `<option value="">${defaultLabel}</option>` + unique.map(v => `<option value="${v}">${v}</option>`).join('');
+    }
+
+    function buildCheckboxOptions(container, values, name) {
+        const unique = Array.from(new Set(values.filter(Boolean)));
+        container.innerHTML = unique.map(v => `
+            <label class="filter-option">
+                <input type="checkbox" value="${v}"> ${v}
+            </label>
+        `).join('');
+        return Array.from(container.querySelectorAll('input[type="checkbox"]'));
+    }
 
     async function loadCompanies() {
         companiesGrid.innerHTML = '<div class="text-center w-100 py-4" id="companiesLoading">Loading companies...</div>';
@@ -26,6 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             allCompanies = data.companies;
+
+            // Build dynamic filter options
+            buildSelectOptions(locationFilter, allCompanies.map(c => c.location), 'All Locations');
+            buildSelectOptions(industryFilter, allCompanies.map(c => c.industry), 'All Industries');
+            sizeCheckboxes = buildCheckboxOptions(sizeFilterOptions, allCompanies.map(c => c.company_size), 'size');
+            industryCheckboxes = buildCheckboxOptions(industryFilterOptions, allCompanies.map(c => c.industry), 'industry');
+            foundedCheckboxes = buildCheckboxOptions(foundedFilterOptions, allCompanies.map(c => c.founded), 'founded');
+
             renderCompanies(allCompanies);
             filterCompanies();
         } catch (err) {
@@ -110,11 +133,22 @@ document.addEventListener('DOMContentLoaded', function () {
     locationFilter.addEventListener('change', filterCompanies);
     industryFilter.addEventListener('change', filterCompanies);
     sortBy.addEventListener('change', filterCompanies);
-    sizeCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
-    industryCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
-    foundedCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
+
+    // Add event listeners after dynamic build
+    function addDynamicCheckboxListeners() {
+        sizeCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
+        industryCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
+        foundedCheckboxes.forEach(cb => cb.addEventListener('change', filterCompanies));
+    }
 
     document.getElementById('searchBtn').addEventListener('click', filterCompanies);
+
+    // Re-add listeners after each load
+    const origLoadCompanies = loadCompanies;
+    loadCompanies = async function() {
+        await origLoadCompanies();
+        addDynamicCheckboxListeners();
+    };
 
     loadCompanies();
 });

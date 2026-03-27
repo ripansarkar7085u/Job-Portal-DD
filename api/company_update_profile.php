@@ -1,14 +1,18 @@
+
 <?php
+ob_start();
 require_once __DIR__ . '/../config/database.php';
 session_start();
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    ob_clean();
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit;
 }
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || ($_SESSION['account_type'] ?? '') !== 'company' || !isset($_SESSION['company_id'])) {
+    ob_clean();
     echo json_encode(['success' => false, 'message' => 'Not authorized.']);
     exit;
 }
@@ -30,6 +34,7 @@ foreach ($fields as $field) {
     }
 }
 if (empty($updates)) {
+    ob_clean();
     echo json_encode(['success' => false, 'message' => 'No data to update.']);
     exit;
 }
@@ -39,8 +44,10 @@ $sql = "UPDATE companies SET " . implode(', ', $updates) . " WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param($types, ...$params);
 if ($stmt->execute()) {
+    ob_clean();
     echo json_encode(['success' => true, 'message' => 'Profile updated successfully.']);
 } else {
+    ob_clean();
     echo json_encode(['success' => false, 'message' => 'Failed to update profile.']);
 }
 $stmt->close();
