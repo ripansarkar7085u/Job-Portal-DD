@@ -13,7 +13,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 // Redirect user accounts to user dashboard
 if (!isset($_SESSION['account_type']) || $_SESSION['account_type'] !== 'company') {
-    header('Location: /user/.php');
+    header('Location: /user/index.php');
     exit;
 }
 

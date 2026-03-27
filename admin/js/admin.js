@@ -145,6 +145,7 @@ async function handleAdminLogin(e) {
             headers: {
                 'Content-Type': 'application/json'
             },
+                credentials: 'include',
             body: JSON.stringify({ username, password })
         });
 
@@ -166,6 +167,7 @@ async function handleAdminLogin(e) {
 }
 
 // Admin Logout Handler
+            credentials: 'include' 
 async function handleAdminLogout() {
     try {
         await fetch('../api/admin_logout.php');

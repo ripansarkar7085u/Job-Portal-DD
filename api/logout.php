@@ -20,5 +20,8 @@ if (ini_get('session.use_cookies')) {
 
 session_destroy();
 
-header('Location: ' . auth_path('/index.php'));
+echo json_encode([
+    'success' => true,
+    'message' => 'Logged out successfully.'
+]);
 exit;
