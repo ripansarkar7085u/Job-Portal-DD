@@ -17,6 +17,8 @@ auth_ensure_jobs_table($conn);
 user_ensure_profiles_table($conn);
 user_ensure_applications_table($conn);
 
+// Get company info from session
+$companyName = $_SESSION['company_name'] ?? 'Company';
 $companyId = (int) $_SESSION['company_id'];
 
 // Get job filter if provided
@@ -165,9 +167,9 @@ function application_status_label(string $status): string
             
             <div class="sidebar-footer">
                 <div class="company-profile">
-                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=Company&background=0d47a1&color=fff" alt="Company">
+                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company">
                     <div class="company-info">
-                        <span class="company-name" id="companyNameDisplay">TechCorp Inc.</span>
+                        <span class="company-name" id="companyNameDisplay"><?php echo htmlspecialchars($companyName); ?></span>
                         <span class="company-role">Business Account</span>
                     </div>
                 </div>
@@ -198,8 +200,8 @@ function application_status_label(string $status): string
                     </button>
                     <div class="profile-dropdown">
                         <button class="profile-btn" id="profileBtn">
-                            <img src="https://ui-avatars.com/api/?name=Company&background=0d47a1&color=fff" alt="Company" id="headerAvatar">
-                            <span id="headerCompanyName">TechCorp Inc.</span>
+                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company" id="headerAvatar">
+                            <span id="headerCompanyName"><?php echo htmlspecialchars($companyName); ?></span>
                             <i class="bi bi-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu" id="profileDropdown">
