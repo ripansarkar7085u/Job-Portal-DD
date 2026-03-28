@@ -3,6 +3,8 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+// Get company info from session
+$companyName = $_SESSION['company_name'] ?? 'Company';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,9 +58,9 @@ if (session_status() == PHP_SESSION_NONE) {
             
             <div class="sidebar-footer">
                 <div class="company-profile">
-                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=Company&background=0d47a1&color=fff" alt="Company">
+                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company">
                     <div class="company-info">
-                        <span class="company-name" id="companyNameDisplay">TechCorp Inc.</span>
+                        <span class="company-name" id="companyNameDisplay"><?php echo htmlspecialchars($companyName); ?></span>
                         <span class="company-role">Business Account</span>
                     </div>
                 </div>
@@ -89,8 +91,8 @@ if (session_status() == PHP_SESSION_NONE) {
                     </button>
                     <div class="profile-dropdown">
                         <button class="profile-btn" id="profileBtn">
-                            <img src="https://ui-avatars.com/api/?name=Company&background=0d47a1&color=fff" alt="Company" id="headerAvatar">
-                            <span id="headerCompanyName">TechCorp Inc.</span>
+                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company" id="headerAvatar">
+                            <span id="headerCompanyName"><?php echo htmlspecialchars($companyName); ?></span>
                             <i class="bi bi-chevron-down"></i>
                         </button>
                         <div class="dropdown-menu" id="profileDropdown">
