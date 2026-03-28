@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await res.json();
                 if (result.success) {
                     showToast('Profile updated successfully', 'success');
-                    checkSession();
+                    // checkSession();
                 } else {
                     showToast(result.message || 'Failed to update profile', 'error');
                 }
@@ -284,7 +284,13 @@ async function logout(event) {
     if (event) {
         event.preventDefault();
     }
-    window.location.replace('../api/logout.php');
+    try {
+        await fetch('../api/logout.php');
+    } catch (e) {
+        console.error('Logout error:', e);
+    } finally {
+        window.location.href = '../index.php';
+    }
 }
 
 
@@ -527,6 +533,8 @@ function editJob(jobId) {
     window.location.href = `job-create.html?edit=${jobId}`;
 }
 
+// Pagination logic is handled independently by the pages.
+
 /**
  * Delete job
  */
@@ -596,7 +604,7 @@ async function toggleJobStatus(jobId, currentStatus) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Check session
-    checkSession();
+    // checkSession();
     
     // Handle navigation
     handleNavigation();
@@ -723,7 +731,6 @@ window.companyDashboard = {
     formatDate,
     formatNumber,
     logout,
-    checkSession,
     viewApplication,
     acceptApplication,
     rejectApplication,

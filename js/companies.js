@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let allCompanies = [];
     let filteredCompanies = [];
+    let currentPage = 1;
+    const perPage = 6;
 
     function buildSelectOptions(select, values, defaultLabel) {
         const unique = Array.from(new Set(values.filter(Boolean)));
@@ -49,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
             industryCheckboxes = buildCheckboxOptions(industryFilterOptions, allCompanies.map(c => c.industry), 'industry');
             foundedCheckboxes = buildCheckboxOptions(foundedFilterOptions, allCompanies.map(c => c.founded), 'founded');
 
-            renderCompanies(allCompanies);
             filterCompanies();
         } catch (err) {
             companiesGrid.innerHTML = '<div class="alert alert-danger">Failed to load companies.</div>';
@@ -126,7 +127,69 @@ document.addEventListener('DOMContentLoaded', function () {
         else if (sortBy.value === 'jobs') sorted.sort((a, b) => b.jobs_count - a.jobs_count);
         else sorted.sort((a, b) => b.id - a.id); // Newest first
 
-        renderCompanies(sorted);
+        filteredCompanies = sorted;
+        currentPage = 1;
+        showPage();
+    }
+
+    function showPage() {
+        const start = (currentPage - 1) * perPage;
+        const end = start + perPage;
+        const paginatedCompanies = filteredCompanies.slice(start, end);
+        
+        renderCompanies(paginatedCompanies);
+        
+        const resultsCountSpan = document.querySelector('.results-count span');
+        if (resultsCountSpan) {
+            const startNum = filteredCompanies.length === 0 ? 0 : start + 1;
+            const endNum = Math.min(start + perPage, filteredCompanies.length);
+            resultsCountSpan.innerHTML = `Showing <strong>${startNum}-${endNum}</strong> of <strong>${filteredCompanies.length}</strong> companies`;
+        }
+
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const paginationList = document.querySelector('.pagination');
+        if (!paginationList) return;
+        
+        paginationList.innerHTML = '';
+        let totalPages = Math.ceil(filteredCompanies.length / perPage);
+        if (totalPages < 1) totalPages = 1;
+
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>`;
+        if (currentPage > 1) {
+            prevLi.onclick = (e) => { e.preventDefault(); currentPage--; showPage(); };
+        } else {
+            prevLi.onclick = (e) => e.preventDefault();
+        }
+        paginationList.appendChild(prevLi);
+
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            li.onclick = (e) => { e.preventDefault(); currentPage = i; showPage(); };
+            paginationList.appendChild(li);
+        }
+
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>`;
+        if (currentPage < totalPages) {
+            nextLi.onclick = (e) => { e.preventDefault(); currentPage++; showPage(); };
+        } else {
+            nextLi.onclick = (e) => e.preventDefault();
+        }
+        paginationList.appendChild(nextLi);
     }
 
     searchInput.addEventListener('keyup', filterCompanies);

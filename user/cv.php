@@ -37,7 +37,7 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     <title>CV Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -46,14 +46,26 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <?php include 'sidebar.php'; ?>
-    <div class="content p-4">
-        <h2 class="section-title">CV Manager</h2>
+    <div class="user-container" id="userDashboard">
+        <?php include 'sidebar.php'; ?>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">CV Manager</h1>
+                </div>
+            </header>
+
+            <section class="content-section p-4">
         
         <div class="card shadow-sm mt-3">
             <div class="card-body">
-                <table class="table align-middle">
-                    <thead class="table-light">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
                         <tr>
                             <th>CV Name</th>
                             <th>Date Uploaded</th>
@@ -93,12 +105,15 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
                         </tr>
                         <?php endwhile; ?>
                     </tbody>
-                </table>
+                    </table>
+                </div>
                 <div class="mt-3">
                     <a href="resume.php" class="btn btn-primary"><i class="bi bi-upload"></i> Upload New CV</a>
                 </div>
             </div>
         </div>
+        </section>
+    </main>
     </div>
 
     <script>
@@ -142,33 +157,6 @@ $result = $conn->query("SELECT * FROM user_resumes ORDER BY upload_date DESC");
         });
     }
 
-    
-    function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const windowWidth = window.innerWidth;
-
-    if (windowWidth <= 768) {
-        // Mobile: Slide in/out
-        sidebar.classList.toggle('active');
-    } else {
-        // Desktop: Shrink/Expand
-        sidebar.classList.toggle('collapsed');
-    }
-}
-
-// Optional: Close sidebar when clicking outside on mobile
-document.addEventListener('click', function(event) {
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.querySelector('.mobile-toggle');
-    
-    if (window.innerWidth <= 768) {
-        if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target) && sidebar.classList.contains('active')) {
-            sidebar.classList.remove('active');
-        }
-    }
-});
-
     </script>
-    <script src="user.js"></script>
 </body>
 </html>

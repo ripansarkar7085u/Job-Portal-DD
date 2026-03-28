@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Change Password - CareerHunt</title>
 
@@ -17,15 +17,20 @@
 
 <body>
 
-    <div class="dashboard">
-
-        <!-- Sidebar -->
+    <div class="user-container" id="userDashboard">
         <?php include 'sidebar.php'; ?>
 
-        <!-- Content -->
-        <div class="content p-4">
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Change Password</h1>
+                </div>
+            </header>
 
-            <h2>Change Password</h2>
+            <section class="content-section p-4">
 
             <div class="card mt-3 shadow-sm">
                 <div class="card-body w-100">
@@ -60,15 +65,11 @@
                         </button>
                     </form>
 
-                </div>
-            </div>
-
-        </div>
-
+            </section>
+        </main>
     </div>
 
-
-<script src="user.js"></script>
+<!-- Removed user.js -->
 <script>
 // Password update AJAX
 document.addEventListener('DOMContentLoaded', function() {

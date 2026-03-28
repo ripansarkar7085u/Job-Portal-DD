@@ -507,12 +507,14 @@ async function checkLoginStatus() {
         if (!loginBtn) return;
 
         if (data.account_type === 'company' && data.company) {
-            loginBtn.textContent = data.company.name || 'Dashboard';
+            loginBtn.innerHTML = '<i class="bi bi-building me-1"></i>';
+            loginBtn.appendChild(document.createTextNode(data.company.name || 'Dashboard'));
             loginBtn.removeAttribute('data-bs-toggle');
             loginBtn.removeAttribute('data-bs-target');
             loginBtn.href = appUrl('/company/index.php');
         } else if (data.user) {
-            loginBtn.textContent = data.user.name || 'Dashboard';
+            loginBtn.innerHTML = '<i class="bi bi-person me-1"></i>';
+            loginBtn.appendChild(document.createTextNode(data.user.name || 'Dashboard'));
             loginBtn.removeAttribute('data-bs-toggle');
             loginBtn.removeAttribute('data-bs-target');
             loginBtn.href = appUrl('/user/index.php');

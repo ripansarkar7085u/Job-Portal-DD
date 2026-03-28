@@ -61,8 +61,7 @@ $stmtRecent = $conn->prepare("SELECT a.applied_at, a.status, j.id AS job_id, j.t
     INNER JOIN jobs j ON j.id = a.job_id
     INNER JOIN companies c ON c.id = j.company_id
     WHERE a.user_id = ?
-    ORDER BY a.applied_at DESC
-    LIMIT 5");
+    ORDER BY a.applied_at DESC");
 
 if ($stmtRecent) {
     $stmtRecent->bind_param('i', $userId);
@@ -90,37 +89,37 @@ function dashboard_status_class(string $status): string
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     <title>CareerHunt Dashboard</title>
     <link rel="stylesheet" href="user.css">
-    <link rel="stylesheet" href="user\css\index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
 </head>
 
 <body>
-    <?php include 'sidebar.php'; ?>
+    <div class="user-container" id="userDashboard">
+        <?php include 'sidebar.php'; ?>
 
-    <div class="main-content">
-        <nav class="top-navbar">
-            <div class="nav-left">
-                <h5 class="mb-0">CareerHunt Dashboard</h5>
-            </div>
-            <div class="nav-right">
-                <i class="bi bi-search"></i>
-                <i class="bi bi-bell"></i>
-                <div class="profile-box">
-                    <img src="<?php echo htmlspecialchars($profile_image_src); ?>" class="nav-profile"
-                        style="object-fit:cover;width:40px;height:40px;">
-                    <span><?php echo htmlspecialchars($profile_full_name); ?></span>
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h1 class="page-title">Dashboard</h1>
                 </div>
-            </div>
-        </nav>
+                <div class="header-right">
+                    <div class="profile-dropdown">
+                        <button class="profile-btn" id="profileBtn" onclick="window.location.href='profile.php'">
+                            <img src="<?php echo htmlspecialchars($profile_image_src); ?>" alt="User" id="headerAvatar">
+                            <span id="headerUserName"><?php echo htmlspecialchars($profile_full_name); ?></span>
+                        </button>
+                    </div>
+                </div>
+            </header>
 
-        <div class="container-fluid p-4">
+            <section class="content-section">
             <!-- Welcome Section -->
             <div class="mb-4">
                 <h3 class="fw-bold">Welcome back, Candidate! 👋</h3>
@@ -129,44 +128,44 @@ function dashboard_status_class(string $status): string
 
             <!-- Stats Cards -->
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon blue"><i class="bi bi-briefcase"></i></div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: none; box-shadow: 0 4px 15px rgba(25,118,210,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
+                    <div class="stat-icon blue" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-briefcase"></i></div>
                     <div class="stat-info">
-                        <h4><?php echo (int) $stats['applied_jobs']; ?></h4>
-                        <p>Applied Jobs</p>
+                        <h4 style="color: #0d47a1;"><?php echo (int) $stats['applied_jobs']; ?></h4>
+                        <p style="color: #1565c0; font-weight: 500;">Applied Jobs</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon orange"><i class="bi bi-star"></i></div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border: none; box-shadow: 0 4px 15px rgba(245,124,0,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
+                    <div class="stat-icon orange" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-star"></i></div>
                     <div class="stat-info">
-                        <h4><?php echo (int) $stats['shortlisted']; ?></h4>
-                        <p>Shortlisted</p>
+                        <h4 style="color: #e65100;"><?php echo (int) $stats['shortlisted']; ?></h4>
+                        <p style="color: #ef6c00; font-weight: 500;">Shortlisted</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon green"><i class="bi bi-bell"></i></div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border: none; box-shadow: 0 4px 15px rgba(56,142,60,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
+                    <div class="stat-icon green" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-bell"></i></div>
                     <div class="stat-info">
-                        <h4><?php echo (int) $stats['alerts']; ?></h4>
-                        <p>Job Alerts</p>
+                        <h4 style="color: #1b5e20;"><?php echo (int) $stats['alerts']; ?></h4>
+                        <p style="color: #2e7d32; font-weight: 500;">Job Alerts</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon purple"><i class="bi bi-chat-dots"></i></div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border: none; box-shadow: 0 4px 15px rgba(123,31,162,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
+                    <div class="stat-icon purple" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-chat-dots"></i></div>
                     <div class="stat-info">
-                        <h4><?php echo (int) $stats['messages']; ?></h4>
-                        <p>Messages</p>
+                        <h4 style="color: #4a148c;"><?php echo (int) $stats['messages']; ?></h4>
+                        <p style="color: #6a1b9a; font-weight: 500;">Messages</p>
                     </div>
                 </div>
             </div>
 
             <!-- Recent Jobs Table -->
-            <div class="content-card mt-4">
-                <div class="card-header-flex">
-                    <h5>Recent Applied Jobs</h5>
-                    <a href="applied.php" class="btn-view-all">View All</a>
+            <div class="dashboard-card mt-4">
+                <div class="card-header">
+                    <h2><i class="bi bi-clock-history"></i> Recent Applied Jobs</h2>
+                    <a href="applied.php" class="view-all-btn">View All <i class="bi bi-arrow-right"></i></a>
                 </div>
-                <div class="table-responsive">
-                    <table class="table custom-table">
+                <div class="table-responsive card-body p-0">
+                    <table class="data-table">
                         <thead>
                             <tr>
                                 <th>Job Title</th>
@@ -184,28 +183,78 @@ function dashboard_status_class(string $status): string
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($recentApplied as $application): ?>
-                                    <tr>
+                                    <tr class="job-row">
                                         <td><strong><?php echo user_esc((string) $application['title']); ?></strong></td>
                                         <td><?php echo user_esc((string) $application['company_name']); ?></td>
-                                        <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?>
-                                        </td>
-                                        <td><span
-                                                class="badge <?php echo dashboard_status_class((string) $application['status']); ?>"><?php echo user_esc(ucfirst((string) $application['status'])); ?></span>
-                                        </td>
-                                        <td><a class="btn-action"
-                                                href="../job-details.php?id=<?php echo (int) $application['job_id']; ?>"><i
-                                                    class="bi bi-eye"></i></a></td>
+                                        <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
+                                        <td><span class="status-badge <?php echo dashboard_status_class((string) $application['status']); ?>"><?php echo user_esc(ucfirst((string) $application['status'])); ?></span></td>
+                                        <td><a class="action-btn view" href="../job-details.php?id=<?php echo (int) $application['job_id']; ?>"><i class="bi bi-eye"></i></a></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
+                <!-- Pagination -->
+                <div class="pagination"></div>
             </div>
-        </div>
+            </section>
+        </main>
     </div>
 
-    <script src="user.js"></script>
-</body>
+    <!-- No user.js here because pagination is self-contained -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rows = Array.from(document.querySelectorAll('.job-row'));
+            if (!rows.length) return;
+            
+            const perPage = 5;
+            let currentPage = 1;
+            const paginationContainer = document.querySelector('.pagination');
+            
+            function render() {
+                const start = (currentPage - 1) * perPage;
+                const end = start + perPage;
+                
+                rows.forEach((row, idx) => {
+                    row.style.display = (idx >= start && idx < end) ? '' : 'none';
+                });
+                
+                renderPagination();
+            }
+            
+            function renderPagination() {
+                if (!paginationContainer) return;
+                paginationContainer.innerHTML = '';
+                
+                let totalPages = Math.ceil(rows.length / perPage);
+                if (totalPages < 1) totalPages = 1;
 
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'pagination-btn';
+                prevBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.onclick = () => { if (currentPage > 1) { currentPage--; render(); } };
+                paginationContainer.appendChild(prevBtn);
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.innerText = i;
+                    pageBtn.onclick = () => { currentPage = i; render(); };
+                    paginationContainer.appendChild(pageBtn);
+                }
+                
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'pagination-btn';
+                nextBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.onclick = () => { if (currentPage < totalPages) { currentPage++; render(); } };
+                paginationContainer.appendChild(nextBtn);
+            }
+            
+            render();
+        });
+    </script>
+</body>
 </html>
