@@ -137,6 +137,11 @@ function user_ensure_applications_table(mysqli $conn): void
     $initialized = true;
 }
 
+/**
+ * @deprecated This function is deprecated. The messaging system now uses the unified 'messages' table.
+ * Run api/messages_migration_unified.php to migrate existing data.
+ * This function is kept for backward compatibility but should not be used in new code.
+ */
 function user_ensure_messages_table(mysqli $conn): void
 {
     static $initialized = false;
@@ -144,17 +149,21 @@ function user_ensure_messages_table(mysqli $conn): void
         return;
     }
 
-    $sql = "CREATE TABLE IF NOT EXISTS user_messages (
+    // DEPRECATED: This table schema is no longer used.
+    // The unified 'messages' table is now used for all messaging.
+    // This function ensures the messages table exists with the correct schema.
+    
+    $sql = "CREATE TABLE IF NOT EXISTS messages (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        company_id INT NOT NULL,
-        sender_type ENUM('user', 'company') NOT NULL,
-        message_text TEXT NOT NULL,
-        is_read TINYINT(1) NOT NULL DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        INDEX idx_user_company_time (user_id, company_id, created_at),
-        CONSTRAINT fk_user_messages_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-        CONSTRAINT fk_user_messages_company FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
+        sender_id INT NOT NULL,
+        sender_type ENUM('user','company') NOT NULL,
+        receiver_id INT NOT NULL,
+        receiver_type ENUM('user','company') NOT NULL,
+        message TEXT NOT NULL,
+        is_read TINYINT(1) DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_receiver_unread (receiver_id, receiver_type, is_read),
+        INDEX idx_conversation (sender_id, sender_type, receiver_id, receiver_type, created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
     $conn->query($sql);

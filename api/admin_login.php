@@ -33,34 +33,25 @@ $result = $stmt->get_result();
 $admin = $result->fetch_assoc();
 $stmt->close();
 
-if ($admin || password_verify($password, $admin['password'])) {
-    http_response_code(200);
-    echo json_encode(['success' => true, 'message' => 'login.']);
+// Simple plain password check (no session)
+if ($admin && $password === $admin['password']) {
+    echo json_encode([
+        'success' => true,
+        'message' => 'Login successful.',
+        'admin' => [
+            'id' => $admin['id'],
+            'username' => $admin['username'],
+            'full_name' => $admin['full_name'],
+            'email' => $admin['email'],
+            'role' => $admin['role']
+        ]
+    ]);
     $conn->close();
     exit;
 }
 
-// Set session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-$_SESSION['admin_id'] = $admin['id'];
-$_SESSION['admin_username'] = $admin['username'];
-$_SESSION['admin_name'] = $admin['full_name'];
-$_SESSION['admin_email'] = $admin['email'];
-$_SESSION['admin_role'] = $admin['role'];
-$_SESSION['admin_logged_in'] = true;
-
-echo json_encode([
-    'success' => true,
-    'message' => 'Login successful.',
-    'admin' => [
-        'id' => $admin['id'],
-        'username' => $admin['username'],
-        'full_name' => $admin['full_name'],
-        'email' => $admin['email'],
-        'role' => $admin['role']
-    ]
-]);
+http_response_code(401);
+echo json_encode(['success' => false, 'message' => 'Invalid credentials.']);
 $conn->close();
+exit;
 

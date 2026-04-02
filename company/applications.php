@@ -119,6 +119,7 @@ function application_status_label(string $status): string
     return 'New';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,6 +158,9 @@ function application_status_label(string $status): string
                     <li class="nav-item active" data-page="applications.php">
                         <i class="bi bi-people-fill"></i>
                         <span>Applications</span>
+                    </li>
+                     <li class="nav-item" data-page="messages.php">
+                        <a href="messages.php"><i class="bi bi-chat-dots-fill"></i> <span>Messages</span></a>
                     </li>
                     <li class="nav-item" data-page="profile.php">
                         <i class="bi bi-building"></i>
@@ -341,6 +345,9 @@ function application_status_label(string $status): string
                                                     <button class="action-btn app-review" title="Mark as Reviewing"><i class="bi bi-eye"></i></button>
                                                     <button class="action-btn app-shortlist" title="Shortlist"><i class="bi bi-check-lg"></i></button>
                                                     <button class="action-btn app-reject" title="Reject"><i class="bi bi-x-lg"></i></button>
+                                                    <a href="messages.php?user_id=<?php echo (int)$application['user_id']; ?>" class="btn btn-sm btn-primary ms-1" title="Message Applicant">
+                                                        <i class="bi bi-chat-dots"></i> Message
+                                                    </a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
