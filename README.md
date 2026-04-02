@@ -2,6 +2,25 @@
 
 A job portal application built with HTML, CSS, and JavaScript.
 
+## 🆕 New Feature: Messaging System
+
+Complete end-to-end messaging system for communication between job seekers and employers!
+
+**Quick Start:** See [QUICK_START.md](QUICK_START.md)  
+**Full Documentation:** See [MESSAGING_DOCUMENTATION.md](MESSAGING_DOCUMENTATION.md)  
+**Implementation Summary:** See [IMPLEMENTATION_COMPLETE.md](IMPLEMENTATION_COMPLETE.md)
+
+### Messaging Features:
+- ✅ Real-time messaging (3-second auto-refresh)
+- ✅ Unread message badges
+- ✅ Full conversation history
+- ✅ Mobile responsive design
+- ✅ Secure and performant
+
+**To activate:** Run `http://localhost/job-portal/api/messages_migration_unified.php` once
+
+---
+
 ##  Folder Structure
 
 ```
@@ -51,6 +70,16 @@ Job-Portal-DD/
 - **Company Management**: View, search, filter, block/unblock companies
 - **Job Management**: View, search, filter, delete jobs
 - **Responsive Design**: Works on desktop and mobile
+
+## 💬 Messaging System Features
+
+- **User to Company Messaging**: Job seekers can message employers
+- **Company to User Replies**: Employers can respond to candidates
+- **Real-time Updates**: Messages auto-refresh every 3 seconds
+- **Unread Notifications**: Badge counters in sidebar
+- **Conversation History**: Full message history preserved
+- **Mobile Responsive**: Works perfectly on all devices
+- **Secure**: XSS protection, SQL injection prevention, authentication required
 
 
 ## 🛠️ How to Run

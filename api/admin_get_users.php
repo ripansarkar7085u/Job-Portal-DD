@@ -1,13 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
-session_start();
-header('Content-Type: application/json');
 
-// Only allow if admin is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    echo json_encode(['success' => false, 'message' => 'Not authorized.']);
-    exit;
-}
+header('Content-Type: application/json');
 
 // Fetch all users
 $sql = "SELECT id, full_name, email, phone, status, created_at FROM users ORDER BY created_at DESC";

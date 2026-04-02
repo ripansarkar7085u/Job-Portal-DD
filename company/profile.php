@@ -9,6 +9,7 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Profile - CareerHunt</title>
@@ -17,6 +18,17 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
+        <?php if (isset($_GET['status'])): ?>
+            <div class="container mt-3">
+                <?php if ($_GET['status'] === 'success'): ?>
+                    <div class="alert alert-success">Profile updated successfully.</div>
+                <?php elseif ($_GET['status'] === 'error'): ?>
+                    <div class="alert alert-danger">Failed to update profile. Please try again.</div>
+                <?php elseif ($_GET['status'] === 'unauthorized'): ?>
+                    <div class="alert alert-danger">You are not authorized to update this profile.</div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     <div class="company-container" id="companyDashboard">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -44,6 +56,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                     <li class="nav-item" data-page="applications.php">
                         <i class="bi bi-people-fill"></i>
                         <span>Applications</span>
+                    </li>
+                     <li class="nav-item" data-page="messages.php">
+                        <a href="messages.php"><i class="bi bi-chat-dots-fill"></i> <span>Messages</span></a>
                     </li>
                     <li class="nav-item active" data-page="profile.php">
                         <i class="bi bi-building"></i>
@@ -126,7 +141,7 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                             <h2><i class="bi bi-pencil-square"></i> Edit Profile</h2>
                         </div>
                         <div class="card-body">
-                            <form id="profileForm">
+                            <form id="profileForm" action="../api/save_company_profile.php" method="POST" enctype="multipart/form-data">
                                 <!-- Logo Upload -->
                                 <div class="logo-upload-section">
                                     <div class="current-logo">
@@ -137,7 +152,7 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                                         <p>Upload a square logo (min. 200x200px)</p>
                                         <label class="btn btn-outline btn-sm">
                                             <i class="bi bi-upload"></i> Upload Logo
-                                            <input type="file" id="logoUpload" accept="image/*" hidden>
+                                            <input type="file" id="logoUpload" name="logo" accept="image/*">
                                         </label>
                                     </div>
                                 </div>
@@ -145,11 +160,11 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="companyName">Company Name <span class="required">*</span></label>
-                                        <input type="text" id="companyName" class="form-control" value="" required>
+                                        <input type="text" id="companyName" name="company_name" class="form-control" value="" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="industry">Industry <span class="required">*</span></label>
-                                        <select id="industry" class="form-control" required>
+                                        <select id="industry" name="industry" class="form-control" required>
                                             <option value="">Select Industry</option>
                                             <option value="technology">Technology</option>
                                             <option value="finance">Finance & Banking</option>
@@ -167,7 +182,7 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="companySize">Company Size <span class="required">*</span></label>
-                                        <select id="companySize" class="form-control" required>
+                                        <select id="companySize" name="company_size" class="form-control" required>
                                             <option value="">Select Size</option>
                                             <option value="1-10">1-10 employees</option>
                                             <option value="11-50">11-50 employees</option>
@@ -179,19 +194,19 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                                     </div>
                                     <div class="form-group">
                                         <label for="founded">Founded Year</label>
-                                        <input type="number" id="founded" class="form-control" value="" min="1800" max="2026">
+                                        <input type="number" id="founded" name="founded" class="form-control" value="" min="1800" max="2026">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tagline">Tagline</label>
-                                    <input type="text" id="tagline" class="form-control" placeholder="A short description of your company" value="">
+                                    <input type="text" id="tagline" name="tagline" class="form-control" placeholder="A short description of your company" value="">
                                     <p class="form-hint">A catchy phrase that describes your company (max 100 characters)</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="description">Company Description <span class="required">*</span></label>
-                                    <textarea id="description" class="form-control" rows="5" required></textarea>
+                                    <textarea id="description" name="description" class="form-control" rows="5" required></textarea>
                                     <p class="form-hint">Describe your company, culture, and what makes you unique</p>
                                 </div>
 
@@ -200,14 +215,14 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                                         <label for="website">Website</label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-globe"></i>
-                                            <input type="url" id="website" class="form-control" value="">
+                                            <input type="url" id="website" name="website" class="form-control" value="">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Contact Email <span class="required">*</span></label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-envelope"></i>
-                                            <input type="email" id="email" class="form-control" value="" required>
+                                            <input type="email" id="email" name="email" class="form-control" value="" required>
                                         </div>
                                     </div>
                                 </div>
@@ -217,14 +232,14 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                                         <label for="phone">Phone Number</label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-telephone"></i>
-                                            <input type="tel" id="phone" class="form-control" value="">
+                                            <input type="tel" id="phone" name="phone" class="form-control" value="">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="location">Headquarters Location <span class="required">*</span></label>
                                         <div class="input-with-icon">
                                             <i class="bi bi-geo-alt"></i>
-                                            <input type="text" id="location" class="form-control" value="" required>
+                                            <input type="text" id="location" name="location" class="form-control" value="" required>
                                         </div>
                                     </div>
                                 </div>
@@ -234,26 +249,26 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                                     <div class="social-links-grid">
                                         <div class="input-with-icon">
                                             <i class="bi bi-linkedin"></i>
-                                            <input type="url" class="form-control" placeholder="LinkedIn URL" value="">
+                                            <input type="url" id="linkedin" name="linkedin" class="form-control" placeholder="LinkedIn URL" value="">
                                         </div>
                                         <div class="input-with-icon">
                                             <i class="bi bi-twitter-x"></i>
-                                            <input type="url" class="form-control" placeholder="Twitter/X URL" value="">
+                                            <input type="url" id="twitter" name="twitter" class="form-control" placeholder="Twitter/X URL" value="">
                                         </div>
                                         <div class="input-with-icon">
                                             <i class="bi bi-facebook"></i>
-                                            <input type="url" class="form-control" placeholder="Facebook URL" value="">
+                                            <input type="url" id="facebook" name="facebook" class="form-control" placeholder="Facebook URL" value="">
                                         </div>
                                         <div class="input-with-icon">
                                             <i class="bi bi-instagram"></i>
-                                            <input type="url" class="form-control" placeholder="Instagram URL" value="">
+                                            <input type="url" id="instagram" name="instagram" class="form-control" placeholder="Instagram URL" value="">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-actions">
                                     <button type="button" class="btn btn-outline">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" name="save_all">
                                         <i class="bi bi-check-lg"></i> Save Changes
                                     </button>
                                 </div>
@@ -341,6 +356,33 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/company.js?v=<?php echo filemtime(__DIR__ . '/js/company.js'); ?>"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(profileForm);
+                    fetch('../api/save_company_profile.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({ icon: 'success', title: 'Success', text: data.message });
+                            setTimeout(() => window.location.reload(), 1200);
+                        } else {
+                            Swal.fire({ icon: 'error', title: 'Error', text: data.message });
+                        }
+                    })
+                    .catch(() => {
+                        Swal.fire({ icon: 'error', title: 'Error', text: 'Server error. Please try again.' });
+                    });
+                });
+            }
+        });
+        </script>
     <script>
     // Sidebar/menu/profile dropdown logic (ensure always initialized)
     document.addEventListener('DOMContentLoaded', function() {

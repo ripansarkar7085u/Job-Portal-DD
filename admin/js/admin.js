@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (createCompanyBtn && createCompanyModal) {
         createCompanyBtn.onclick = () => { createCompanyModal.style.display = 'flex'; };
     }
-    if (closeCreateCompanyModal) {
-        closeCreateCompanyModal.onclick = () => { createCompanyModal.style.display = 'none'; };
     }
     if (cancelCreateCompany) {
         cancelCreateCompany.onclick = () => { createCompanyModal.style.display = 'none'; };
@@ -22,9 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             createCompanyError.textContent = '';
             const company_name = document.getElementById('companyName').value.trim();
+            const company_username = document.getElementById('companyUsername').value.trim();
+            const company_name = document.getElementById('companyName').value.trim();
             const company_email = document.getElementById('companyEmail').value.trim();
             const company_password = document.getElementById('companyPassword').value;
-            if (!company_name || !company_email || !company_password) {
+            if (!company_username || !company_name || !company_email || !company_password) {
                 createCompanyError.textContent = 'All fields are required.';
                 return;
             }
@@ -32,90 +32,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 const res = await fetch('../api/admin_create_company.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ company_name, company_email, company_password })
+                    body: JSON.stringify({ company_username, company_name, company_email, company_password })
                 });
                 const data = await res.json();
                 if (data.success) {
                     createCompanyModal.style.display = 'none';
                     showToast('Company created successfully', 'success');
-                    
+                    fetchCompanies().then(renderCompaniesTable).then(renderRecentCompanies).then(updateDashboardStats);
                 } else {
                     createCompanyError.textContent = data.message || 'Failed to create company.';
                 }
             } catch (err) {
                 createCompanyError.textContent = 'Error: ' + err.message;
             }
-        };
     }
 });
 
-// Admin Authentication
 
-let currentAdmin = null;
-
-// Check admin session on page load
-async function checkAdminSession() {
-    try {
-        const response = await fetch('../api/admin_check_session.php');
-        const data = await response.json();
-        
-        if (data.success && data.logged_in) {
-            currentAdmin = data.admin;
-            showDashboard();
-            updateAdminUI();
-        } else {
-            showLogin();
-        }
-    } catch (error) {
-        console.error('Session check failed:', error);
-        showLogin();
-    }
-}
-
-function showLogin() {
-    document.getElementById('adminLoginContainer').style.display = 'flex';
-    document.getElementById('adminDashboard').style.display = 'none';
-}
-
-function showDashboard() {
-    document.getElementById('adminLoginContainer').style.display = 'none';
-    document.getElementById('adminDashboard').style.display = 'flex';
-    // Fetch all data and initialize sidebar/events
-    fetchUsers().then(renderUsersTable);
-    fetchCompanies().then(renderCompaniesTable);
-    fetchJobs().then(renderJobsTable);
-    updateDashboardStats();
-    renderRecentUsers();
-    renderRecentCompanies();
-    if (typeof initializeEventListeners === 'function') {
-        initializeEventListeners();
-    }
-}
-
-function updateAdminUI() {
-    if (currentAdmin) {
-        const adminName = document.getElementById('adminNameDisplay');
-        const adminRole = document.getElementById('adminRoleDisplay');
-        const roleBadge = document.getElementById('roleBadge');
-        const adminAvatar = document.getElementById('adminAvatar');
-        
-        if (adminName) adminName.textContent = currentAdmin.full_name;
-        if (adminRole) adminRole.textContent = formatRole(currentAdmin.role);
-        if (roleBadge) roleBadge.textContent = formatRole(currentAdmin.role);
-        if (adminAvatar) {
-            adminAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentAdmin.full_name)}&background=0d47a1&color=fff`;
-        }
-    }
-}
-
-function formatRole(role) {
-    const roleMap = {
-        'super_admin': 'Super Admin',
-        'admin': 'Admin',
-        'moderator': 'Moderator'
-    };
-    return roleMap[role] || role;
-}
 
 // Admin Login Handler
 async function handleAdminLogin(e) {
@@ -126,6 +59,23 @@ async function handleAdminLogin(e) {
     const username = document.getElementById('adminUsername').value.trim();
     const password = document.getElementById('adminPassword').value;
 
+
+        // Navigation and section logic
+        window.navItems = Array.from(document.querySelectorAll('.sidebar-nav .nav-item'));
+        window.contentSections = Array.from(document.querySelectorAll('.content-section'));
+        window.sidebar = document.querySelector('.sidebar');
+        window.menuToggle = document.getElementById('menuToggle');
+        window.pageTitle = document.querySelector('.page-title');
+        window.itemsPerPage = 10;
+        window.currentUserPage = 1;
+        window.currentCompanyPage = 1;
+        window.currentJobPage = 1;
+
+        initializeEventListeners();
+        fetchUsers().then(renderUsersTable).then(renderRecentUsers).then(updateDashboardStats);
+        fetchCompanies().then(renderCompaniesTable).then(renderRecentCompanies).then(updateDashboardStats);
+        fetchJobs().then(renderJobsTable).then(updateDashboardStats);
+        switchSection('dashboard');
     // Clear previous errors
     errorDiv.textContent = '';
 

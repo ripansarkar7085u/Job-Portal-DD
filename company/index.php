@@ -109,6 +109,9 @@ if ($companyId) {
                         <i class="bi bi-people-fill"></i>
                         <span>Applications</span>
                     </li>
+                    <li class="nav-item" data-page="messages.php">
+                        <a href="messages.php"><i class="bi bi-chat-dots-fill"></i> <span>Messages</span></a>
+                    </li>
                     <li class="nav-item" data-page="profile.php">
                         <i class="bi bi-building"></i>
                         <span>Company Profile</span>

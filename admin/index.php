@@ -1,8 +1,9 @@
+<?php ini_set('display_errors', 1); error_reporting(E_ALL); ?>
 <?php
-// Start session
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
- 
+// Simple login check: show dashboard only if ?loggedin=1 is in URL
+if (!isset($_GET['loggedin']) || $_GET['loggedin'] !== '1') {
+    echo '<script>window.location.href = "login.php";</script>';
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -15,48 +16,10 @@ if (session_status() == PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
-    <!-- Admin Login Page -->
-    <div class="admin-login-container" id="adminLoginContainer">
-        <div class="admin-login-card">
-            <div class="login-header">
-                 <a href="/index.php" class="logo">
-                    <img src="..\photos\job_logo.png" alt="CareerHunt">
-                </a>
-                <h1>Admin Login</h1>
-                <p>Enter your credentials to access the admin panel</p>
-            </div>
-            <form id="adminLoginForm" class="login-form">
-                <div class="form-group">
-                    <label for="adminUsername">Username</label>
-                    <div class="input-wrapper">
-                        <i class="bi bi-person-fill"></i>
-                        <input type="text" id="adminUsername" name="username" placeholder="Enter your username" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <div class="input-wrapper">
-                        <i class="bi bi-lock-fill"></i>
-                        <input type="password" id="adminPassword" name="password" placeholder="Enter your password" required>
-                        <button type="button" class="toggle-password" id="togglePassword">
-                            <i class="bi bi-eye-fill"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="form-error" id="loginError"></div>
-                <button type="submit" class="btn-login" id="loginBtn">
-                    <span>Login</span>
-                    <i class="bi bi-arrow-right"></i>
-                </button>
-            </form>
-            <div class="login-footer">
-                <a href="../index.php"><i class="bi bi-arrow-left"></i> Back to Website</a>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Admin Dashboard (hidden until login) -->
-    <div class="admin-container" id="adminDashboard" style="display: none;">
+    <div class="admin-container" id="adminDashboard" style="display: block;">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -307,6 +270,10 @@ if (session_status() == PHP_SESSION_NONE) {
                         <form id="createCompanyForm">
                             <div class="modal-body">
                                 <div class="form-group">
+                                    <label for="companyUsername">Username</label>
+                                    <input type="text" id="companyUsername" name="company_username" class="form-control" required>
+                                </div>
+                                <div class="form-group">
                                     <label for="companyName">Company Name</label>
                                     <input type="text" id="companyName" name="company_name" class="form-control" required>
                                 </div>
@@ -431,16 +398,5 @@ if (session_status() == PHP_SESSION_NONE) {
     </div>
 
         <script src="js/admin.js"></script>
-        <script>
-            // Ensure login listeners and session check are initialized
-            document.addEventListener('DOMContentLoaded', function() {
-                if (typeof initializeLoginListeners === 'function') {
-                    initializeLoginListeners();
-                }
-                if (typeof checkAdminSession === 'function') {
-                    checkAdminSession();
-                }
-            });
-        </script>
 </body>
 </html>
