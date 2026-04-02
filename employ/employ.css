@@ -1,0 +1,73 @@
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f9fbff;
+    margin: 0;
+}
+
+.dashboard-wrapper {
+    display: flex;
+}
+
+/* SIDEBAR STYLING */
+.sidebar {
+    background: #fff;
+    width: 280px;
+    /* background: #fff; */
+    height: 100vh;
+    padding: 30px 15px;
+    position: fixed;
+    border-right: 1px solid #edf2f6;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.logo-section {
+    padding: 0 20px 30px;
+}
+
+.logo-section img {
+    max-height: 50px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #646464;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.sidebar-menu a i {
+    font-size: 18px;
+    margin-right: 15px;
+}
+
+/* The exact Blue shade from your screenshot */
+.sidebar-menu .active {
+    background: #eef4ff;
+    color: #1967d2;
+}
+
+.sidebar-menu a:hover:not(.active) {
+    background: #f8f9fa;
+    color: #1967d2;
+}
+
+/* CONTENT AREA */
+.content-area {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    padding: 40px;
+    min-height: 100vh;
+}

@@ -1,9 +1,39 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once __DIR__ . '/_user_common.php';
 
+user_ensure_resumes_table($conn);
+
+if (isset($_GET['id']) && isset($_GET['update_status'])) {
+    $stmt = $conn->prepare("UPDATE user_resumes SET status = ? WHERE id = ?");
+    $stmt->bind_param("si", $_GET['update_status'], $_GET['id']);
+    $stmt->execute();
+    header("Location: resume.php?action=updated");
+    exit();
+}
+
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
+    $stmt = $conn->prepare("SELECT file_name FROM user_resumes WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $file_data = $stmt->get_result()->fetch_assoc();
+
+    if ($file_data) {
+        $path = dirname(__DIR__) . "/user_uploads/" . $file_data['file_name'];
+        if (file_exists($path)) unlink($path);
+        $del = $conn->prepare("DELETE FROM user_resumes WHERE id = ?");
+        $del->bind_param("i", $id);
+        $del->execute();
+    }
+    header("Location: resume.php?action=deleted");
+    exit();
+}
+
 $upload_success = false;
-$upload_error = "";
 
 if (isset($_POST['upload'])) {
     $file = $_FILES['resume']['name'];
@@ -26,15 +56,28 @@ if (isset($_POST['upload'])) {
         $safeName = 'resume_' . time() . '_' . $random . '.pdf';
         $dest = $uploadDir . $safeName;
         if (move_uploaded_file($tmp, $dest)) {
-            $stmt = $conn->prepare("INSERT INTO user_resumes (file_name, display_name, status) VALUES (?, ?, 'Active')");
-            $stmt->bind_param("ss", $safeName, $file);
+            $user_id = $_SESSION['user_id'] ?? null;
+            if ($user_id) {
+                $stmt = $conn->prepare("INSERT INTO user_resumes (user_id, file_name, display_name, status) VALUES (?, ?, ?, 'Active')");
+                $stmt->bind_param("iss", $user_id, $safeName, $file);
+            } else {
+                $stmt = $conn->prepare("INSERT INTO user_resumes (file_name, display_name, status) VALUES (?, ?, 'Active')");
+                $stmt->bind_param("ss", $safeName, $file);
+            }
             $stmt->execute();
             $upload_success = true;
         } else {
-            $upload_error = "Failed to upload file. Try again.";
+            $upload_error = "Failed to upload file. Check permissions for user_uploads directory.";
         }
     }
 }
+
+// Fetch resumes for the table
+$user_id = $_SESSION['user_id'] ?? 0;
+$stmt_fetch = $conn->prepare("SELECT * FROM user_resumes WHERE user_id = ? OR user_id IS NULL ORDER BY upload_date DESC");
+$stmt_fetch->bind_param("i", $user_id);
+$stmt_fetch->execute();
+$result = $stmt_fetch->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +111,7 @@ if (isset($_POST['upload'])) {
                 <div class="container-fluid">
 
         <div class="row">
-            <div class="col-12 col-md-8 col-lg-6">
+            <div class="col-12 col-md-8 col-lg-6 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <span class="fw-bold text-primary">Select your CV</span>
@@ -87,6 +130,8 @@ if (isset($_POST['upload'])) {
                 </div>
             </div>
         </div>
+
+        <?php include 'cv_list.php'; ?>
     </div>
                 </div>
             </section>
@@ -102,3 +147,55 @@ if (isset($_POST['upload'])) {
             });
         </script>
     <?php endif; ?>
+
+    <?php if (!empty($upload_error)): ?>
+        <script>
+            Swal.fire({
+                title: 'Error!',
+                text: '<?php echo addslashes($upload_error); ?>',
+                icon: 'error'
+            });
+        </script>
+    <?php endif; ?>
+
+    <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.has('action')) {
+        let actionMsg = urlParams.get('action') === 'deleted' ? 'CV deleted permanently.' : 'Status updated successfully.';
+        Swal.fire({
+            icon: 'success',
+            title: 'Done!',
+            text: actionMsg,
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+
+    function confirmStatus(id, newStatus) {
+        Swal.fire({
+            title: 'Change status to ' + newStatus + '?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, change it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `resume.php?id=${id}&update_status=${newStatus}`;
+            }
+        });
+    }
+
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This will delete the file forever!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `resume.php?delete_id=${id}`;
+            }
+        });
+    }
+    </script>

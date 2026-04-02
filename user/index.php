@@ -129,41 +129,59 @@ function dashboard_status_class(string $status): string
 
             <!-- Stats Cards -->
             <div class="stats-grid">
-                <div class="stat-card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: none; box-shadow: 0 4px 15px rgba(25,118,210,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
-                    <div class="stat-icon blue" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-briefcase"></i></div>
-                    <div class="stat-info">
-                        <h4 style="color: #0d47a1;"><?php echo (int) $stats['applied_jobs']; ?></h4>
-                        <p style="color: #1565c0; font-weight: 500;">Applied Jobs</p>
+                <!-- Applied Jobs -->
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border: none; box-shadow: 0 10px 20px rgba(0,242,254,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                    <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-briefcase"></i></div>
+                    <div class="stat-info" style="margin-top: 15px;">
+                        <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Applied Jobs</p>
+                        <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $stats['applied_jobs']; ?></h4>
                     </div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border: none; box-shadow: 0 4px 15px rgba(245,124,0,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
-                    <div class="stat-icon orange" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-star"></i></div>
-                    <div class="stat-info">
-                        <h4 style="color: #e65100;"><?php echo (int) $stats['shortlisted']; ?></h4>
-                        <p style="color: #ef6c00; font-weight: 500;">Shortlisted</p>
+
+                <!-- Shortlisted -->
+                <div class="stat-card" style="background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); border: none; box-shadow: 0 10px 20px rgba(255,8,68,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                    <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-star-fill"></i></div>
+                    <div class="stat-info" style="margin-top: 15px;">
+                        <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Shortlisted</p>
+                        <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $stats['shortlisted']; ?></h4>
                     </div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border: none; box-shadow: 0 4px 15px rgba(56,142,60,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
-                    <div class="stat-icon green" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-bell"></i></div>
-                    <div class="stat-info">
-                        <h4 style="color: #1b5e20;"><?php echo (int) $stats['alerts']; ?></h4>
-                        <p style="color: #2e7d32; font-weight: 500;">Job Alerts</p>
+
+                <!-- Job Alerts -->
+                <div class="stat-card" style="background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); border: none; box-shadow: 0 10px 20px rgba(11,163,96,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                    <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-bell-fill"></i></div>
+                    <div class="stat-info" style="margin-top: 15px;">
+                        <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Job Alerts</p>
+                        <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $stats['alerts']; ?></h4>
                     </div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border: none; box-shadow: 0 4px 15px rgba(123,31,162,0.15); transform: translateY(-5px); transition: all 0.3s ease;">
-                    <div class="stat-icon purple" style="background: rgba(255,255,255,0.7); box-shadow: 0 2px 10px rgba(0,0,0,0.05);"><i class="bi bi-chat-dots"></i></div>
-                    <div class="stat-info">
-                        <h4 style="color: #4a148c;"><?php echo (int) $stats['messages']; ?></h4>
-                        <p style="color: #6a1b9a; font-weight: 500;">Messages</p>
+
+                <!-- Messages -->
+                <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; box-shadow: 0 10px 20px rgba(102,126,234,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                    <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                    <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-chat-dots-fill"></i></div>
+                    <div class="stat-info" style="margin-top: 15px;">
+                        <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Messages</p>
+                        <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $stats['messages']; ?></h4>
                     </div>
                 </div>
             </div>
 
             <!-- Recent Jobs Table -->
             <div class="dashboard-card mt-4">
-                <div class="card-header">
-                    <h2><i class="bi bi-clock-history"></i> Recent Applied Jobs</h2>
-                    <a href="applied.php" class="view-all-btn">View All <i class="bi bi-arrow-right"></i></a>
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h2 class="mb-0"><i class="bi bi-clock-history"></i> Recent Applied Jobs</h2>
+                    <div class="d-flex gap-2 align-items-center">
+                        <input type="text" id="appliedJobSearch" class="form-control form-control-sm" placeholder="Search jobs/companies..." style="max-width: 200px;">
+                        <a href="applied.php" class="view-all-btn text-nowrap">View All <i class="bi bi-arrow-right"></i></a>
+                    </div>
                 </div>
                 <div class="table-responsive card-body p-0">
                     <table class="data-table">
@@ -213,22 +231,41 @@ function dashboard_status_class(string $status): string
             let currentPage = 1;
             const paginationContainer = document.querySelector('.pagination');
             
+            const searchInput = document.getElementById('appliedJobSearch');
+            let searchQuery = '';
+            let filteredRows = [...rows];
+            
             function render() {
                 const start = (currentPage - 1) * perPage;
                 const end = start + perPage;
                 
-                rows.forEach((row, idx) => {
-                    row.style.display = (idx >= start && idx < end) ? '' : 'none';
+                rows.forEach(row => row.style.display = 'none');
+                
+                filteredRows.forEach((row, idx) => {
+                    if (idx >= start && idx < end) row.style.display = '';
                 });
                 
                 renderPagination();
+            }
+            
+            function applySearch() {
+                filteredRows = rows.filter(row => row.innerText.toLowerCase().includes(searchQuery));
+                currentPage = 1;
+                render();
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    searchQuery = e.target.value.toLowerCase();
+                    applySearch();
+                });
             }
             
             function renderPagination() {
                 if (!paginationContainer) return;
                 paginationContainer.innerHTML = '';
                 
-                let totalPages = Math.ceil(rows.length / perPage);
+                let totalPages = Math.ceil(filteredRows.length / perPage);
                 if (totalPages < 1) totalPages = 1;
 
                 const prevBtn = document.createElement('button');
