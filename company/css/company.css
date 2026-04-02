@@ -52,6 +52,7 @@ body {
     background-color: var(--bg-main);
     color: var(--text-primary);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 a {
@@ -162,6 +163,15 @@ a {
     text-decoration: none;
 }
 
+.nav-item a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
 .nav-item:hover {
     background: #e9ecf5;
     color: var(--text-primary);
@@ -237,8 +247,12 @@ a {
    =================================== */
 .main-content {
     flex: 1;
+    min-width: 0;
+    max-width: 100%;
     margin-left: var(--sidebar-width);
+    padding-top: var(--header-height);
     transition: var(--transition);
+    overflow-x: hidden;
 }
 
 /* ===================================
@@ -252,9 +266,12 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
+    position: fixed;
     top: 0;
+    right: 0;
+    width: calc(100% - var(--sidebar-width));
     z-index: 50;
+    transition: var(--transition);
 }
 
 .header-left {
@@ -1420,6 +1437,10 @@ select.form-control {
     .main-content {
         margin-left: 0;
     }
+
+    .main-header {
+        width: 100%;
+    }
     
     .menu-toggle {
         display: block;
@@ -1458,13 +1479,68 @@ select.form-control {
         gap: 16px;
     }
     
-    .data-table {
-        font-size: 0.85rem;
+    /* Transform table into stacked cards on mobile */
+    .data-table,
+    .data-table tbody,
+    .data-table tr,
+    .data-table td {
+        display: block;
+        width: 100%;
+        min-width: 0;
     }
     
-    .data-table th,
+    .data-table thead {
+        display: none;
+    }
+    
+    .data-table tr {
+        margin-bottom: 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    
     .data-table td {
-        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border-color);
+        white-space: normal;
+        text-align: right;
+    }
+    
+    .data-table td:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    
+    .data-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        flex-shrink: 0;
+        margin-right: 15px;
+        text-align: left;
+    }
+    
+    /* Specific overrides for flex cells (like applicant-info) */
+    .data-table td > .applicant-info,
+    .data-table td > .d-flex {
+        justify-content: flex-end;
+        text-align: right;
+        margin: 0;
+        width: 100%;
+    }
+    
+    .data-table td:has(.action-btn) {
+        justify-content: flex-end;
+        gap: 10px;
     }
     
     .applicant-info {
