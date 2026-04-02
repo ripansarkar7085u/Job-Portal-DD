@@ -56,10 +56,7 @@ if (isset($conn) && isset($_SESSION['user_id'])) {
                 <i class="bi bi-bell"></i>
                 <span>Job Alerts</span>
             </a>
-            <a href="cv.php" class="nav-item" data-page="cv.php">
-                <i class="bi bi-file-earmark"></i>
-                <span>CV Manager</span>
-            </a>
+
             <a href="messages.php" class="nav-item" data-page="messages.php">
                 <i class="bi bi-chat"></i>
                 <span>Messages</span>
