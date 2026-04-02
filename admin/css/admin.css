@@ -75,6 +75,12 @@ body {
     z-index: 100;
     padding: 25px 15px;
     overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar.collapsed {
@@ -121,6 +127,12 @@ body {
     flex: 1;
     padding: 20px 0;
     overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar-nav ul {
@@ -215,6 +227,7 @@ body {
    Main Content
    =================================== */
 .main-content {
+    background: #fff;
     flex: 1;
     margin-left: var(--sidebar-width);
     transition: var(--transition);
