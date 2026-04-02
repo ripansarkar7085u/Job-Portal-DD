@@ -7,7 +7,8 @@ function send_message($sender_id, $sender_type, $receiver_id, $receiver_type, $m
     if (!$stmt) {
         return false;
     }
-    $stmt->bind_param("issis", $sender_id, $sender_type, $receiver_id, $receiver_type, $message);
+    // sender_id(int), sender_type(string), receiver_id(int), receiver_type(string), message(string)
+    $stmt->bind_param("isiss", $sender_id, $sender_type, $receiver_id, $receiver_type, $message);
     $success = $stmt->execute();
     $insert_id = $success ? $conn->insert_id : false;
     $stmt->close();
@@ -20,7 +21,8 @@ function get_messages($user1_id, $user1_type, $user2_id, $user2_type) {
     if (!$stmt) {
         return [];
     }
-    $stmt->bind_param("isisiisi", $user1_id, $user1_type, $user2_id, $user2_type, $user2_id, $user2_type, $user1_id, $user1_type);
+    // (int,string,int,string) twice
+    $stmt->bind_param("isisisis", $user1_id, $user1_type, $user2_id, $user2_type, $user2_id, $user2_type, $user1_id, $user1_type);
     $stmt->execute();
     $result = $stmt->get_result();
     $messages = [];

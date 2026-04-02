@@ -1,9 +1,5 @@
 <?php
-/**
- * Messages Alerts API - Get unread message count
- * 
- * Returns the number of unread messages for a user or company
- */
+
 
 require_once '../config/database.php';
 
