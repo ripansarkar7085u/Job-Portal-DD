@@ -43,6 +43,30 @@ if ($companyId) {
         }
         $stmt->close();
     }
+
+    $companyStats = [
+        'total_jobs' => 0,
+        'active_jobs' => 0,
+        'total_applications' => 0,
+        'profile_views' => rand(100, 500) // Aesthetic placeholder
+    ];
+
+    $stmtStats = $conn->prepare("SELECT 
+        (SELECT COUNT(*) FROM jobs WHERE company_id = ?) AS total_jobs,
+        (SELECT COUNT(*) FROM jobs WHERE company_id = ? AND status = 'open') AS active_jobs,
+        (SELECT COUNT(*) FROM user_job_applications a INNER JOIN jobs j ON j.id = a.job_id WHERE j.company_id = ?) AS total_apps");
+
+    if ($stmtStats) {
+        $stmtStats->bind_param('iii', $companyId, $companyId, $companyId);
+        $stmtStats->execute();
+        $resultStats = $stmtStats->get_result();
+        if ($resultStats && $statsRow = $resultStats->fetch_assoc()) {
+            $companyStats['total_jobs'] = (int)$statsRow['total_jobs'];
+            $companyStats['active_jobs'] = (int)$statsRow['active_jobs'];
+            $companyStats['total_applications'] = (int)$statsRow['total_apps'];
+        }
+        $stmtStats->close();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -155,55 +179,47 @@ if ($companyId) {
             <section class="content-section">
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon jobs">
-                            <i class="bi bi-briefcase-fill"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>Total Jobs Posted</h3>
-                            <p class="stat-number" id="totalJobs">24</p>
-                            <span class="stat-change positive">
-                                <i class="bi bi-arrow-up"></i> 4 this month
-                            </span>
+                    <!-- Total Jobs -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border: none; box-shadow: 0 10px 20px rgba(245,87,108,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px; display: block;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-briefcase-fill"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Total Jobs Posted</p>
+                            <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int)($companyStats['total_jobs'] ?? 0); ?></h4>
                         </div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon active-jobs">
-                            <i class="bi bi-check-circle-fill"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>Active Jobs</h3>
-                            <p class="stat-number" id="activeJobs">18</p>
-                            <span class="stat-change positive">
-                                <i class="bi bi-arrow-up"></i> 2 new this week
-                            </span>
+                    <!-- Active Jobs -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #4ef58f 0%, #00a454 100%); border: none; box-shadow: 0 10px 20px rgba(0,164,84,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px; display: block;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-check-circle-fill"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Active Jobs</p>
+                            <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int)($companyStats['active_jobs'] ?? 0); ?></h4>
                         </div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon applications">
-                            <i class="bi bi-people-fill"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>Total Applications</h3>
-                            <p class="stat-number" id="totalApplications">156</p>
-                            <span class="stat-change positive">
-                                <i class="bi bi-arrow-up"></i> 23 this week
-                            </span>
+                    <!-- Applications -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border: none; box-shadow: 0 10px 20px rgba(0,242,254,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px; display: block;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-people-fill"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Total Applications</p>
+                            <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int)($companyStats['total_applications'] ?? 0); ?></h4>
                         </div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon views">
-                            <i class="bi bi-eye-fill"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>Profile Views</h3>
-                            <p class="stat-number" id="profileViews">1,248</p>
-                            <span class="stat-change positive">
-                                <i class="bi bi-arrow-up"></i> 15% from last month
-                            </span>
+                    <!-- Views -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; box-shadow: 0 10px 20px rgba(102,126,234,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px; display: block;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-eye-fill"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Company Profile Views</p>
+                            <h4 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo number_format($companyStats['profile_views'] ?? 0); ?></h4>
                         </div>
                     </div>
                 </div>
@@ -212,9 +228,12 @@ if ($companyId) {
                 <div class="dashboard-grid">
                     <!-- Recent Applications -->
                     <div class="dashboard-card recent-applications">
-                        <div class="card-header">
-                            <h2><i class="bi bi-people"></i> Recent Applications</h2>
-                            <a href="applications.php" class="view-all-btn">View All <i class="bi bi-arrow-right"></i></a>
+                        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h2 class="mb-0"><i class="bi bi-people"></i> Recent Applications</h2>
+                            <div class="d-flex gap-2 align-items-center">
+                                <input type="date" id="dateFilter" class="form-control form-control-sm" title="Filter by Application Date" style="max-width: 150px;">
+                                <a href="applications.php" class="view-all-btn text-nowrap">View All <i class="bi bi-arrow-right"></i></a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -233,7 +252,7 @@ if ($companyId) {
                                             <tr><td colspan="5" class="text-center text-muted">No recent applicants found.</td></tr>
                                         <?php else: ?>
                                             <?php foreach ($recentApplications as $app): ?>
-                                                <tr>
+                                                <tr class="app-row" data-raw-date="<?php echo date('Y-m-d', strtotime($app['applied_at'])); ?>" data-status="<?php echo strtolower($app['status']); ?>">
                                                     <td>
                                                         <div class="applicant-info">
                                                             <img src="<?php echo !empty($app['profile_image']) ? (strpos($app['profile_image'], 'http') === 0 ? $app['profile_image'] : '../user/uploads/' . $app['profile_image']) : 'https://ui-avatars.com/api/?name=' . urlencode($app['full_name']) . '&background=0d47a1&color=fff'; ?>" alt="<?php echo htmlspecialchars($app['full_name']); ?>">
@@ -279,6 +298,33 @@ if ($companyId) {
             profileBtn.addEventListener('click', toggleProfileDropdown);
             document.addEventListener('click', closeProfileDropdown);
         }
+
+        // Search and Filter implementation
+        const globalSearch = document.getElementById('globalSearch');
+        const dateFilter = document.getElementById('dateFilter');
+        const rows = document.querySelectorAll('.app-row');
+        
+        function applyFilters() {
+            const query = globalSearch ? globalSearch.value.toLowerCase() : '';
+            const dateQuery = dateFilter ? dateFilter.value : '';
+            
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const rawDate = row.dataset.rawDate || '';
+                
+                const matchSearch = query === '' || text.includes(query);
+                const matchDate = dateQuery === '' || rawDate === dateQuery;
+                
+                if (matchSearch && matchDate) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        if (globalSearch) globalSearch.addEventListener('input', applyFilters);
+        if (dateFilter) dateFilter.addEventListener('change', applyFilters);
     });
     </script>
 </body>
