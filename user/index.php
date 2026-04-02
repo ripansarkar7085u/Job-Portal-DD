@@ -203,11 +203,11 @@ function dashboard_status_class(string $status): string
                             <?php else: ?>
                                 <?php foreach ($recentApplied as $application): ?>
                                     <tr class="job-row">
-                                        <td><strong><?php echo user_esc((string) $application['title']); ?></strong></td>
-                                        <td><?php echo user_esc((string) $application['company_name']); ?></td>
-                                        <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
-                                        <td><span class="status-badge <?php echo dashboard_status_class((string) $application['status']); ?>"><?php echo user_esc(ucfirst((string) $application['status'])); ?></span></td>
-                                        <td><a class="action-btn view" href="../job-details.php?id=<?php echo (int) $application['job_id']; ?>"><i class="bi bi-eye"></i></a></td>
+                                        <td data-label="Job Title"><strong><?php echo user_esc((string) $application['title']); ?></strong></td>
+                                        <td data-label="Company"><?php echo user_esc((string) $application['company_name']); ?></td>
+                                        <td data-label="Date Applied"><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
+                                        <td data-label="Status"><span class="status-badge <?php echo dashboard_status_class((string) $application['status']); ?>"><?php echo user_esc(ucfirst((string) $application['status'])); ?></span></td>
+                                        <td data-label="Action"><a class="action-btn view" href="../job-details.php?id=<?php echo (int) $application['job_id']; ?>"><i class="bi bi-eye"></i></a></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>

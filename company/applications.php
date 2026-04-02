@@ -124,7 +124,7 @@ function application_status_label(string $status): string
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Applications - CareerHunt</title>
     <link rel="stylesheet" href="css/company.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -132,60 +132,7 @@ function application_status_label(string $status): string
 </head>
 <body>
     <div class="company-container" id="companyDashboard">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <a href="../index.php" class="logo">
-                    <img src="..\photos\job_logo.png" alt="CareerHunt">
-                </a>
-                <span class="company-badge">Company</span>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <ul>
-                    <li class="nav-item" data-page="index.php">
-                        <i class="bi bi-grid-1x2-fill"></i>
-                        <span>Dashboard</span>
-                    </li>
-                    <li class="nav-item" data-page="job-create.php">
-                        <i class="bi bi-plus-circle-fill"></i>
-                        <span>Post Job</span>
-                    </li>
-                    <li class="nav-item" data-page="jobs.php">
-                        <i class="bi bi-file-earmark-text-fill"></i>
-                        <span>Manage Jobs</span>
-                    </li>
-                    <li class="nav-item active" data-page="applications.php">
-                        <i class="bi bi-people-fill"></i>
-                        <span>Applications</span>
-                    </li>
-                     <li class="nav-item" data-page="messages.php">
-                        <a href="messages.php"><i class="bi bi-chat-dots-fill"></i> <span>Messages</span></a>
-                    </li>
-                    <li class="nav-item" data-page="profile.php">
-                        <i class="bi bi-building"></i>
-                        <span>Company Profile</span>
-                    </li>
-                    <li class="nav-item" data-page="settings.php">
-                        <i class="bi bi-gear-fill"></i>
-                        <span>Settings</span>
-                    </li>
-                </ul>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="company-profile">
-                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company">
-                    <div class="company-info">
-                        <span class="company-name" id="companyNameDisplay"><?php echo htmlspecialchars($companyName); ?></span>
-                        <span class="company-role">Business Account</span>
-                    </div>
-                </div>
-                <button class="logout-btn" id="logoutBtn" title="Logout">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </div>
-        </aside>
+        <?php include 'sidebar.php'; ?>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -230,20 +177,20 @@ function application_status_label(string $status): string
 
             <!-- Applications Content -->
             <section class="content-section">
-                <div class="page-header">
+                <div class="page-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                     <div>
                         <h1>Applications</h1>
-                        <p id="appCountText">Review and manage job applications</p>
+                        <p id="appCountText" class="m-0">Review and manage job applications</p>
                     </div>
-                    <div class="header-actions d-flex gap-2 align-items-center">
-                        <input type="date" class="form-control" id="dateFilter" title="Filter by Application Date" style="max-width: 160px;">
-                        <select class="form-control" id="jobFilter" style="max-width: 200px;">
+                    <div class="header-actions d-flex flex-wrap gap-2 align-items-center w-100">
+                        <input type="date" class="form-control flex-grow-1" id="dateFilter" title="Filter by Application Date" style="min-width: 140px; max-width: 200px;">
+                        <select class="form-control flex-grow-1" id="jobFilter" style="min-width: 140px; max-width: 250px;">
                             <option value="all">All Jobs</option>
                             <?php foreach ($jobs as $job): ?>
                                 <option value="<?php echo (int) $job['id']; ?>" <?php echo ($jobFilter === (int) $job['id']) ? 'selected' : ''; ?>><?php echo user_esc((string) $job['title']); ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <button class="btn btn-outline" id="exportBtn">
+                        <button class="btn btn-outline" id="exportBtn" style="white-space: nowrap;">
                             <i class="bi bi-download"></i> Export
                         </button>
                     </div>
@@ -297,7 +244,7 @@ function application_status_label(string $status): string
                 </div>
 
                 <!-- Filter Tabs -->
-                <div class="tabs">
+                <div class="tabs d-flex flex-wrap gap-2 mb-4">
                     <div class="tab active" data-filter="all">All (<?php echo (int) $counts['all']; ?>)</div>
                     <div class="tab" data-filter="new">New (<?php echo (int) $counts['new']; ?>)</div>
                     <div class="tab" data-filter="reviewing">In Review (<?php echo (int) $counts['reviewing']; ?>)</div>
@@ -355,8 +302,8 @@ function application_status_label(string $status): string
                                                 data-linkedin="<?php echo user_esc((string) ($application['profile_linkedin'] ?? '')); ?>"
                                                 data-github="<?php echo user_esc((string) ($application['profile_github'] ?? '')); ?>"
                                                 data-photo="<?php echo user_esc($avatarUrl); ?>">
-                                                <td><input type="checkbox" class="form-check-input row-select"></td>
-                                                <td>
+                                                <td data-label="Select"><input type="checkbox" class="form-check-input row-select"></td>
+                                                <td data-label="Applicant">
                                                     <div class="applicant-info">
                                                         <img src="<?php echo user_esc($avatarUrl); ?>" alt="<?php echo user_esc($avatarName); ?>">
                                                         <div>
@@ -365,11 +312,11 @@ function application_status_label(string $status): string
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td><?php echo user_esc((string) $application['job_title']); ?></td>
-                                                <td><?php echo user_esc((string) ($application['profile_experience'] ?: 'Not specified')); ?></td>
-                                                <td><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
-                                                <td><span class="status-badge <?php echo user_esc($badgeClass); ?>"><?php echo user_esc($statusLabel); ?></span></td>
-                                                <td>
+                                                <td data-label="Position"><?php echo user_esc((string) $application['job_title']); ?></td>
+                                                <td data-label="Experience"><?php echo user_esc((string) ($application['profile_experience'] ?: 'Not specified')); ?></td>
+                                                <td data-label="Applied Date"><?php echo user_esc(date('M j, Y', strtotime((string) $application['applied_at']))); ?></td>
+                                                <td data-label="Status"><span class="status-badge <?php echo user_esc($badgeClass); ?>"><?php echo user_esc($statusLabel); ?></span></td>
+                                                <td data-label="Actions">
                                                     <button class="action-btn app-view" title="View Application"><i class="bi bi-eye"></i></button>
                                                     <button class="action-btn app-review" title="Mark as Reviewing"><i class="bi bi-eye"></i></button>
                                                     <button class="action-btn app-shortlist" title="Shortlist"><i class="bi bi-check-lg"></i></button>

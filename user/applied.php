@@ -88,7 +88,7 @@ function applied_status_class(string $status): string
                     <?php else: ?>
                         <?php foreach ($appliedRows as $row): ?>
                             <tr>
-                                <td>
+                                <td data-label="Job Details">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="job-logo bg-dark"><?php echo user_esc(strtoupper(substr($row['company_name'], 0, 1))); ?></div>
                                         <div>
@@ -100,9 +100,9 @@ function applied_status_class(string $status): string
                                         </div>
                                     </div>
                                 </td>
-                                <td><?php echo user_esc(date('M j, Y', strtotime((string) $row['applied_at']))); ?></td>
-                                <td class="fw-semibold <?php echo applied_status_class((string) $row['status']); ?>"><?php echo user_esc(ucfirst((string) $row['status'])); ?></td>
-                                <td>
+                                <td data-label="Date Applied"><?php echo user_esc(date('M j, Y', strtotime((string) $row['applied_at']))); ?></td>
+                                <td data-label="Status" class="fw-semibold <?php echo applied_status_class((string) $row['status']); ?>"><?php echo user_esc(ucfirst((string) $row['status'])); ?></td>
+                                <td data-label="Action">
                                     <a class="action-btn view" href="../job-details.php?id=<?php echo (int) $row['job_id']; ?>"><i class="bi bi-eye"></i></a>
                                 </td>
                             </tr>

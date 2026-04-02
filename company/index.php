@@ -73,7 +73,7 @@ if ($companyId) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Company Dashboard - CareerHunt</title>
     <link rel="stylesheet" href="css/company.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -82,60 +82,7 @@ if ($companyId) {
 <body>
     <!-- Company Dashboard -->
     <div class="company-container" id="companyDashboard">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <a href="../index.php" class="logo">
-                    <img src="..\photos\job_logo.png" alt="CareerHunt">
-                </a>
-                <span class="company-badge">Company</span>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <ul>
-                    <li class="nav-item active" data-page="index.php">
-                        <i class="bi bi-grid-1x2-fill"></i>
-                        <span>Dashboard</span>
-                    </li>
-                    <li class="nav-item" data-page="job-create.php">
-                        <i class="bi bi-plus-circle-fill"></i>
-                        <span>Post Job</span>
-                    </li>
-                    <li class="nav-item" data-page="jobs.php">
-                        <i class="bi bi-file-earmark-text-fill"></i>
-                        <span>Manage Jobs</span>
-                    </li>
-                    <li class="nav-item" data-page="applications.php">
-                        <i class="bi bi-people-fill"></i>
-                        <span>Applications</span>
-                    </li>
-                    <li class="nav-item" data-page="messages.php">
-                        <a href="messages.php"><i class="bi bi-chat-dots-fill"></i> <span>Messages</span></a>
-                    </li>
-                    <li class="nav-item" data-page="profile.php">
-                        <i class="bi bi-building"></i>
-                        <span>Company Profile</span>
-                    </li>
-                    <li class="nav-item" data-page="settings.php">
-                        <i class="bi bi-gear-fill"></i>
-                        <span>Settings</span>
-                    </li>
-                </ul>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="company-profile">
-                    <img id="companyAvatar" src="https://ui-avatars.com/api/?name=<?php echo urlencode($companyName); ?>&background=0d47a1&color=fff" alt="Company">
-                    <div class="company-info">
-                        <span class="company-name" id="companyNameDisplay"><?php echo htmlspecialchars($companyName); ?></span>
-                        <span class="company-role">Business Account</span>
-                    </div>
-                </div>
-                <button class="logout-btn" id="logoutBtn" title="Logout">
-                    <i class="bi bi-box-arrow-right"></i>
-                </button>
-            </div>
-        </aside>
+        <?php include 'sidebar.php'; ?>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -256,7 +203,7 @@ if ($companyId) {
                                         <?php else: ?>
                                             <?php foreach ($recentApplications as $app): ?>
                                                 <tr class="app-row" data-raw-date="<?php echo date('Y-m-d', strtotime($app['applied_at'])); ?>" data-status="<?php echo strtolower($app['status']); ?>">
-                                                    <td>
+                                                    <td data-label="Applicant">
                                                         <div class="applicant-info">
                                                             <img src="<?php echo !empty($app['profile_image']) ? (strpos($app['profile_image'], 'http') === 0 ? $app['profile_image'] : '../user/uploads/' . $app['profile_image']) : 'https://ui-avatars.com/api/?name=' . urlencode($app['full_name']) . '&background=0d47a1&color=fff'; ?>" alt="<?php echo htmlspecialchars($app['full_name']); ?>">
                                                             <div>
@@ -265,10 +212,10 @@ if ($companyId) {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td><?php echo htmlspecialchars($app['job_title']); ?></td>
-                                                    <td><?php echo date('M d, Y', strtotime($app['applied_at'])); ?></td>
-                                                    <td><span class="status-badge <?php echo strtolower($app['status']); ?>"><?php echo htmlspecialchars($app['status']); ?></span></td>
-                                                    <td>
+                                                    <td data-label="Position"><?php echo htmlspecialchars($app['job_title']); ?></td>
+                                                    <td data-label="Applied Date"><?php echo date('M d, Y', strtotime($app['applied_at'])); ?></td>
+                                                    <td data-label="Status"><span class="status-badge <?php echo strtolower($app['status']); ?>"><?php echo htmlspecialchars($app['status']); ?></span></td>
+                                                    <td data-label="Action">
                                                         <a href="applications.php?app_id=<?php echo $app['id']; ?>" class="action-btn view" title="View"><i class="bi bi-eye"></i></a>
                                                     </td>
                                                 </tr>
