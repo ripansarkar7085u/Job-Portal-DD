@@ -62,8 +62,11 @@ function applied_status_class(string $status): string
             </header>
 
             <section class="content-section">
-                <div class="page-header mb-4">
-                    <p class="text-muted">Ready to jump back in?</p>
+                <div class="page-header mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <p class="text-muted mb-0">Ready to jump back in?</p>
+                    <div style="max-width: 300px; width: 100%;">
+                        <input type="text" id="appliedJobSearch" class="form-control" placeholder="Search jobs or companies...">
+                    </div>
                 </div>
 
                 <div class="dashboard-card shadow-sm border-0">
@@ -126,15 +129,19 @@ function applied_status_class(string $status): string
 
         const perPage = 5;
         let currentPage = 1;
-        const totalMatches = rows.length;
+        let totalMatches = rows.length;
         let totalPages = Math.ceil(totalMatches / perPage);
         const paginationContainer = document.getElementById('paginationContainer');
+        const searchInput = document.getElementById('appliedJobSearch');
+        let searchQuery = '';
+        let filteredRows = [...rows];
 
         function renderPagination() {
             if (!paginationContainer) return;
             paginationContainer.innerHTML = '';
             
             if (totalPages < 1) totalPages = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
 
             const prevBtn = document.createElement('button');
             prevBtn.className = 'pagination-btn';
@@ -167,14 +174,34 @@ function applied_status_class(string $status): string
             const startIndex = (currentPage - 1) * perPage;
             const endIndex = startIndex + perPage;
             
-            rows.forEach((row, index) => {
+            rows.forEach(row => {
+                row.style.display = 'none';
+            });
+
+            filteredRows.forEach((row, index) => {
                 if (index >= startIndex && index < endIndex) {
                     row.style.display = '';
-                } else {
-                    row.style.display = 'none';
                 }
             });
             renderPagination();
+        }
+
+        function applySearch() {
+            filteredRows = rows.filter(row => {
+                const text = row.innerText.toLowerCase();
+                return text.includes(searchQuery);
+            });
+            totalMatches = filteredRows.length;
+            totalPages = Math.ceil(totalMatches / perPage);
+            currentPage = 1;
+            renderTable();
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                searchQuery = e.target.value.toLowerCase();
+                applySearch();
+            });
         }
 
         renderTable();

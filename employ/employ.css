@@ -10,8 +10,9 @@ body {
 
 /* SIDEBAR STYLING */
 .sidebar {
+    background: #fff;
     width: 280px;
-    background: #ffffff;
+    /* background: #fff; */
     height: 100vh;
     padding: 30px 15px;
     position: fixed;

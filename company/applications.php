@@ -229,10 +229,11 @@ function application_status_label(string $status): string
                 <div class="page-header">
                     <div>
                         <h1>Applications</h1>
-                        <p>Review and manage job applications</p>
+                        <p id="appCountText">Review and manage job applications</p>
                     </div>
-                    <div class="header-actions">
-                        <select class="form-control" id="jobFilter">
+                    <div class="header-actions d-flex gap-2 align-items-center">
+                        <input type="date" class="form-control" id="dateFilter" title="Filter by Application Date" style="max-width: 160px;">
+                        <select class="form-control" id="jobFilter" style="max-width: 200px;">
                             <option value="all">All Jobs</option>
                             <?php foreach ($jobs as $job): ?>
                                 <option value="<?php echo (int) $job['id']; ?>" <?php echo ($jobFilter === (int) $job['id']) ? 'selected' : ''; ?>><?php echo user_esc((string) $job['title']); ?></option>
@@ -245,22 +246,49 @@ function application_status_label(string $status): string
                 </div>
 
                 <!-- Stats -->
-                <div class="application-stats">
-                    <div class="stat-item">
-                        <span class="stat-number"><?php echo (int) $counts['all']; ?></span>
-                        <span class="stat-label">Total Applications</span>
+                <div class="stats-grid mb-4">
+                    <!-- Total Applications -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border: none; box-shadow: 0 10px 20px rgba(0,242,254,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-people-fill"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Total Applications</p>
+                            <h4 id="statCountAll" style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $counts['all']; ?></h4>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number"><?php echo (int) $counts['new']; ?></span>
-                        <span class="stat-label">New</span>
+
+                    <!-- New -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border: none; box-shadow: 0 10px 20px rgba(245,87,108,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-stars"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">New</p>
+                            <h4 id="statCountNew" style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $counts['new']; ?></h4>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number"><?php echo (int) $counts['reviewing']; ?></span>
-                        <span class="stat-label">In Review</span>
+
+                    <!-- In Review -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); border: none; box-shadow: 0 10px 20px rgba(67,233,123,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-eye"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">In Review</p>
+                            <h4 id="statCountReviewing" style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $counts['reviewing']; ?></h4>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number"><?php echo (int) $counts['shortlisted']; ?></span>
-                        <span class="stat-label">Shortlisted</span>
+
+                    <!-- Shortlisted -->
+                    <div class="stat-card" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); border: none; box-shadow: 0 10px 20px rgba(253,160,133,0.3); border-radius: 16px; position: relative; overflow: hidden; padding: 30px;">
+                        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -20px; right: 20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; width: 64px; height: 64px; font-size: 1.8rem;"><i class="bi bi-check2-circle"></i></div>
+                        <div class="stat-info" style="margin-top: 15px;">
+                            <p style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin: 0;">Shortlisted</p>
+                            <h4 id="statCountShortlisted" style="color: white; font-size: 2.5rem; font-weight: 700; margin: 5px 0 0 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);"><?php echo (int) $counts['shortlisted']; ?></h4>
+                        </div>
                     </div>
                 </div>
 
@@ -314,6 +342,7 @@ function application_status_label(string $status): string
                                                 data-position="<?php echo user_esc((string) $application['job_title']); ?>"
                                                 data-experience="<?php echo user_esc((string) ($application['profile_experience'] ?: 'Not specified')); ?>"
                                                 data-date="<?php echo user_esc(date('F j, Y', strtotime((string) $application['applied_at']))); ?>"
+                                                data-raw-date="<?php echo user_esc(date('Y-m-d', strtotime((string) $application['applied_at']))); ?>"
                                                 data-status-label="<?php echo user_esc($statusLabel); ?>"
                                                 data-cover-letter="<?php echo user_esc((string) ($application['cover_letter'] ?: 'No cover letter provided.')); ?>"
                                                 data-resume-path="<?php echo user_esc((string) ($application['resume_path'] ?: $application['primary_resume_path'])); ?>"
@@ -447,6 +476,7 @@ function application_status_label(string $status): string
         const perPage = 5;
         let activeFilter = 'all';
         let searchQuery = '';
+        let dateQuery = '';
 
         // Filter tabs functionality
         document.querySelectorAll('.tab').forEach(tab => {
@@ -465,28 +495,71 @@ function application_status_label(string $status): string
             currentPage = 1;
             applyFilters();
         });
+        
+        document.getElementById('dateFilter').addEventListener('change', function() {
+            dateQuery = this.value;
+            currentPage = 1;
+            applyFilters();
+        });
 
         function applyFilters() {
             const rows = Array.from(document.querySelectorAll('#applicationsTable tr[data-application-id]'));
             let visibleRows = [];
+            let dynamicCounts = { all: 0, new: 0, reviewing: 0, shortlisted: 0 };
             
             rows.forEach(row => {
-                const rowStatus = row.dataset.status || '';
+                let rowStatus = row.dataset.status || '';
+                // normalize status string
+                if (rowStatus === 'applied' || rowStatus === 'pending' || rowStatus === '') {
+                    rowStatus = 'new';
+                }
+                
                 const name = row.querySelector('.name')?.textContent.toLowerCase() || '';
                 const email = row.querySelector('.email')?.textContent.toLowerCase() || '';
                 const position = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
+                const rawDate = row.dataset.rawDate || '';
                 
-                const matchesFilter = activeFilter === 'all' || rowStatus === activeFilter;
                 const matchesSearch = searchQuery === '' || name.includes(searchQuery) || email.includes(searchQuery) || position.includes(searchQuery);
+                const matchesDate = dateQuery === '' || rawDate === dateQuery;
                 
-                if (matchesFilter && matchesSearch) {
-                    visibleRows.push(row);
+                if (matchesSearch && matchesDate) {
+                    dynamicCounts.all++;
+                    if (dynamicCounts.hasOwnProperty(rowStatus)) {
+                        dynamicCounts[rowStatus]++;
+                    }
+                    
+                    const matchesFilter = activeFilter === 'all' || rowStatus === activeFilter;
+                    if (matchesFilter) {
+                        visibleRows.push(row);
+                    } else {
+                        row.style.display = 'none';
+                    }
                 } else {
                     row.style.display = 'none';
                 }
             });
             
+            // update UI dynamic counts
+            const statAll = document.getElementById('statCountAll');
+            const statNew = document.getElementById('statCountNew');
+            const statReviewing = document.getElementById('statCountReviewing');
+            const statShortlisted = document.getElementById('statCountShortlisted');
+            
+            if (statAll) statAll.textContent = dynamicCounts.all;
+            if (statNew) statNew.textContent = dynamicCounts.new;
+            if (statReviewing) statReviewing.textContent = dynamicCounts.reviewing;
+            if (statShortlisted) statShortlisted.textContent = dynamicCounts.shortlisted;
+
+            
             const totalMatches = visibleRows.length;
+            const appCountText = document.getElementById('appCountText');
+            if (appCountText) {
+                if (dateQuery !== '') {
+                    appCountText.textContent = `${totalMatches} candidate(s) applied on ${dateQuery}`;
+                } else {
+                    appCountText.textContent = `Review and manage job applications`;
+                }
+            }
             const startIndex = (currentPage - 1) * perPage;
             const endIndex = startIndex + perPage;
             

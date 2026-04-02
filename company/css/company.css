@@ -72,7 +72,7 @@ a {
    =================================== */
 .sidebar {
     width: var(--sidebar-width);
-    background: var(--bg-sidebar);
+    background: #fff;
     color: var(--text-primary);
     position: fixed;
     height: 100vh;
