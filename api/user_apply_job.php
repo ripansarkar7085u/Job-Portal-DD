@@ -26,6 +26,26 @@ $userId = (int) $_SESSION['user_id'];
 $jobId = isset($payload['job_id']) ? (int) $payload['job_id'] : 0;
 $coverLetter = trim((string) ($payload['cover_letter'] ?? ''));
 
+$resumePath = null;
+if (isset($_FILES['resume']) && $_FILES['resume']['error'] === UPLOAD_ERR_OK) {
+    $file = $_FILES['resume']['name'];
+    $tmp = $_FILES['resume']['tmp_name'];
+    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    $size = $_FILES['resume']['size'];
+    $maxSize = 5 * 1024 * 1024; // 5MB limit
+    
+    if ($size <= $maxSize && in_array($ext, ['pdf', 'doc', 'docx'])) {
+        $uploadDir = dirname(__DIR__) . '/user_uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0700, true);
+        }
+        $safeName = 'resume_' . time() . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
+        if (move_uploaded_file($tmp, $uploadDir . $safeName)) {
+            $resumePath = $safeName;
+        }
+    }
+}
+
 if ($jobId <= 0) {
     auth_json_response(422, ['success' => false, 'message' => 'Valid job id is required.']);
 }
@@ -50,13 +70,13 @@ if (!$job) {
     auth_json_response(404, ['success' => false, 'message' => 'Job not found or not open for applications.']);
 }
 
-$insert = $conn->prepare('INSERT INTO user_job_applications (user_id, job_id, cover_letter, status) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE cover_letter = VALUES(cover_letter), status = VALUES(status), updated_at = CURRENT_TIMESTAMP');
+$insert = $conn->prepare('INSERT INTO user_job_applications (user_id, job_id, cover_letter, resume_path, status) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE cover_letter = VALUES(cover_letter), resume_path = COALESCE(VALUES(resume_path), resume_path), status = VALUES(status), updated_at = CURRENT_TIMESTAMP');
 if (!$insert) {
     auth_json_response(500, ['success' => false, 'message' => 'Unable to save application.']);
 }
 
 $status = 'applied';
-$insert->bind_param('iiss', $userId, $jobId, $coverLetter, $status);
+$insert->bind_param('iisss', $userId, $jobId, $coverLetter, $resumePath, $status);
 if (!$insert->execute()) {
     $insert->close();
     auth_json_response(500, ['success' => false, 'message' => 'Failed to save application.']);

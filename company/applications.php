@@ -16,6 +16,7 @@ auth_ensure_core_tables($conn);
 auth_ensure_jobs_table($conn);
 user_ensure_profiles_table($conn);
 user_ensure_applications_table($conn);
+user_ensure_resumes_table($conn);
 
 $companyId = (int) $_SESSION['company_id'];
 
@@ -36,10 +37,13 @@ if ($jobsStmt) {
     $jobsStmt->close();
 }
 
-$sql = "SELECT a.id, a.user_id, a.job_id, a.status, a.applied_at, a.cover_letter,
+$sql = "SELECT a.id, a.user_id, a.job_id, a.status, a.applied_at, a.cover_letter, a.resume_path,
     j.title AS job_title,
     u.full_name, u.email, u.phone,
-    p.job_title AS profile_job_title, p.experience AS profile_experience, p.location AS profile_location, p.profile_image
+    p.job_title AS profile_job_title, p.experience AS profile_experience, p.location AS profile_location, p.profile_image,
+    p.website AS profile_website, p.linkedin AS profile_linkedin, p.github AS profile_github,
+    (SELECT file_name FROM user_resumes WHERE user_resumes.user_id = u.id AND user_resumes.status='Active' ORDER BY id DESC LIMIT 1) AS primary_resume_path,
+    (SELECT display_name FROM user_resumes WHERE user_resumes.user_id = u.id AND user_resumes.status='Active' ORDER BY id DESC LIMIT 1) AS primary_resume_name
     FROM user_job_applications a
     INNER JOIN jobs j ON j.id = a.job_id
     INNER JOIN users u ON u.id = a.user_id
@@ -310,6 +314,11 @@ function application_status_label(string $status): string
                                                 data-date="<?php echo user_esc(date('F j, Y', strtotime((string) $application['applied_at']))); ?>"
                                                 data-status-label="<?php echo user_esc($statusLabel); ?>"
                                                 data-cover-letter="<?php echo user_esc((string) ($application['cover_letter'] ?: 'No cover letter provided.')); ?>"
+                                                data-resume-path="<?php echo user_esc((string) ($application['resume_path'] ?: $application['primary_resume_path'])); ?>"
+                                                data-resume-name="<?php echo user_esc((string) $application['primary_resume_name']); ?>"
+                                                data-website="<?php echo user_esc((string) ($application['profile_website'] ?? '')); ?>"
+                                                data-linkedin="<?php echo user_esc((string) ($application['profile_linkedin'] ?? '')); ?>"
+                                                data-github="<?php echo user_esc((string) ($application['profile_github'] ?? '')); ?>"
                                                 data-photo="<?php echo user_esc($avatarUrl); ?>">
                                                 <td><input type="checkbox" class="form-check-input row-select"></td>
                                                 <td>
@@ -408,18 +417,7 @@ function application_status_label(string $status): string
                 <div class="attachments">
                     <h5>Attachments</h5>
                     <div class="attachment-list">
-                        <a href="#" class="attachment-item">
-                            <i class="bi bi-file-pdf"></i>
-                            <span>Resume_JohnDoe.pdf</span>
-                        </a>
-                        <a href="#" class="attachment-item">
-                            <i class="bi bi-file-pdf"></i>
-                            <span>CoverLetter_JohnDoe.pdf</span>
-                        </a>
-                        <a href="#" class="attachment-item">
-                            <i class="bi bi-link-45deg"></i>
-                            <span>Portfolio Website</span>
-                        </a>
+                        <!-- Attachments will be loaded dynamically via JS -->
                     </div>
                 </div>
             </div>
@@ -653,6 +651,61 @@ function application_status_label(string $status): string
                 document.getElementById('modalDate').textContent = row.dataset.date || '';
                 document.getElementById('modalStatus').textContent = row.dataset.statusLabel || 'New';
                 document.getElementById('modalCoverLetter').textContent = row.dataset.coverLetter || 'No cover letter provided.';
+
+                const attachmentsDiv = document.querySelector('#applicationModal .attachment-list');
+                if (attachmentsDiv) {
+                    attachmentsDiv.innerHTML = '';
+                    let hasAttachments = false;
+                    
+                    if (row.dataset.resumePath) {
+                        const resumeUrl = '../user_uploads/' + row.dataset.resumePath;
+                        const resumeName = row.dataset.resumeName || row.dataset.resumePath.split('/').pop() || 'Resume.pdf';
+                        attachmentsDiv.innerHTML += `
+                            <a href="${resumeUrl}" target="_blank" class="attachment-item">
+                                <i class="bi bi-file-pdf"></i>
+                                <span>${resumeName}</span>
+                            </a>
+                        `;
+                        hasAttachments = true;
+                    }
+                    
+                    if (row.dataset.website) {
+                        const websiteUrl = row.dataset.website.startsWith('http') ? row.dataset.website : 'https://' + row.dataset.website;
+                        attachmentsDiv.innerHTML += `
+                            <a href="${websiteUrl}" target="_blank" class="attachment-item">
+                                <i class="bi bi-link-45deg"></i>
+                                <span>Portfolio Website</span>
+                            </a>
+                        `;
+                        hasAttachments = true;
+                    }
+                    
+                    if (row.dataset.linkedin) {
+                        const linkedinUrl = row.dataset.linkedin.startsWith('http') ? row.dataset.linkedin : 'https://' + row.dataset.linkedin;
+                        attachmentsDiv.innerHTML += `
+                            <a href="${linkedinUrl}" target="_blank" class="attachment-item">
+                                <i class="bi bi-linkedin"></i>
+                                <span>LinkedIn Profile</span>
+                            </a>
+                        `;
+                        hasAttachments = true;
+                    }
+                    
+                    if (row.dataset.github) {
+                        const githubUrl = row.dataset.github.startsWith('http') ? row.dataset.github : 'https://' + row.dataset.github;
+                        attachmentsDiv.innerHTML += `
+                            <a href="${githubUrl}" target="_blank" class="attachment-item">
+                                <i class="bi bi-github"></i>
+                                <span>GitHub Profile</span>
+                            </a>
+                        `;
+                        hasAttachments = true;
+                    }
+                    
+                    if (!hasAttachments) {
+                        attachmentsDiv.innerHTML = '<span class="text-muted" style="display: block; padding: 10px 0;">No attachments provided.</span>';
+                    }
+                }
 
                 modal.classList.add('active');
             });

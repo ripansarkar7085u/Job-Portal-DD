@@ -259,18 +259,22 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
                 const fullName = document.getElementById('applyFullName').value.trim();
                 const email = document.getElementById('applyEmail').value.trim();
                 const coverLetter = document.getElementById('applyCoverLetter').value.trim();
-                // TODO: handle CV upload if needed
+                const formData = new FormData();
+                formData.append('job_id', jobId);
+                formData.append('full_name', fullName);
+                formData.append('email', email);
+                formData.append('cover_letter', coverLetter);
+                
+                const cvInput = document.getElementById('applyCv');
+                if (cvInput && cvInput.files[0]) {
+                    formData.append('resume', cvInput.files[0]);
+                }
+
                 try {
                     const response = await fetch('api/user_apply_job.php', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
                         credentials: 'include',
-                        body: JSON.stringify({
-                            job_id: jobId,
-                            full_name: fullName,
-                            email: email,
-                            cover_letter: coverLetter
-                        })
+                        body: formData
                     });
                     const data = await response.json();
                     if (!response.ok || !data.success) {
