@@ -200,5 +200,12 @@ function user_ensure_resumes_table(mysqli $conn): void
         upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
     $conn->query($sql);
+
+    // Add user_id column if it doesn't exist (migrations)
+    if (!user_column_exists($conn, 'user_resumes', 'user_id')) {
+        $conn->query('ALTER TABLE user_resumes ADD COLUMN user_id INT NULL AFTER id');
+        $conn->query('ALTER TABLE user_resumes ADD CONSTRAINT fk_user_resumes_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE');
+    }
+
     $initialized = true;
 }
