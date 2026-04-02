@@ -9,11 +9,21 @@ if (!$companyId) {
 }
 
 $applicants = [];
-$stmt = $conn->prepare("SELECT m.sender_id AS user_id, u.full_name, MAX(m.created_at) AS last_message_at,
+$stmt = $conn->prepare("SELECT
+    CASE
+        WHEN m.sender_type = 'user' THEN m.sender_id
+        ELSE m.receiver_id
+    END AS user_id,
+    u.full_name,
+    MAX(m.created_at) AS last_message_at,
     SUBSTRING_INDEX(GROUP_CONCAT(m.message ORDER BY m.created_at DESC SEPARATOR '\n'), '\n', 1) AS last_message
     FROM messages m
-    INNER JOIN users u ON u.id = IF(m.sender_type='user', m.sender_id, m.receiver_id)
-    WHERE (m.sender_id=? AND m.sender_type='company') OR (m.receiver_id=? AND m.receiver_type='company')
+    INNER JOIN users u ON u.id = CASE
+        WHEN m.sender_type = 'user' THEN m.sender_id
+        ELSE m.receiver_id
+    END
+    WHERE (m.sender_id = ? AND m.sender_type = 'company')
+       OR (m.receiver_id = ? AND m.receiver_type = 'company')
     GROUP BY user_id, u.full_name
     ORDER BY last_message_at DESC");
 if ($stmt) {
@@ -405,7 +415,46 @@ if ($activeUserId > 0) {
 </head>
 <body>
 <div class="company-container" id="companyDashboard">
-    <?php include 'sidebar.php'; ?>
+      <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.php" class="logo">
+                    <img src="..\photos\job_logo.png" alt="CareerHunt">
+                </a>
+                <span class="company-badge">Company</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item" data-page="index.php">
+                        <i class="bi bi-grid-1x2-fill"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="nav-item" data-page="job-create.php">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Post Job</span>
+                    </li>
+                    <li class="nav-item" data-page="jobs.php">
+                        <i class="bi bi-file-earmark-text-fill"></i>
+                        <span>Manage Jobs</span>
+                    </li>
+                    <li class="nav-item" data-page="applications.php">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Applications</span>
+                    </li>
+                     <li class="nav-item" data-page="messages.php">
+                        <a href="messages.php"><i class="bi bi-chat-dots-fill"></i> <span>Messages</span></a>
+                    </li>
+                    <li class="nav-item active" data-page="profile.php">
+                        <i class="bi bi-building"></i>
+                        <span>Company Profile</span>
+                    </li>
+                    <li class="nav-item" data-page="settings.php">
+                        <i class="bi bi-gear-fill"></i>
+                        <span>Settings</span>
+                    </li>
+                </ul>
+            </nav>
+      </aside>
     <main class="main-content">
         <header class="main-header">
             <div class="header-left">
@@ -562,11 +611,18 @@ async function fetchMessages() {
         + '&user1_type=company&user2_id=' + encodeURIComponent(selectedUserId)
         + '&user2_type=user';
 
-    const res = await fetch(endpoint);
-    const data = await res.json();
+    try {
+        const res = await fetch(endpoint, { cache: 'no-store' });
+        const data = await res.json();
 
-    if (data.success) {
-        renderMessages(data.messages);
+        if (Array.isArray(data.messages)) {
+            renderMessages(data.messages);
+            return;
+        }
+
+        renderMessages([]);
+    } catch (e) {
+        renderMessages([]);
     }
 }
 

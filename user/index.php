@@ -33,11 +33,12 @@ if ($stmtProfile) {
     $profile_full_name = 'Candidate';
 }
 
-$stmtStats = $conn->prepare("SELECT
+ $stmtStats = $conn->prepare("SELECT
     (SELECT COUNT(*) FROM user_job_applications WHERE user_id = ?) AS applied_jobs,
     (SELECT COUNT(*) FROM user_job_applications WHERE user_id = ? AND LOWER(status) = 'shortlisted') AS shortlisted,
     (SELECT COUNT(*) FROM user_alerts WHERE user_id = ? AND is_read = 0) AS alerts,
-    (SELECT COUNT(*) FROM user_messages WHERE user_id = ? AND sender_type = 'company' AND is_read = 0) AS messages");
+    (SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND receiver_type = 'user' AND is_read = 0) AS messages");
+
 
 if ($stmtStats) {
     $stmtStats->bind_param('iiii', $userId, $userId, $userId, $userId);

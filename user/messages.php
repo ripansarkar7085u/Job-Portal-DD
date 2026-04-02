@@ -140,7 +140,7 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                         <?php foreach ($conversations as $conversation): ?>
                             <?php $companyId = (int) $conversation['company_id']; ?>
                             <?php $unreadCount = (int) ($conversation['unread_count'] ?? 0); ?>
-                            <a href="messages.php?company_id=<?php echo $companyId; ?>" class="chat-user-item <?php echo $companyId === $activeCompanyId ? 'active' : ''; ?>">
+                            <div class="chat-user-item <?php echo $companyId === $activeCompanyId ? 'active' : ''; ?>" data-company-id="<?php echo $companyId; ?>" data-company-name="<?php echo user_esc((string) $conversation['company_name']); ?>" data-company-avatar="https://ui-avatars.com/api/?name=<?php echo urlencode((string) $conversation['company_name']); ?>&background=0d47a1&color=fff">
                                 <div class="chat-user-avatar">
                                     <img src="https://ui-avatars.com/api/?name=<?php echo urlencode((string) $conversation['company_name']); ?>&background=0d47a1&color=fff" alt="Avatar">
                                     <?php if ($unreadCount > 0): ?>
@@ -154,72 +154,19 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                                     </div>
                                     <p class="chat-snippet"><?php echo user_esc((string) $conversation['last_message']); ?></p>
                                 </div>
-                            </a>
+                            </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
 
                     </div>
                 </div>
 
-                <!-- CHAT AREA -->
                 <div class="chat-main">
-
-                    <?php if ($activeCompanyId === 0): ?>
-                        <div class="empty-state h-100 d-none d-lg-flex flex-column align-items-center justify-content-center">
-                            <i class="bi bi-chat-dots" style="font-size: 5rem; color: #e2e8f0; margin-bottom: 20px;"></i>
-                            <h4 style="color: #64748b; font-weight: 600;">Your Messages</h4>
-                            <p style="color: #94a3b8;">Select a conversation from the sidebar to start chatting</p>
-                        </div>
-                    <?php else: ?>
-
-                    <!-- HEADER -->
-                    <div class="chat-main-header">
-                        <div class="chat-active-user">
-                            <a href="messages.php" class="d-lg-none me-3 text-dark"><i class="bi bi-arrow-left fs-4"></i></a>
-                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($activeCompanyName !== '' ? $activeCompanyName : 'Company'); ?>&background=0d47a1&color=fff" alt="Avatar">
-                            <div class="chat-active-user-info">
-                                <h5><?php echo user_esc($activeCompanyName !== '' ? $activeCompanyName : 'No conversation selected'); ?></h5>
-                                <span>Online</span>
-                            </div>
-                        </div>
-
-                        <div class="chat-actions">
-                            <button class="chat-btn" title="Voice Call"><i class="bi bi-telephone"></i></button>
-                            <button class="chat-btn" title="Video Call"><i class="bi bi-camera-video"></i></button>
-                            <button class="chat-btn" title="More Options"><i class="bi bi-info-circle"></i></button>
-                        </div>
+                    <div class="empty-state h-100 d-none d-lg-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-chat-dots" style="font-size: 5rem; color: #e2e8f0; margin-bottom: 20px;"></i>
+                        <h4 style="color: #64748b; font-weight: 600;">Your Messages</h4>
+                        <p style="color: #94a3b8;">Select a conversation from the sidebar to open chat</p>
                     </div>
-
-
-                    <!-- MESSAGES -->
-                    <div class="chat-messages-area">
-                        <?php if (empty($messages)): ?>
-                            <div class="msg-bubble msg-received">
-                                No messages found for this conversation.
-                            </div>
-                        <?php else: ?>
-                            <?php foreach ($messages as $message): ?>
-                                <div class="msg-bubble <?php echo $message['sender_type'] === 'user' ? 'msg-sent' : 'msg-received'; ?>">
-                                    <?php echo nl2br(user_esc((string) $message['message'])); ?>
-                                    <span class="msg-time"><?php echo user_esc(date('H:i', strtotime((string) $message['created_at']))); ?></span>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-
-                    <!-- MESSAGE INPUT -->
-                    <div class="chat-input-area">
-                        <button class="chat-attach-btn" title="Attach file"><i class="bi bi-paperclip"></i></button>
-                        <div class="chat-input-wrapper">
-                            <input type="text" placeholder="Type your message here...">
-                        </div>
-                        <button class="chat-send-btn" title="Send message">
-                            <i class="bi bi-send-fill"></i>
-                        </button>
-                    </div>
-
-                    <?php endif; ?>
-
                 </div>
 
             </div>
@@ -228,10 +175,37 @@ if ($activeCompanyName === '' && !empty($conversations)) {
         </main>
     </div>
 
+    <div class="chat-modal" id="chatModal" aria-hidden="true" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1300; align-items:center; justify-content:center; padding:16px;">
+        <div class="chat-modal-content" style="width:min(740px,100%);height:min(84vh,720px);background:#fff;border-radius:14px;box-shadow:0 24px 48px rgba(2,10,34,.28);display:flex;flex-direction:column;overflow:hidden;">
+            <div class="chat-main-header">
+                <div class="chat-active-user">
+                    <img id="modalCompanyAvatar" src="" alt="Avatar">
+                    <div class="chat-active-user-info">
+                        <h5 id="modalCompanyName">Conversation</h5>
+                        <span>Live chat</span>
+                    </div>
+                </div>
+                <button class="chat-btn" id="closeChatModal" title="Close"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="chat-messages-area" id="chatMessagesArea"></div>
+            <div class="chat-input-area">
+                <button class="chat-attach-btn" title="Attach file"><i class="bi bi-paperclip"></i></button>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Type your message here...">
+                </div>
+                <button class="chat-send-btn" id="chatSendBtn" title="Send message">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
 <script>
 const userId = <?php echo json_encode($userId); ?>;
 const initialCompanyId = <?php echo json_encode($activeCompanyId); ?>;
+const initialCompanyName = <?php echo json_encode($activeCompanyName); ?>;
 let chatInterval = null;
+let selectedCompanyId = 0;
 
 function escapeHtml(text) {
     const div = document.createElement('div');
@@ -247,13 +221,13 @@ function formatTime(dateTimeValue) {
 }
 
 async function fetchMessages() {
-    if (initialCompanyId <= 0) {
+    if (selectedCompanyId <= 0) {
         return;
     }
 
     try {
         const endpoint = '../api/get_messages.php?user1_id=' + encodeURIComponent(userId)
-            + '&user1_type=user&user2_id=' + encodeURIComponent(initialCompanyId)
+            + '&user1_type=user&user2_id=' + encodeURIComponent(selectedCompanyId)
             + '&user2_type=company';
 
         const res = await fetch(endpoint);
@@ -268,7 +242,7 @@ async function fetchMessages() {
 }
 
 function renderMessages(messages) {
-    const area = document.querySelector('.chat-messages-area');
+    const area = document.getElementById('chatMessagesArea');
     if (!area) return;
     
     area.innerHTML = '';
@@ -291,11 +265,11 @@ function renderMessages(messages) {
 }
 
 async function sendMessage() {
-    if (initialCompanyId <= 0) {
+    if (selectedCompanyId <= 0) {
         return;
     }
 
-    const input = document.querySelector('.chat-input-wrapper input');
+    const input = document.getElementById('chatInput');
     if (!input) return;
     
     const msg = input.value.trim();
@@ -303,7 +277,7 @@ async function sendMessage() {
         return;
     }
 
-    const sendBtn = document.querySelector('.chat-send-btn');
+    const sendBtn = document.getElementById('chatSendBtn');
     if (sendBtn) {
         sendBtn.disabled = true;
     }
@@ -315,7 +289,7 @@ async function sendMessage() {
             body: JSON.stringify({
                 sender_id: userId,
                 sender_type: 'user',
-                receiver_id: initialCompanyId,
+                receiver_id: selectedCompanyId,
                 receiver_type: 'company',
                 message: msg
             })
@@ -342,7 +316,7 @@ function startPolling() {
     if (chatInterval) {
         clearInterval(chatInterval);
     }
-    if (initialCompanyId > 0) {
+    if (selectedCompanyId > 0) {
         chatInterval = setInterval(fetchMessages, 3000);
     }
 }
@@ -354,9 +328,37 @@ function stopPolling() {
     }
 }
 
+function setActiveCompanyVisual(companyId) {
+    document.querySelectorAll('.chat-user-item').forEach((item) => {
+        item.classList.toggle('active', Number(item.dataset.companyId) === Number(companyId));
+    });
+}
+
+async function openChatModal(companyId, companyName, companyAvatar) {
+    selectedCompanyId = Number(companyId);
+    setActiveCompanyVisual(selectedCompanyId);
+
+    document.getElementById('modalCompanyName').textContent = companyName || 'Conversation';
+    document.getElementById('modalCompanyAvatar').src = companyAvatar || '';
+
+    const modal = document.getElementById('chatModal');
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+
+    await fetchMessages();
+    startPolling();
+}
+
+function closeChatModal() {
+    const modal = document.getElementById('chatModal');
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    stopPolling();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const sendBtn = document.querySelector('.chat-send-btn');
-    const input = document.querySelector('.chat-input-wrapper input');
+    const sendBtn = document.getElementById('chatSendBtn');
+    const input = document.getElementById('chatInput');
 
     if (sendBtn) {
         sendBtn.addEventListener('click', sendMessage);
@@ -371,9 +373,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Start polling if we have an active conversation
+    document.querySelectorAll('.chat-user-item').forEach((item) => {
+        item.addEventListener('click', () => {
+            openChatModal(item.dataset.companyId, item.dataset.companyName, item.dataset.companyAvatar);
+        });
+    });
+
+    const closeBtn = document.getElementById('closeChatModal');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeChatModal);
+    }
+
+    const modal = document.getElementById('chatModal');
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target.id === 'chatModal') {
+                closeChatModal();
+            }
+        });
+    }
+
     if (initialCompanyId > 0) {
-        startPolling();
+        const initialAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(initialCompanyName || 'Company') + '&background=0d47a1&color=fff';
+        openChatModal(initialCompanyId, initialCompanyName, initialAvatar);
     }
 });
 

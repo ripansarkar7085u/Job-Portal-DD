@@ -24,7 +24,7 @@ try {
     $conn->query("DELETE FROM user_job_applications WHERE user_id = $userId");
     
     // Delete messages
-    $conn->query("DELETE FROM user_messages WHERE user_id = $userId");
+    $conn->query("DELETE FROM messages WHERE (sender_id = $userId AND sender_type = 'user') OR (receiver_id = $userId AND receiver_type = 'user')");
     
     // Delete alerts
     $conn->query("DELETE FROM user_alerts WHERE user_id = $userId");
