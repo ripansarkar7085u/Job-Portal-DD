@@ -20,8 +20,8 @@
     
     --bg-main: #f5f7fb;
     --bg-card: #ffffff;
-    --bg-sidebar: #f5f6fa;
-    --bg-sidebar-hover: #e9ecf5;
+    --bg-sidebar: #ffffff;
+    --bg-sidebar-hover: #f1f5f9;
     
     --text-primary: #222222;
     --text-secondary: #666666;
@@ -82,6 +82,12 @@ a {
     z-index: 100;
     padding: 25px 15px;
     overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar.collapsed {
@@ -129,6 +135,12 @@ a {
     flex: 1;
     padding: 20px 0;
     overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar-nav ul {
@@ -148,6 +160,8 @@ a {
     font-size: 15px;
     font-weight: 500;
     text-decoration: none;
+    text-align: left;
+    justify-content: flex-start;
 }
 
 .nav-item:hover {
