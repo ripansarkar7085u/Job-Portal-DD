@@ -1,12 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
-session_start();
-header('Content-Type: application/json');
 
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    echo json_encode(['success' => false, 'message' => 'Not authorized.']);
-    exit;
-}
+header('Content-Type: application/json');
 
 $sql = "SELECT jobs.id, jobs.title, companies.company_name AS company, jobs.location, jobs.type, jobs.created_at AS posted, jobs.status FROM jobs LEFT JOIN companies ON jobs.company_id = companies.id ORDER BY jobs.created_at DESC";
 $result = $conn->query($sql);

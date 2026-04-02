@@ -1,49 +1,6 @@
-// =============================
-// Company Profile Update Logic
-// =============================
-document.addEventListener('DOMContentLoaded', function() {
-    // Profile form submit
-    const profileForm = document.getElementById('profileForm');
-    if (profileForm) {
-        profileForm.onsubmit = async function(e) {
-            e.preventDefault();
-            const data = {
-                company_name: document.getElementById('companyName').value,
-                industry: document.getElementById('industry').value,
-                company_size: document.getElementById('companySize').value,
-                founded: document.getElementById('founded').value,
-                tagline: document.getElementById('tagline').value,
-                description: document.getElementById('description').value,
-                website: document.getElementById('website').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                location: document.getElementById('location').value,
-                linkedin: document.querySelector('input[placeholder="LinkedIn URL"]').value,
-                twitter: document.querySelector('input[placeholder="Twitter/X URL"]').value,
-                facebook: document.querySelector('input[placeholder="Facebook URL"]').value,
-                instagram: document.querySelector('input[placeholder="Instagram URL"]').value,
-            };
-            try {
-                const res = await fetch('../api/company_update_profile.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify(data)
-                });
-                const result = await res.json();
-                if (result.success) {
-                    showToast('Profile updated successfully', 'success');
-                    // checkSession();
-                } else {
-                    showToast(result.message || 'Failed to update profile', 'error');
-                }
-            } catch (err) {
-                showToast('Error: ' + err.message, 'error');
-            }
-        };
-    }
 
-    // Benefits CRUD
+document.addEventListener('DOMContentLoaded', function() {
+    
     fetchBenefits();
     const addBenefitForm = document.getElementById('addBenefitForm');
     if (addBenefitForm) {
@@ -68,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // Photos CRUD
+    
     fetchPhotos();
     const addPhotoForm = document.getElementById('addPhotoForm');
     if (addPhotoForm) {
@@ -183,7 +140,6 @@ async function deletePhoto(id) {
 }
 
 
-// DOM Elements
 const sidebar = document.getElementById('sidebar');
 const menuToggle = document.getElementById('menuToggle');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -201,7 +157,7 @@ let dashboardStats = {};
 
 
 
-// Fetch company profile from backend and update UI
+
 async function fetchCompanyProfile() {
     try {
         const res = await fetch('../api/company_public_profile.php?id=me', { credentials: 'include' });
@@ -217,10 +173,9 @@ async function fetchCompanyProfile() {
     }
 }
 
-// On page load, fetch company profile
 document.addEventListener('DOMContentLoaded', function() {
     fetchCompanyProfile();
-    // Always initialize sidebar/menu/profile dropdown logic, even if profile fetch fails
+    
     if (typeof handleNavigation === 'function') handleNavigation();
     if (typeof menuToggle !== 'undefined' && typeof sidebar !== 'undefined' && typeof sidebarOverlay !== 'undefined') {
         menuToggle.addEventListener('click', toggleSidebar);
@@ -233,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
- // Update company information in UI
+ 
  
 function updateCompanyInfo(company) {
 
@@ -294,7 +249,7 @@ async function logout(event) {
 }
 
 
-// Toggle sidebar on mobile
+
  
 function toggleSidebar() {
     sidebar.classList.toggle('show');
@@ -303,7 +258,7 @@ function toggleSidebar() {
 }
 
 
- // Close sidebar
+
  
 function closeSidebar() {
     sidebar.classList.remove('show');
@@ -392,9 +347,7 @@ function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-/**
- * Show notification toast
- */
+
 function showToast(message, type = 'info') {
     // Create toast element
     const toast = document.createElement('div');
@@ -404,22 +357,20 @@ function showToast(message, type = 'info') {
         <span>${message}</span>
     `;
     
-    // Add to document
+    
     document.body.appendChild(toast);
     
-    // Trigger animation
+    
     setTimeout(() => toast.classList.add('show'), 10);
     
-    // Remove after delay
+    
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
-/**
- * Confirm action dialog
- */
+
 function confirmAction(message) {
     return new Promise((resolve) => {
         const confirmed = confirm(message);
@@ -427,13 +378,10 @@ function confirmAction(message) {
     });
 }
 
-// ===================================
-// Search Functionality
-// ===================================
 
-/**
- * Handle global search
- */
+
+  //Handle global search
+ 
 function handleSearch() {
     const searchInput = document.getElementById('globalSearch');
     
@@ -442,29 +390,23 @@ function handleSearch() {
             if (e.key === 'Enter') {
                 const query = this.value.trim();
                 if (query) {
-                    // Redirect to search results or filter current page
+                    
                     console.log('Searching for:', query);
-                    // Implement search logic based on current page
+                    
                 }
             }
         });
     }
 }
 
-// ===================================
-// Application Actions
-// ===================================
 
-/**
- * View application details
- */
+
+ //View application details
+ 
 function viewApplication(applicationId) {
     window.location.href = `applications.html?view=${applicationId}`;
 }
 
-/**
- * Accept application
- */
 async function acceptApplication(applicationId) {
     const confirmed = await confirmAction('Are you sure you want to accept this application?');
     

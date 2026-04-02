@@ -1,12 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
-session_start();
-header('Content-Type: application/json');
 
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    echo json_encode(['success' => false, 'message' => 'Not authorized.']);
-    exit;
-}
+header('Content-Type: application/json');
 
 $sql = "SELECT id, company_name, industry, email, status, created_at FROM companies ORDER BY created_at DESC";
 $result = $conn->query($sql);

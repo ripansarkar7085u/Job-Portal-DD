@@ -60,6 +60,7 @@ if (isset($conn) && isset($_SESSION['user_id'])) {
             <a href="messages.php" class="nav-item" data-page="messages.php">
                 <i class="bi bi-chat"></i>
                 <span>Messages</span>
+                <span class="badge-count" id="userMessageBadge" style="display:none;">0</span>
             </a>
             <a href="password.php" class="nav-item" data-page="password.php">
                 <i class="bi bi-lock"></i>
@@ -125,5 +126,34 @@ document.addEventListener("DOMContentLoaded", function() {
             overlay.classList.remove('show');
         });
     }
+    
+    // Update unread message count
+    async function updateMessageBadge() {
+        const userId = <?php echo json_encode($_SESSION['user_id'] ?? 0); ?>;
+        if (!userId) return;
+        
+        try {
+            const res = await fetch(`../api/messages_alerts.php?user_id=${userId}&user_type=user`);
+            const data = await res.json();
+            
+            if (data.success) {
+                const badge = document.getElementById('userMessageBadge');
+                if (badge) {
+                    if (data.unread_count > 0) {
+                        badge.textContent = data.unread_count > 99 ? '99+' : data.unread_count;
+                        badge.style.display = 'inline-block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch unread count:', error);
+        }
+    }
+    
+    // Update badge on load and every 10 seconds
+    updateMessageBadge();
+    setInterval(updateMessageBadge, 10000);
 });
 </script>

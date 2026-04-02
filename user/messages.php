@@ -4,17 +4,29 @@ require_once __DIR__ . '/_user_common.php';
 $userId = user_require_login();
 user_ensure_messages_table($conn);
 
+// Fetch conversations with companies (using unified messages table)
 $conversations = [];
-$stmtConversations = $conn->prepare("SELECT m.company_id, c.company_name, MAX(m.created_at) AS last_message_at,
-    SUBSTRING_INDEX(GROUP_CONCAT(m.message_text ORDER BY m.created_at DESC SEPARATOR '\\n'), '\\n', 1) AS last_message
-    FROM user_messages m
-    INNER JOIN companies c ON c.id = m.company_id
-    WHERE m.user_id = ?
-    GROUP BY m.company_id, c.company_name
+$stmtConversations = $conn->prepare("SELECT 
+    CASE 
+        WHEN m.sender_type = 'company' THEN m.sender_id
+        ELSE m.receiver_id
+    END as company_id,
+    c.company_name,
+    MAX(m.created_at) AS last_message_at,
+    SUBSTRING_INDEX(GROUP_CONCAT(m.message ORDER BY m.created_at DESC SEPARATOR '\n'), '\n', 1) AS last_message,
+    SUM(CASE WHEN m.receiver_id = ? AND m.receiver_type = 'user' AND m.is_read = 0 THEN 1 ELSE 0 END) as unread_count
+    FROM messages m
+    INNER JOIN companies c ON c.id = CASE 
+        WHEN m.sender_type = 'company' THEN m.sender_id
+        ELSE m.receiver_id
+    END
+    WHERE (m.sender_id = ? AND m.sender_type = 'user') 
+       OR (m.receiver_id = ? AND m.receiver_type = 'user')
+    GROUP BY company_id, c.company_name
     ORDER BY last_message_at DESC");
 
 if ($stmtConversations) {
-    $stmtConversations->bind_param('i', $userId);
+    $stmtConversations->bind_param('iii', $userId, $userId, $userId);
     $stmtConversations->execute();
     $result = $stmtConversations->get_result();
     while ($result && ($row = $result->fetch_assoc())) {
@@ -24,23 +36,25 @@ if ($stmtConversations) {
 }
 
 $activeCompanyId = isset($_GET['company_id']) ? (int) $_GET['company_id'] : 0;
-// We no longer auto-select so mobile can show the chat list first
-// if ($activeCompanyId <= 0 && !empty($conversations)) {
-//     $activeCompanyId = (int) $conversations[0]['company_id'];
-// }
 
 $messages = [];
 $activeCompanyName = '';
 
 if ($activeCompanyId > 0) {
-    $stmtMessages = $conn->prepare("SELECT m.message_text, m.sender_type, m.created_at, c.company_name
-        FROM user_messages m
-        INNER JOIN companies c ON c.id = m.company_id
-        WHERE m.user_id = ? AND m.company_id = ?
+    // Fetch all messages between user and company
+    $stmtMessages = $conn->prepare("SELECT 
+        m.message,
+        m.sender_type,
+        m.created_at,
+        c.company_name
+        FROM messages m
+        INNER JOIN companies c ON c.id = ?
+        WHERE ((m.sender_id = ? AND m.sender_type = 'user' AND m.receiver_id = ? AND m.receiver_type = 'company')
+           OR (m.sender_id = ? AND m.sender_type = 'company' AND m.receiver_id = ? AND m.receiver_type = 'user'))
         ORDER BY m.created_at ASC");
 
     if ($stmtMessages) {
-        $stmtMessages->bind_param('ii', $userId, $activeCompanyId);
+        $stmtMessages->bind_param('iiiii', $activeCompanyId, $userId, $activeCompanyId, $activeCompanyId, $userId);
         $stmtMessages->execute();
         $result = $stmtMessages->get_result();
         while ($result && ($row = $result->fetch_assoc())) {
@@ -50,6 +64,20 @@ if ($activeCompanyId > 0) {
             }
         }
         $stmtMessages->close();
+    }
+    
+    // Mark messages from this company as read
+    $stmtMarkRead = $conn->prepare("UPDATE messages 
+        SET is_read = 1 
+        WHERE receiver_id = ? 
+        AND receiver_type = 'user' 
+        AND sender_id = ? 
+        AND sender_type = 'company' 
+        AND is_read = 0");
+    if ($stmtMarkRead) {
+        $stmtMarkRead->bind_param('ii', $userId, $activeCompanyId);
+        $stmtMarkRead->execute();
+        $stmtMarkRead->close();
     }
 }
 
@@ -111,9 +139,13 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                     <?php else: ?>
                         <?php foreach ($conversations as $conversation): ?>
                             <?php $companyId = (int) $conversation['company_id']; ?>
+                            <?php $unreadCount = (int) ($conversation['unread_count'] ?? 0); ?>
                             <a href="messages.php?company_id=<?php echo $companyId; ?>" class="chat-user-item <?php echo $companyId === $activeCompanyId ? 'active' : ''; ?>">
                                 <div class="chat-user-avatar">
                                     <img src="https://ui-avatars.com/api/?name=<?php echo urlencode((string) $conversation['company_name']); ?>&background=0d47a1&color=fff" alt="Avatar">
+                                    <?php if ($unreadCount > 0): ?>
+                                        <span class="unread-badge"><?php echo $unreadCount; ?></span>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="chat-user-details">
                                     <div class="chat-user-name">
@@ -168,7 +200,7 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                         <?php else: ?>
                             <?php foreach ($messages as $message): ?>
                                 <div class="msg-bubble <?php echo $message['sender_type'] === 'user' ? 'msg-sent' : 'msg-received'; ?>">
-                                    <?php echo nl2br(user_esc((string) $message['message_text'])); ?>
+                                    <?php echo nl2br(user_esc((string) $message['message'])); ?>
                                     <span class="msg-time"><?php echo user_esc(date('H:i', strtotime((string) $message['created_at']))); ?></span>
                                 </div>
                             <?php endforeach; ?>
@@ -195,6 +227,159 @@ if ($activeCompanyName === '' && !empty($conversations)) {
             </section>
         </main>
     </div>
+
+<script>
+const userId = <?php echo json_encode($userId); ?>;
+const initialCompanyId = <?php echo json_encode($activeCompanyId); ?>;
+let chatInterval = null;
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text || '';
+    return div.innerHTML;
+}
+
+function formatTime(dateTimeValue) {
+    if (!dateTimeValue || dateTimeValue.length < 16) {
+        return '';
+    }
+    return dateTimeValue.substring(11, 16);
+}
+
+async function fetchMessages() {
+    if (initialCompanyId <= 0) {
+        return;
+    }
+
+    try {
+        const endpoint = '../api/get_messages.php?user1_id=' + encodeURIComponent(userId)
+            + '&user1_type=user&user2_id=' + encodeURIComponent(initialCompanyId)
+            + '&user2_type=company';
+
+        const res = await fetch(endpoint);
+        const data = await res.json();
+
+        if (data.success && data.messages) {
+            renderMessages(data.messages);
+        }
+    } catch (error) {
+        console.error('Failed to fetch messages:', error);
+    }
+}
+
+function renderMessages(messages) {
+    const area = document.querySelector('.chat-messages-area');
+    if (!area) return;
+    
+    area.innerHTML = '';
+
+    if (!messages || !messages.length) {
+        area.innerHTML = '<div class="msg-bubble msg-received">No messages found for this conversation.</div>';
+        return;
+    }
+
+    messages.forEach((msg) => {
+        const bubble = document.createElement('div');
+        const isSent = msg.sender_type === 'user';
+        bubble.className = 'msg-bubble ' + (isSent ? 'msg-sent' : 'msg-received');
+        bubble.innerHTML = escapeHtml(msg.message).replace(/\n/g, '<br>') 
+            + '<span class="msg-time">' + escapeHtml(formatTime(msg.created_at)) + '</span>';
+        area.appendChild(bubble);
+    });
+
+    area.scrollTop = area.scrollHeight;
+}
+
+async function sendMessage() {
+    if (initialCompanyId <= 0) {
+        return;
+    }
+
+    const input = document.querySelector('.chat-input-wrapper input');
+    if (!input) return;
+    
+    const msg = input.value.trim();
+    if (!msg) {
+        return;
+    }
+
+    const sendBtn = document.querySelector('.chat-send-btn');
+    if (sendBtn) {
+        sendBtn.disabled = true;
+    }
+
+    try {
+        const res = await fetch('../api/send_message.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sender_id: userId,
+                sender_type: 'user',
+                receiver_id: initialCompanyId,
+                receiver_type: 'company',
+                message: msg
+            })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            input.value = '';
+            await fetchMessages();
+        } else {
+            alert('Failed to send message. Please try again.');
+        }
+    } catch (error) {
+        console.error('Failed to send message:', error);
+        alert('Failed to send message. Please try again.');
+    } finally {
+        if (sendBtn) {
+            sendBtn.disabled = false;
+        }
+    }
+}
+
+function startPolling() {
+    if (chatInterval) {
+        clearInterval(chatInterval);
+    }
+    if (initialCompanyId > 0) {
+        chatInterval = setInterval(fetchMessages, 3000);
+    }
+}
+
+function stopPolling() {
+    if (chatInterval) {
+        clearInterval(chatInterval);
+        chatInterval = null;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const sendBtn = document.querySelector('.chat-send-btn');
+    const input = document.querySelector('.chat-input-wrapper input');
+
+    if (sendBtn) {
+        sendBtn.addEventListener('click', sendMessage);
+    }
+
+    if (input) {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+
+    // Start polling if we have an active conversation
+    if (initialCompanyId > 0) {
+        startPolling();
+    }
+});
+
+// Clean up on page unload
+window.addEventListener('beforeunload', stopPolling);
+</script>
 
 </body>
 
