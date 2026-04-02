@@ -52,6 +52,7 @@ body {
     background-color: var(--bg-main);
     color: var(--text-primary);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 a {
@@ -162,6 +163,15 @@ a {
     text-decoration: none;
 }
 
+.nav-item a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
 .nav-item:hover {
     background: #e9ecf5;
     color: var(--text-primary);
@@ -237,8 +247,12 @@ a {
    =================================== */
 .main-content {
     flex: 1;
+    min-width: 0;
+    max-width: 100%;
     margin-left: var(--sidebar-width);
+    padding-top: var(--header-height);
     transition: var(--transition);
+    overflow-x: hidden;
 }
 
 /* ===================================
@@ -252,9 +266,12 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
+    position: fixed;
     top: 0;
+    right: 0;
+    width: calc(100% - var(--sidebar-width));
     z-index: 50;
+    transition: var(--transition);
 }
 
 .header-left {
@@ -1419,6 +1436,10 @@ select.form-control {
     
     .main-content {
         margin-left: 0;
+    }
+
+    .main-header {
+        width: 100%;
     }
     
     .menu-toggle {

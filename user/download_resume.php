@@ -33,8 +33,9 @@ if (!file_exists($file)) {
     exit('File not found.');
 }
 
+$disposition = (isset($_GET['action']) && $_GET['action'] === 'view') ? 'inline' : 'inline'; // default to inline for viewing
 header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="' . basename($row['display_name']) . '"');
+header('Content-Disposition: ' . $disposition . '; filename="' . basename($row['display_name']) . '"');
 header('Content-Length: ' . filesize($file));
 readfile($file);
 exit;
