@@ -83,9 +83,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
 
                 <div class="profile-grid">
                     <!-- Profile Form -->
-                    <div class="dashboard-card profile-form-card">
-                        <div class="card-header">
-                            <h2><i class="bi bi-pencil-square"></i> Edit Profile</h2>
+                    <div class="dashboard-card profile-form-card shadow-sm border rounded-3 mb-4">
+                        <div class="card-header border-bottom py-3">
+                            <h2 class="m-0 fs-5"><i class="bi bi-pencil-square text-primary me-2"></i> Edit Profile</h2>
                         </div>
                         <div class="card-body">
                             <form id="profileForm" action="../api/save_company_profile.php" method="POST" enctype="multipart/form-data">
@@ -224,9 +224,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                     </div>
 
                     <!-- Profile Preview Card -->
-                    <div class="dashboard-card profile-preview-card">
-                        <div class="card-header">
-                            <h2><i class="bi bi-eye"></i> Profile Preview</h2>
+                    <div class="dashboard-card profile-preview-card shadow-sm border rounded-3 mb-4">
+                        <div class="card-header border-bottom py-3">
+                            <h2 class="m-0 fs-5"><i class="bi bi-eye text-primary me-2"></i> Profile Preview</h2>
                         </div>
                         <div class="card-body">
                             <div class="preview-header">
@@ -267,9 +267,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                     </div>
 
                     <!-- Benefits & Perks -->
-                    <div class="dashboard-card benefits-card">
-                        <div class="card-header">
-                            <h2><i class="bi bi-gift"></i> Benefits & Perks</h2>
+                    <div class="dashboard-card benefits-card shadow-sm border rounded-3 mb-4">
+                        <div class="card-header border-bottom py-3 d-flex justify-content-between align-items-center">
+                            <h2 class="m-0 fs-5"><i class="bi bi-gift text-primary me-2"></i> Benefits & Perks</h2>
                             <form id="addBenefitForm" style="display:inline-flex;gap:8px;align-items:center;">
                                 <input type="text" id="newBenefitInput" class="form-control form-control-sm" placeholder="Add benefit..." style="width:180px;">
                                 <button type="submit" class="btn btn-sm btn-outline"><i class="bi bi-plus"></i> Add</button>
@@ -282,14 +282,16 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
 
                     <!-- Company Photos -->
                     <div class="dashboard-card photos-card">
-                        <div class="card-header">
-                            <h2><i class="bi bi-images"></i> Company Photos</h2>
-                            <form id="addPhotoForm" style="display:inline-flex;gap:8px;align-items:center;">
-                                <input type="url" id="newPhotoUrl" class="form-control form-control-sm" placeholder="Paste image URL..." style="width:220px;">
-                                <button type="submit" class="btn btn-sm btn-outline"><i class="bi bi-plus"></i> Add</button>
-                            </form>
+                        <div class="card-header border-bottom mb-3 pb-3 d-flex justify-content-between align-items-center">
+                            <h2 class="m-0 fs-5"><i class="bi bi-images text-primary me-2"></i> Company Photos</h2>
                         </div>
                         <div class="card-body">
+                            <form id="addPhotoForm" class="mb-4 d-flex gap-2 align-items-center bg-light p-3 rounded border" enctype="multipart/form-data">
+                                <div class="flex-grow-1">
+                                    <input type="file" id="newPhotoFile" name="photo" class="form-control" accept="image/*" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary px-4"><i class="bi bi-upload me-1"></i> Upload</button>
+                            </form>
                             <div class="photos-grid" id="photosGrid"></div>
                         </div>
                     </div>
@@ -306,6 +308,27 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             const profileForm = document.getElementById('profileForm');
+            const logoUpload = document.getElementById('logoUpload');
+            const logoPreview = document.getElementById('logoPreview');
+            const headerAvatar = document.getElementById('headerAvatar');
+            const companyAvatar = document.getElementById('companyAvatar');
+
+            // Show immediate preview when a file is selected
+            if (logoUpload) {
+                logoUpload.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            if (logoPreview) logoPreview.src = e.target.result;
+                            if (headerAvatar) headerAvatar.src = e.target.result;
+                            if (companyAvatar) companyAvatar.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
             if (profileForm) {
                 profileForm.addEventListener('submit', function(e) {
                     e.preventDefault();

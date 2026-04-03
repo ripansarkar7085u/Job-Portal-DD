@@ -46,6 +46,24 @@ if (isset($_FILES['resume']) && $_FILES['resume']['error'] === UPLOAD_ERR_OK) {
     }
 }
 
+if (!$resumePath) {
+    // Try to get active resume from database
+    $stmtCv = $conn->prepare("SELECT file_name FROM user_resumes WHERE user_id = ? AND status = 'Active' ORDER BY id DESC LIMIT 1");
+    if ($stmtCv) {
+        $stmtCv->bind_param("i", $userId);
+        $stmtCv->execute();
+        $resCv = $stmtCv->get_result();
+        if ($resCv && $rowCv = $resCv->fetch_assoc()) {
+            $resumePath = $rowCv['file_name'];
+        }
+        $stmtCv->close();
+    }
+}
+
+if (!$resumePath) {
+    auth_json_response(422, ['success' => false, 'message' => 'Please upload a CV to apply.']);
+}
+
 if ($jobId <= 0) {
     auth_json_response(422, ['success' => false, 'message' => 'Valid job id is required.']);
 }

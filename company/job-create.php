@@ -72,9 +72,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                 <form id="jobForm" class="job-form">
                     <div class="form-grid">
                         <!-- Basic Information -->
-                        <div class="dashboard-card">
-                            <div class="card-header">
-                                <h2><i class="bi bi-info-circle"></i> Basic Information</h2>
+                        <div class="dashboard-card shadow-sm border rounded-3 mb-4">
+                            <div class="card-header border-bottom py-3">
+                                <h2 class="m-0 fs-5"><i class="bi bi-info-circle text-primary me-2"></i> Basic Information</h2>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -133,9 +133,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                         </div>
 
                         <!-- Location & Work Style -->
-                        <div class="dashboard-card">
-                            <div class="card-header">
-                                <h2><i class="bi bi-geo-alt"></i> Location & Work Style</h2>
+                        <div class="dashboard-card shadow-sm border rounded-3 mb-4">
+                            <div class="card-header border-bottom py-3">
+                                <h2 class="m-0 fs-5"><i class="bi bi-geo-alt text-primary me-2"></i> Location & Work Style</h2>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -179,9 +179,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                         </div>
 
                         <!-- Compensation -->
-                        <div class="dashboard-card">
-                            <div class="card-header">
-                                <h2><i class="bi bi-currency-dollar"></i> Compensation</h2>
+                        <div class="dashboard-card shadow-sm border rounded-3 mb-4">
+                            <div class="card-header border-bottom py-3">
+                                <h2 class="m-0 fs-5"><i class="bi bi-currency-dollar text-primary me-2"></i> Compensation</h2>
                             </div>
                             <div class="card-body">
                                 <div class="form-check">
@@ -260,9 +260,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                         </div>
 
                         <!-- Job Description -->
-                        <div class="dashboard-card full-width">
-                            <div class="card-header">
-                                <h2><i class="bi bi-file-text"></i> Job Description</h2>
+                        <div class="dashboard-card full-width shadow-sm border rounded-3 mb-4">
+                            <div class="card-header border-bottom py-3">
+                                <h2 class="m-0 fs-5"><i class="bi bi-file-text text-primary me-2"></i> Job Description</h2>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -285,9 +285,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                         </div>
 
                         <!-- Skills -->
-                        <div class="dashboard-card full-width">
-                            <div class="card-header">
-                                <h2><i class="bi bi-tags"></i> Skills & Tags</h2>
+                        <div class="dashboard-card full-width shadow-sm border rounded-3 mb-4">
+                            <div class="card-header border-bottom py-3">
+                                <h2 class="m-0 fs-5"><i class="bi bi-tags text-primary me-2"></i> Skills & Tags</h2>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -316,9 +316,9 @@ $companyName = $_SESSION['company_name'] ?? 'Company';
                         </div>
 
                         <!-- Application Settings -->
-                        <div class="dashboard-card full-width">
-                            <div class="card-header">
-                                <h2><i class="bi bi-gear"></i> Application Settings</h2>
+                        <div class="dashboard-card full-width shadow-sm border rounded-3 mb-4">
+                            <div class="card-header border-bottom py-3">
+                                <h2 class="m-0 fs-5"><i class="bi bi-gear text-primary me-2"></i> Application Settings</h2>
                             </div>
                             <div class="card-body">
                                 <div class="form-row">

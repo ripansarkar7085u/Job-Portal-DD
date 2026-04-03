@@ -29,19 +29,52 @@ if ($method === 'GET') {
 }
 
 if ($method === 'POST') {
-    // Handle photo upload (expects base64 or URL for now)
-    $data = json_decode(file_get_contents('php://input'), true);
-    $url = trim($data['url'] ?? '');
+    // Handle photo upload
+    $url = '';
+    
+    // Check if it's a file upload
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../uploads/company_photos/';
+        if (!is_dir($uploadDir)) {
+            // Create directory with proper permissions
+            mkdir($uploadDir, 0755, true);
+        }
+        
+        $file = $_FILES['photo'];
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
+        if (in_array($ext, $allowed)) {
+            $fileName = uniqid('photo_') . '.' . $ext;
+            $dest = $uploadDir . $fileName;
+            
+            if (move_uploaded_file($file['tmp_name'], $dest)) {
+                $url = '../uploads/company_photos/' . $fileName;
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to move uploaded file.']);
+                exit;
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid file type. Allowed: jpg, png, gif, webp.']);
+            exit;
+        }
+    } else {
+        // Fallback to JSON body URL (if still used)
+        $data = json_decode(file_get_contents('php://input'), true);
+        $url = trim($data['url'] ?? '');
+    }
+    
     if (!$url) {
-        echo json_encode(['success' => false, 'message' => 'Photo URL is required.']);
+        echo json_encode(['success' => false, 'message' => 'Photo file or URL is required.']);
         exit;
     }
+    
     $stmt = $conn->prepare('INSERT INTO company_photos (company_id, url) VALUES (?, ?)');
     $stmt->bind_param('is', $companyId, $url);
     if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'id' => $stmt->insert_id]);
+        echo json_encode(['success' => true, 'id' => $stmt->insert_id, 'url' => $url]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to add photo.']);
+        echo json_encode(['success' => false, 'message' => 'Failed to add photo to database.']);
     }
     $stmt->close();
     $conn->close();
