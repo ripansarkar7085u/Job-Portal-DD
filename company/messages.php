@@ -16,7 +16,8 @@ $stmt = $conn->prepare("SELECT
     END AS user_id,
     u.full_name,
     MAX(m.created_at) AS last_message_at,
-    SUBSTRING_INDEX(GROUP_CONCAT(m.message ORDER BY m.created_at DESC SEPARATOR '\n'), '\n', 1) AS last_message
+    SUBSTRING_INDEX(GROUP_CONCAT(m.message ORDER BY m.created_at DESC SEPARATOR '\n'), '\n', 1) AS last_message,
+    SUM(CASE WHEN m.receiver_id = ? AND m.receiver_type = 'company' AND m.is_read = 0 THEN 1 ELSE 0 END) as unread_count
     FROM messages m
     INNER JOIN users u ON u.id = CASE
         WHEN m.sender_type = 'user' THEN m.sender_id
@@ -27,7 +28,7 @@ $stmt = $conn->prepare("SELECT
     GROUP BY user_id, u.full_name
     ORDER BY last_message_at DESC");
 if ($stmt) {
-    $stmt->bind_param('ii', $companyId, $companyId);
+    $stmt->bind_param('iii', $companyId, $companyId, $companyId);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($result && ($row = $result->fetch_assoc())) {
@@ -167,6 +168,25 @@ if ($activeUserId > 0) {
         .chat-user-item:hover,
         .chat-user-item.active {
             background: #eaf2ff;
+        }
+
+        .chat-user-avatar {
+            position: relative;
+        }
+
+        .unread-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ff3b3b;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            min-width: 18px;
+            text-align: center;
         }
 
         .chat-user-avatar img {
@@ -485,14 +505,18 @@ if ($activeUserId > 0) {
                                 <?php $userId = (int) $applicant['user_id']; ?>
                                 <?php $fullName = (string) $applicant['full_name']; ?>
                                 <?php $avatar = 'https://ui-avatars.com/api/?name=' . urlencode($fullName) . '&background=0d47a1&color=fff'; ?>
+                                <?php $unreadCount = (int) ($applicant['unread_count'] ?? 0); ?>
                                 <div
                                     class="chat-user-item <?php echo $userId === $activeUserId ? 'active' : ''; ?>"
                                     data-user-id="<?php echo $userId; ?>"
                                     data-user-name="<?php echo htmlspecialchars($fullName); ?>"
                                     data-user-avatar="<?php echo htmlspecialchars($avatar); ?>"
                                 >
-                                    <div class="chat-user-avatar">
+                                    <div class="chat-user-avatar" style="position: relative;">
                                         <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Avatar">
+                                        <?php if ($unreadCount > 0): ?>
+                                            <span class="unread-badge"><?php echo $unreadCount; ?></span>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="chat-user-details">
                                         <div class="chat-user-name">
@@ -573,7 +597,14 @@ function formatTime(dateTimeValue) {
 
 function setActiveUserVisual(userId) {
     document.querySelectorAll('.chat-user-item').forEach((item) => {
-        item.classList.toggle('active', Number(item.dataset.userId) === Number(userId));
+        const isActive = Number(item.dataset.userId) === Number(userId);
+        item.classList.toggle('active', isActive);
+        if (isActive) {
+            const badge = item.querySelector('.unread-badge');
+            if (badge) {
+                badge.style.display = 'none';
+            }
+        }
     });
 }
 
@@ -701,6 +732,13 @@ async function bindUserSearch() {
 
     searchInput.addEventListener('input', function () {
         const q = this.value.trim();
+        const term = q.toLowerCase();
+
+        // Local filter for existing conversations
+        document.querySelectorAll('.chat-user-item').forEach(item => {
+            const name = (item.dataset.userName || '').toLowerCase();
+            item.style.display = name.includes(term) ? '' : 'none';
+        });
 
         if (searchTimeout) {
             clearTimeout(searchTimeout);

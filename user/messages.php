@@ -129,7 +129,7 @@ if ($activeCompanyName === '' && !empty($conversations)) {
                         <h3>Messages</h3>
                         <div class="chat-search">
                             <i class="bi bi-search"></i>
-                            <input type="text" placeholder="Search conversations...">
+                            <input type="text" id="conversationSearchInput" placeholder="Search conversations...">
                         </div>
                     </div>
                     
@@ -330,7 +330,14 @@ function stopPolling() {
 
 function setActiveCompanyVisual(companyId) {
     document.querySelectorAll('.chat-user-item').forEach((item) => {
-        item.classList.toggle('active', Number(item.dataset.companyId) === Number(companyId));
+        const isActive = Number(item.dataset.companyId) === Number(companyId);
+        item.classList.toggle('active', isActive);
+        if (isActive) {
+            const badge = item.querySelector('.unread-badge');
+            if (badge) {
+                badge.style.display = 'none';
+            }
+        }
     });
 }
 
@@ -378,6 +385,17 @@ document.addEventListener('DOMContentLoaded', () => {
             openChatModal(item.dataset.companyId, item.dataset.companyName, item.dataset.companyAvatar);
         });
     });
+
+    const conversationSearch = document.getElementById('conversationSearchInput');
+    if (conversationSearch) {
+        conversationSearch.addEventListener('input', function() {
+            const term = this.value.trim().toLowerCase();
+            document.querySelectorAll('.chat-user-item').forEach(item => {
+                const name = (item.dataset.companyName || '').toLowerCase();
+                item.style.display = name.includes(term) ? '' : 'none';
+            });
+        });
+    }
 
     const closeBtn = document.getElementById('closeChatModal');
     if (closeBtn) {
