@@ -158,20 +158,7 @@ let dashboardStats = {};
 
 
 
-async function fetchCompanyProfile() {
-    try {
-        const res = await fetch('../api/company_public_profile.php?id=me', { credentials: 'include' });
-        const data = await res.json();
-        if (data.success && data.company) {
-            companyData = data.company;
-            updateCompanyInfo(companyData);
-        } else {
-            showToast('Failed to load company profile', 'error');
-        }
-    } catch (error) {
-        showToast('Error loading company profile', 'error');
-    }
-}
+
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchCompanyProfile();
