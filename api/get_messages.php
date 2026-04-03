@@ -39,6 +39,9 @@ try {
     // Get messages
     $messages = get_messages($user1_id, $user1_type, $user2_id, $user2_type);
     
+    // Mark messages sent by user2 to user1 as read
+    mark_as_read($user2_id, $user2_type, $user1_id, $user1_type);
+
     $response['success'] = true;
     $response['messages'] = $messages;
     $response['message'] = 'Messages retrieved successfully';

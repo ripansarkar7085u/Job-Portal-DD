@@ -4,7 +4,45 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+require_once __DIR__ . '/config/database.php';
+
 $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true && isset($_SESSION['user_id']);
+
+$userFullName = '';
+$userEmail = '';
+$hasActiveCv = false;
+$activeCvName = '';
+
+if ($isLoggedIn && ($_SESSION['account_type'] ?? '') === 'user') {
+    $userId = (int) $_SESSION['user_id'];
+    
+    // Get user details
+    $stmtUser = $conn->prepare("SELECT full_name, email FROM users WHERE id = ?");
+    if ($stmtUser) {
+        $stmtUser->bind_param("i", $userId);
+        $stmtUser->execute();
+        $resUser = $stmtUser->get_result();
+        if ($resUser && $rowUser = $resUser->fetch_assoc()) {
+            $userFullName = $rowUser['full_name'];
+            $userEmail = $rowUser['email'];
+        }
+        $stmtUser->close();
+    }
+    
+    // Get active CV
+    $stmtCv = $conn->prepare("SELECT display_name FROM user_resumes WHERE user_id = ? AND status = 'Active' ORDER BY id DESC LIMIT 1");
+    if ($stmtCv) {
+        $stmtCv->bind_param("i", $userId);
+        $stmtCv->execute();
+        $resCv = $stmtCv->get_result();
+        if ($resCv && $rowCv = $resCv->fetch_assoc()) {
+            $hasActiveCv = true;
+            $activeCvName = $rowCv['display_name'];
+        }
+        $stmtCv->close();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,17 +166,26 @@ $jobId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" id="applyFullName" class="form-control" required>
+                            <input type="text" id="applyFullName" class="form-control" value="<?php echo htmlspecialchars($userFullName); ?>" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" id="applyEmail" class="form-control" required>
+                            <input type="email" id="applyEmail" class="form-control" value="<?php echo htmlspecialchars($userEmail); ?>" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Upload CV</label>
-                            <input type="file" id="applyCv" class="form-control" accept=".pdf,.doc,.docx">
+                            <label class="form-label">CV / Resume</label>
+                            <?php if ($hasActiveCv): ?>
+                                <div class="alert alert-info p-2 mb-2" style="font-size: 0.85rem;">
+                                    <i class="bi bi-file-earmark-pdf"></i> Your active CV <br><strong><?php echo htmlspecialchars($activeCvName); ?></strong><br>will be used automatically. You can upload a different one below to override it.
+                                </div>
+                            <?php else: ?>
+                                <div class="alert alert-warning p-2 mb-2" style="font-size: 0.85rem;">
+                                    Please <a href="user/resume.php" target="_blank" class="alert-link">upload your CV</a> in your profile or manually attach one below to apply.
+                                </div>
+                            <?php endif; ?>
+                            <input type="file" id="applyCv" class="form-control" accept=".pdf,.doc,.docx" <?php echo !$hasActiveCv ? 'required' : ''; ?>>
                         </div>
 
                         <div class="mb-3">

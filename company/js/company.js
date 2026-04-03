@@ -31,21 +31,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addPhotoForm) {
         addPhotoForm.onsubmit = async function(e) {
             e.preventDefault();
-            const input = document.getElementById('newPhotoUrl');
-            const url = input.value.trim();
-            if (!url) return;
-            const res = await fetch('../api/company_photos.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ url })
-            });
-            const data = await res.json();
-            if (data.success) {
-                input.value = '';
-                fetchPhotos();
+            const input = document.getElementById('newPhotoFile');
+            if (input) {
+                const file = input.files[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append('photo', file);
+
+                const btn = addPhotoForm.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-arrow-clockwise fa-spin"></i> Uploading...';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch('../api/company_photos.php', {
+                        method: 'POST',
+                        credentials: 'include',
+                        body: formData
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        input.value = '';
+                        fetchPhotos();
+                        showToast('Photo uploaded successfully', 'success');
+                    } else {
+                        showToast(data.message || 'Failed to add photo', 'error');
+                    }
+                } catch (err) {
+                    showToast('Failed to connect to server', 'error');
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
             } else {
-                showToast(data.message || 'Failed to add photo', 'error');
+                 // Fallback for old URL input
+                 const urlInput = document.getElementById('newPhotoUrl');
+                 if(urlInput) {
+                    const url = urlInput.value.trim();
+                    if (!url) return;
+                    const res = await fetch('../api/company_photos.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ url })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        urlInput.value = '';
+                        fetchPhotos();
+                    } else {
+                        showToast(data.message || 'Failed to add photo', 'error');
+                    }
+                 }
             }
         };
     }
@@ -181,17 +219,24 @@ function updateCompanyInfo(company) {
 
     companyData = { ...companyData, ...company };
 
+    let logoUrl = companyData.logo;
+    if (logoUrl && typeof logoUrl === 'string' && !logoUrl.startsWith('http') && !logoUrl.startsWith('../')) {
+        logoUrl = '../' + logoUrl;
+    }
+    const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff`;
+    const finalLogo = logoUrl ? logoUrl : fallbackLogo;
+
     // Sidebar
     const companyNameDisplay = document.getElementById('companyNameDisplay');
     const companyAvatar = document.getElementById('companyAvatar');
     if (companyNameDisplay) companyNameDisplay.textContent = companyData.company_name || companyData.name || '';
-    if (companyAvatar) companyAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff`;
+    if (companyAvatar) companyAvatar.src = finalLogo;
 
     // Header
     const headerCompanyName = document.getElementById('headerCompanyName');
     const headerAvatar = document.getElementById('headerAvatar');
     if (headerCompanyName) headerCompanyName.textContent = companyData.company_name || companyData.name || '';
-    if (headerAvatar) headerAvatar.src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff`;
+    if (headerAvatar) headerAvatar.src = finalLogo;
 
     // Profile Form
     if (document.getElementById('companyName')) document.getElementById('companyName').value = companyData.company_name || '';
@@ -208,10 +253,10 @@ function updateCompanyInfo(company) {
     if (document.querySelector('input[placeholder="Twitter/X URL"]')) document.querySelector('input[placeholder="Twitter/X URL"]').value = companyData.twitter || '';
     if (document.querySelector('input[placeholder="Facebook URL"]')) document.querySelector('input[placeholder="Facebook URL"]').value = companyData.facebook || '';
     if (document.querySelector('input[placeholder="Instagram URL"]')) document.querySelector('input[placeholder="Instagram URL"]').value = companyData.instagram || '';
-    if (document.getElementById('logoPreview')) document.getElementById('logoPreview').src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff`;
+    if (document.getElementById('logoPreview')) document.getElementById('logoPreview').src = finalLogo;
 
     // Profile Preview Card
-    if (document.getElementById('previewLogo')) document.getElementById('previewLogo').src = companyData.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(companyData.company_name || companyData.name || 'Company')}&background=0d47a1&color=fff&size=100`;
+    if (document.getElementById('previewLogo')) document.getElementById('previewLogo').src = finalLogo;
     if (document.getElementById('previewCompanyName')) document.getElementById('previewCompanyName').textContent = companyData.company_name || '';
     if (document.getElementById('previewTagline')) document.getElementById('previewTagline').textContent = companyData.tagline || '';
     if (document.getElementById('previewLocation')) document.getElementById('previewLocation').textContent = companyData.location || '';
