@@ -197,6 +197,7 @@ let dashboardStats = {};
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 async function fetchCompanyProfile() {
@@ -215,6 +216,9 @@ async function fetchCompanyProfile() {
     }
 }
 >>>>>>> 49b13797e085d98bdd47698cc578bb21669ee2f7
+=======
+
+>>>>>>> d634d0e9f9f077f3a8012230d8891d221b84fd92
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchCompanyProfile();
